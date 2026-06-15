@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products – PowerNest | Premium Electronics &amp; Solar Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary:   '#003087',
+            accent:    '#F5A623',
+            accentRed: '#E63329',
+            lightBg:   '#F4F6FA',
+            cardBg:    '#FFFFFF',
+            textMain:  '#1A1A2E',
+            textSub:   '#555770',
+            border:    '#E2E6EF',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #F4F6FA; color: #1A1A2E; margin: 0; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: #003087; border-radius: 3px; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ── Announcement & Nav ── */
+    #announcement-bar { background: #003087; }
+    #main-nav { background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.08); position: sticky; top: 0; z-index: 100; }
+    .cart-btn { background: #003087; }
+    .cart-btn:hover { background: #00236b; }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position: absolute; left:0; bottom:-2px; width:0; height:2px; background:#F5A623; transition: width .2s; }
+    .nav-link:hover::after { width: 100%; }
+    .hamburger-btn { width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:8px; }
+    .hamburger-btn:hover { background: #F4F6FA; }
+
+    /* ── Mobile Menu ── */
+    #mobile-menu-overlay { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:199; opacity:0; visibility:hidden; transition:opacity .25s ease; }
+    #mobile-menu-overlay.open { opacity:1; visibility:visible; }
+    #mobile-menu-panel { position:fixed; top:0; left:0; height:100%; width:85%; max-width:340px; background:#fff; z-index:200; overflow-y:auto; transform:translateX(-100%); transition:transform .28s ease; box-shadow:4px 0 24px rgba(0,0,0,.15); }
+    #mobile-menu-panel.open { transform:translateX(0); }
+
+    /* ── Footer ── */
+    #footer-main { background: #003087; }
+    #footer-bottom { background: #00236b; }
+
+    /* ── Filter Sidebar ── */
+    #filter-sidebar { transition: transform .28s ease; }
+    .filter-section-title { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#003087; margin-bottom:.6rem; }
+    .filter-option label { display:flex; align-items:center; gap:8px; cursor:pointer; padding:4px 0; font-size:.82rem; color:#555770; transition:color .15s; }
+    .filter-option label:hover { color:#003087; }
+    .filter-option input[type=checkbox] { accent-color:#003087; width:14px; height:14px; cursor:pointer; }
+    .filter-option input[type=radio]    { accent-color:#003087; width:14px; height:14px; cursor:pointer; }
+    .active-cat { color:#003087 !important; font-weight:600; }
+
+    /* ── Price Range Slider ── */
+    input[type=range] { accent-color:#003087; cursor:pointer; }
+
+    /* ── Product Cards ── */
+    .product-card { background:#fff; border-radius:10px; overflow:hidden; transition:box-shadow .18s, transform .18s; border:1px solid #E2E6EF; position:relative; }
+    .product-card:hover { box-shadow:0 8px 28px rgba(0,48,135,.13); transform:translateY(-2px); }
+    .product-card:hover .card-quick-actions { opacity:1; }
+    .card-img-wrap { overflow:hidden; background:#F8FAFC; position:relative; }
+    .card-img-wrap img { transition:transform .35s; width:100%; display:block; }
+    .product-card:hover .card-img-wrap img { transform:scale(1.06); }
+    .card-quick-actions { position:absolute; bottom:8px; left:50%; transform:translateX(-50%); opacity:0; transition:opacity .2s; display:flex; gap:6px; white-space:nowrap; }
+    .badge { position:absolute; top:8px; left:8px; font-size:.62rem; font-weight:700; padding:3px 7px; border-radius:4px; text-transform:uppercase; letter-spacing:.04em; }
+    .badge-new    { background:#003087; color:#fff; }
+    .badge-hot    { background:#F5A623; color:#fff; }
+    .badge-sale   { background:#E63329; color:#fff; }
+    .badge-best   { background:#16A34A; color:#fff; }
+    .wish-btn { position:absolute; top:8px; right:8px; width:28px; height:28px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(0,0,0,.12); cursor:pointer; font-size:.8rem; color:#ccc; transition:color .15s; z-index:1; }
+    .wish-btn:hover, .wish-btn.active { color:#E63329; }
+    .price-current  { color:#E63329; font-weight:700; }
+    .price-original { color:#999; font-size:.75rem; text-decoration:line-through; }
+    .add-to-cart-btn { background:#003087; color:#fff; font-size:.72rem; font-weight:600; border-radius:4px; padding:4px 10px; transition:background .15s; white-space:nowrap; }
+    .add-to-cart-btn:hover { background:#0050c8; }
+    .see-all-btn    { border:1.5px solid #003087; color:#003087; font-size:.8rem; font-weight:600; border-radius:4px; padding:4px 14px; white-space:nowrap; transition:all .15s; }
+    .see-all-btn:hover { background:#003087; color:#fff; }
+
+    /* ── Star Rating ── */
+    .stars { color:#F5A623; font-size:.72rem; }
+
+    /* ── View Toggle ── */
+    .view-btn { width:32px; height:32px; border-radius:6px; display:flex; align-items:center; justify-content:center; border:1.5px solid #E2E6EF; cursor:pointer; color:#555770; transition:all .15s; }
+    .view-btn.active { background:#003087; border-color:#003087; color:#fff; }
+
+    /* ── Active Filter Chip ── */
+    .filter-chip { display:inline-flex; align-items:center; gap:5px; background:#EEF2FF; color:#003087; border:1px solid #c7d2fe; border-radius:20px; font-size:.75rem; font-weight:500; padding:3px 10px; }
+    .filter-chip button { color:#6366f1; font-size:.7rem; hover:#003087; }
+
+    /* ── Sort Select ── */
+    select.sort-select { border:1.5px solid #E2E6EF; border-radius:6px; padding:5px 10px; font-size:.82rem; font-family:'Inter',sans-serif; color:#1A1A2E; outline:none; cursor:pointer; }
+    select.sort-select:focus { border-color:#003087; }
+
+    /* ── Pagination ── */
+    .pg-btn { min-width:34px; height:34px; border-radius:6px; display:flex; align-items:center; justify-content:center; border:1.5px solid #E2E6EF; font-size:.82rem; font-weight:600; cursor:pointer; transition:all .15s; color:#555770; }
+    .pg-btn:hover, .pg-btn.active { background:#003087; border-color:#003087; color:#fff; }
+    .pg-btn.disabled { opacity:.4; cursor:default; pointer-events:none; }
+
+    /* ── Filter Accordion ── */
+    .accordion-content { overflow:hidden; transition:max-height .25s ease; max-height:0; }
+    .accordion-content.open { max-height:600px; }
+    .accordion-icon { transition:transform .2s; }
+    .accordion-icon.open { transform:rotate(180deg); }
+
+    /* ── Mobile Filter Drawer ── */
+    #filter-drawer-overlay { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:299; opacity:0; visibility:hidden; transition:opacity .25s; }
+    #filter-drawer-overlay.open { opacity:1; visibility:visible; }
+    #filter-drawer { position:fixed; bottom:0; left:0; right:0; max-height:85vh; background:#fff; z-index:300; border-radius:20px 20px 0 0; overflow-y:auto; transform:translateY(100%); transition:transform .28s ease; }
+    #filter-drawer.open { transform:translateY(0); }
+
+    /* ── Grid layouts ── */
+    #products-grid.grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    #products-grid.grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    #products-grid.list-view { display:flex; flex-direction:column; gap:10px; }
+    #products-grid.list-view .product-card { display:flex; flex-direction:row; height:140px; }
+    #products-grid.list-view .card-img-wrap { width:140px; flex-shrink:0; height:100%; aspect-ratio:unset; }
+    #products-grid.list-view .card-img-wrap img { height:100%; object-fit:cover; }
+    #products-grid.list-view .card-quick-actions { display:none; }
+
+    @media(max-width:1280px) { #products-grid.grid-4 { grid-template-columns:repeat(3,1fr); } }
+    @media(max-width:1024px) {
+      #products-grid.grid-4 { grid-template-columns:repeat(3,1fr); }
+      #products-grid.grid-3 { grid-template-columns:repeat(2,1fr); }
+    }
+    @media(max-width:640px) {
+      #products-grid.grid-4,
+      #products-grid.grid-3 { grid-template-columns:repeat(2,1fr); gap:8px; }
+      #products-grid.list-view .product-card { height:auto; flex-direction:column; }
+      #products-grid.list-view .card-img-wrap { width:100%; height:160px; }
+    }
+
+    /* ── Category banner gradient ── */
+    .cat-banner { border-radius:12px; overflow:hidden; margin-bottom:1rem; }
+
+    /* ── Section label ── */
+    .section-eyebrow { color:#F5A623; font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+
+    /* ── Compare bar ── */
+    #compare-bar { background:#003087; color:#fff; position:fixed; bottom:0; left:0; right:0; z-index:98; transform:translateY(100%); transition:transform .25s; }
+    #compare-bar.visible { transform:translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     ANNOUNCEMENT BAR
+════════════════════════════════════════════ -->
+<div id="announcement-bar" class="text-white text-center text-xs py-2 px-4 flex items-center justify-center md:justify-between flex-wrap gap-2">
+  <div class="flex items-center gap-2 md:gap-4 flex-wrap justify-center">
+    <span><i class="fas fa-shipping-fast mr-1"></i> Free shipping on bulk orders over $5,000</span>
+    <span class="hidden md:inline">|</span>
+    <span class="hidden md:inline"><i class="fas fa-headset mr-1"></i> 24/7 International Support</span>
+  </div>
+  <div class="hidden sm:flex items-center gap-4">
+    <a href="#" class="hover:text-accent transition-colors">Track Order</a>
+    <a href="#" class="hover:text-accent transition-colors">Become a Dealer</a>
+    <span class="bg-accent text-white rounded px-2 py-0.5 text-xs font-bold">USD</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     MAIN NAVIGATION
+════════════════════════════════════════════ -->
+<nav id="main-nav" class="bg-white">
+  <div class="max-w-[1320px] mx-auto px-4">
+    <div class="flex items-center gap-2 sm:gap-4 py-3">
+      <button id="mobile-menu-btn" class="hamburger-btn lg:hidden text-primary shrink-0" aria-label="Open menu">
+        <i class="fas fa-bars text-lg"></i>
+      </button>
+      <a href="../homepage.html" class="flex items-center gap-2 shrink-0">
+        <div class="w-9 h-9 bg-primary rounded-lg flex items-center justify-center shrink-0">
+          <i class="fas fa-bolt text-accent text-lg"></i>
+        </div>
+        <div class="leading-tight">
+          <div class="font-black text-primary text-base sm:text-lg tracking-tight">PowerNest</div>
+          <div class="text-[9px] text-textSub font-medium uppercase tracking-widest hidden sm:block">Electronics &amp; Solar</div>
+        </div>
+      </a>
+      <div class="flex-1 relative max-w-[540px] mx-4 hidden md:block">
+        <div class="flex border-2 border-primary rounded-lg overflow-hidden">
+          <select id="cat-select-nav" class="bg-lightBg text-xs text-textSub font-medium px-3 py-2 border-r border-border outline-none shrink-0">
+            <option value="">All Categories</option>
+            <option value="air-conditioners">Air Conditioners</option>
+            <option value="solar-panels">Solar Panels</option>
+            <option value="televisions">Televisions</option>
+            <option value="refrigerators">Refrigerators</option>
+            <option value="washing-machines">Washing Machines</option>
+            <option value="water-purifiers">Water Purifiers</option>
+            <option value="kitchen-cabinets">Kitchen Cabinets</option>
+            <option value="lighting">Lighting</option>
+          </select>
+          <input id="nav-search-input" type="text" placeholder="Search products, brands, categories…" class="flex-1 px-4 py-2 text-sm outline-none min-w-0" />
+          <button id="nav-search-btn" class="bg-primary text-white px-5 py-2 hover:bg-blue-800 transition-colors shrink-0">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-3 ml-auto shrink-0">
+        <button id="mobile-search-btn" class="md:hidden hamburger-btn text-textSub"><i class="fas fa-search text-lg"></i></button>
+        <a href="account.html" class="hidden sm:flex flex-col items-center text-textSub hover:text-primary text-xs font-medium transition-colors">
+          <i class="far fa-user text-lg mb-0.5"></i><span>Account</span>
+        </a>
+        <a href="wishlist.html" class="hidden sm:flex flex-col items-center text-textSub hover:text-primary text-xs font-medium transition-colors relative">
+          <i class="far fa-heart text-lg mb-0.5"></i><span>Wishlist</span>
+          <span class="absolute -top-1 -right-1 bg-accentRed text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">3</span>
+        </a>
+        <a href="cart.html" class="cart-btn flex items-center gap-2 text-white rounded-lg px-3 sm:px-4 py-2 text-sm font-semibold relative">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="hidden sm:inline">Cart</span>
+          <span class="bg-accent text-white text-[9px] rounded-full w-5 h-5 flex items-center justify-center font-bold">2</span>
+        </a>
+      </div>
+    </div>
+    <div id="mobile-search-bar" class="hidden md:hidden pb-3">
+      <div class="flex border-2 border-primary rounded-lg overflow-hidden">
+        <input type="text" placeholder="Search products…" class="flex-1 px-4 py-2 text-sm outline-none min-w-0" />
+        <button class="bg-primary text-white px-4 py-2 hover:bg-blue-800 transition-colors shrink-0"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div class="hidden lg:flex items-center gap-6 pb-2 border-t border-border pt-2 overflow-x-auto scrollbar-hide">
+      <a href="../homepage.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Home</a>
+      <a href="products.html"    class="nav-link text-sm text-primary font-bold whitespace-nowrap">Products</a>
+      <a href="brands.html"      class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Brands</a>
+      <a href="bulk-order.html"  class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Bulk Orders</a>
+      <a href="solar.html"       class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Solar Solutions</a>
+      <a href="deals.html"       class="nav-link text-sm text-accentRed font-semibold whitespace-nowrap"><i class="fas fa-fire mr-1"></i>Deals</a>
+      <a href="about.html"       class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">About Us</a>
+      <a href="contact.html"     class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu overlay & panel -->
+<div id="mobile-menu-overlay"></div>
+<div id="mobile-menu-panel">
+  <div class="flex items-center justify-between px-4 py-4 border-b border-border bg-primary">
+    <div class="flex items-center gap-2 text-white">
+      <div class="w-9 h-9 bg-white/15 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-accent text-lg"></i></div>
+      <div><div class="font-black text-base">PowerNest</div><div class="text-[9px] opacity-70 uppercase tracking-widest">Electronics &amp; Solar</div></div>
+    </div>
+    <button id="mobile-menu-close" class="text-white w-9 h-9 flex items-center justify-center rounded-lg hover:bg-white/10"><i class="fas fa-times text-lg"></i></button>
+  </div>
+  <div class="px-2 py-2 border-b border-border">
+    <a href="../homepage.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Home</a>
+    <a href="products.html"   class="block px-4 py-2.5 rounded-lg text-sm font-bold text-primary bg-lightBg">Products</a>
+    <a href="brands.html"     class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Brands</a>
+    <a href="bulk-order.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Bulk Orders</a>
+    <a href="solar.html"      class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Solar Solutions</a>
+    <a href="deals.html"      class="block px-4 py-2.5 rounded-lg text-sm font-semibold text-accentRed hover:bg-lightBg"><i class="fas fa-fire mr-1"></i>Deals</a>
+    <a href="about.html"      class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">About Us</a>
+    <a href="contact.html"    class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Contact</a>
+  </div>
+  <div class="px-4 py-4 text-xs text-textSub border-t border-border">
+    <div class="font-bold text-primary mb-1">Customer Support (24/7)</div>
+    <div>+60 3-1234 5678</div><div>support@powernest.com</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE CONTENT
+════════════════════════════════════════════ -->
+<div class="max-w-[1320px] mx-auto px-4 py-4">
+
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-1.5 text-xs text-textSub mb-4" aria-label="Breadcrumb">
+    <a href="../homepage.html" class="hover:text-primary transition-colors">Home</a>
+    <i class="fas fa-chevron-right text-[9px] opacity-50"></i>
+    <span id="breadcrumb-cat" class="text-primary font-medium">All Products</span>
+  </nav>
+
+  <!-- Category header banner -->
+  <div id="category-banner" class="cat-banner mb-4"></div>
+
+  <!-- Category tabs (horizontal scroll) -->
+  <div class="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1 mb-4">
+    <span class="text-xs font-semibold text-textSub whitespace-nowrap shrink-0">Browse:</span>
+    <div id="cat-tabs" class="flex gap-2"></div>
+  </div>
+
+  <div class="flex gap-4 items-start">
+
+    <!-- ─────────────────────────────────────
+         FILTER SIDEBAR (desktop)
+    ───────────────────────────────────── -->
+    <aside id="filter-sidebar" class="w-[230px] shrink-0 hidden lg:block sticky top-[76px]">
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="bg-primary text-white px-4 py-3 flex items-center justify-between">
+          <span class="font-bold text-sm flex items-center gap-2"><i class="fas fa-sliders-h"></i> Filters</span>
+          <button id="clear-all-filters" class="text-xs text-accent hover:underline hidden">Clear all</button>
+        </div>
+
+        <div class="divide-y divide-border">
+
+          <!-- Category Filter -->
+          <div class="p-4">
+            <div class="filter-section-title">Categories</div>
+            <div id="sidebar-cat-list" class="space-y-0.5"></div>
+          </div>
+
+          <!-- Brand Filter -->
+          <div class="p-4">
+            <button class="accordion-btn w-full flex items-center justify-between text-left" data-target="brand-acc">
+              <div class="filter-section-title mb-0">Brands</div>
+              <i class="fas fa-chevron-down accordion-icon open text-xs text-textSub"></i>
+            </button>
+            <div id="brand-acc" class="accordion-content open mt-3">
+              <div id="sidebar-brand-list" class="space-y-1 max-h-[180px] overflow-y-auto scrollbar-hide pr-1"></div>
+            </div>
+          </div>
+
+          <!-- Price Range -->
+          <div class="p-4">
+            <button class="accordion-btn w-full flex items-center justify-between text-left" data-target="price-acc">
+              <div class="filter-section-title mb-0">Price Range</div>
+              <i class="fas fa-chevron-down accordion-icon open text-xs text-textSub"></i>
+            </button>
+            <div id="price-acc" class="accordion-content open mt-3">
+              <div class="flex gap-2 mb-3">
+                <div class="flex-1">
+                  <label class="text-[10px] text-textSub font-medium block mb-1">Min ($)</label>
+                  <input id="price-min" type="number" value="0" min="0" class="w-full border border-border rounded-lg px-2 py-1.5 text-xs outline-none focus:border-primary" />
+                </div>
+                <div class="flex-1">
+                  <label class="text-[10px] text-textSub font-medium block mb-1">Max ($)</label>
+                  <input id="price-max" type="number" value="100000" min="0" class="w-full border border-border rounded-lg px-2 py-1.5 text-xs outline-none focus:border-primary" />
+                </div>
+              </div>
+              <input id="price-slider" type="range" min="0" max="100000" step="500" value="100000" class="w-full" />
+              <div class="flex justify-between text-[10px] text-textSub mt-1"><span>$0</span><span>$100,000</span></div>
+              <button id="apply-price" class="mt-3 w-full bg-primary text-white text-xs font-semibold py-2 rounded-lg hover:bg-blue-800 transition-colors">Apply</button>
+            </div>
+          </div>
+
+          <!-- Rating Filter -->
+          <div class="p-4">
+            <button class="accordion-btn w-full flex items-center justify-between text-left" data-target="rating-acc">
+              <div class="filter-section-title mb-0">Minimum Rating</div>
+              <i class="fas fa-chevron-down accordion-icon open text-xs text-textSub"></i>
+            </button>
+            <div id="rating-acc" class="accordion-content open mt-3">
+              <div class="space-y-1" id="rating-filter-list"></div>
+            </div>
+          </div>
+
+          <!-- Special Features -->
+          <div class="p-4">
+            <button class="accordion-btn w-full flex items-center justify-between text-left" data-target="feat-acc">
+              <div class="filter-section-title mb-0">Features</div>
+              <i class="fas fa-chevron-down accordion-icon open text-xs text-textSub"></i>
+            </button>
+            <div id="feat-acc" class="accordion-content open mt-3">
+              <div id="feature-filter-list" class="space-y-1"></div>
+            </div>
+          </div>
+
+          <!-- Availability -->
+          <div class="p-4">
+            <div class="filter-section-title">Availability</div>
+            <div class="space-y-1">
+              <div class="filter-option"><label><input type="checkbox" id="avail-stock" checked /> In Stock Only</label></div>
+              <div class="filter-option"><label><input type="checkbox" id="avail-bulk" /> Bulk Available</label></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </aside>
+
+    <!-- ─────────────────────────────────────
+         MAIN PRODUCTS AREA
+    ───────────────────────────────────── -->
+    <div class="flex-1 min-w-0">
+
+      <!-- Active filter chips -->
+      <div id="active-filters" class="flex flex-wrap gap-2 mb-3 hidden"></div>
+
+      <!-- Toolbar -->
+      <div class="bg-white rounded-xl shadow-sm px-4 py-3 flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div class="flex items-center gap-3">
+          <!-- Mobile filter button -->
+          <button id="open-filter-drawer" class="lg:hidden flex items-center gap-2 bg-lightBg text-primary font-semibold text-sm rounded-lg px-4 py-2 border border-border">
+            <i class="fas fa-sliders-h"></i> Filters
+            <span id="filter-badge" class="hidden bg-primary text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold"></span>
+          </button>
+          <span id="results-count" class="text-sm text-textSub"></span>
+        </div>
+        <div class="flex items-center gap-3">
+          <!-- Sort -->
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-textSub hidden sm:inline">Sort by:</span>
+            <select id="sort-select" class="sort-select">
+              <option value="recommended">Recommended</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="newest">Newest First</option>
+              <option value="rating">Best Rating</option>
+              <option value="reviews">Most Reviewed</option>
+            </select>
+          </div>
+          <!-- View toggle -->
+          <div class="flex items-center gap-1">
+            <button class="view-btn active" data-view="grid-4" title="4-column grid"><i class="fas fa-th text-xs"></i></button>
+            <button class="view-btn" data-view="grid-3" title="3-column grid"><i class="fas fa-th-large text-xs"></i></button>
+            <button class="view-btn" data-view="list-view" title="List view"><i class="fas fa-list text-xs"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products grid -->
+      <div id="products-grid" class="grid-4"></div>
+
+      <!-- Empty state -->
+      <div id="empty-state" class="hidden text-center py-20 bg-white rounded-xl shadow-sm">
+        <i class="fas fa-search text-5xl text-border mb-4"></i>
+        <h3 class="text-lg font-bold text-textMain mb-2">No products found</h3>
+        <p class="text-sm text-textSub mb-5">Try adjusting your filters or search term</p>
+        <button onclick="resetAll()" class="bg-primary text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-800 transition-colors">Clear All Filters</button>
+      </div>
+
+      <!-- Pagination -->
+      <div id="pagination" class="mt-6 flex items-center justify-center gap-2 flex-wrap pb-6"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     MOBILE FILTER DRAWER
+════════════════════════════════════════════ -->
+<div id="filter-drawer-overlay"></div>
+<div id="filter-drawer">
+  <div class="sticky top-0 bg-white flex items-center justify-between px-4 py-3.5 border-b border-border z-10">
+    <span class="font-bold text-sm text-textMain">Filter Products</span>
+    <button id="close-filter-drawer" class="text-textSub"><i class="fas fa-times text-lg"></i></button>
+  </div>
+  <div class="p-4 space-y-5 pb-24">
+    <!-- Categories -->
+    <div>
+      <div class="filter-section-title">Categories</div>
+      <div id="drawer-cat-list" class="space-y-0.5"></div>
+    </div>
+    <!-- Brands -->
+    <div>
+      <div class="filter-section-title">Brands</div>
+      <div id="drawer-brand-list" class="grid grid-cols-2 gap-1"></div>
+    </div>
+    <!-- Price -->
+    <div>
+      <div class="filter-section-title">Price Range</div>
+      <div class="flex gap-2 mb-3">
+        <div class="flex-1">
+          <label class="text-[10px] text-textSub font-medium block mb-1">Min ($)</label>
+          <input id="drawer-price-min" type="number" value="0" class="w-full border border-border rounded-lg px-2 py-1.5 text-xs outline-none focus:border-primary" />
+        </div>
+        <div class="flex-1">
+          <label class="text-[10px] text-textSub font-medium block mb-1">Max ($)</label>
+          <input id="drawer-price-max" type="number" value="100000" class="w-full border border-border rounded-lg px-2 py-1.5 text-xs outline-none focus:border-primary" />
+        </div>
+      </div>
+    </div>
+    <!-- Rating -->
+    <div>
+      <div class="filter-section-title">Minimum Rating</div>
+      <div id="drawer-rating-list" class="space-y-1"></div>
+    </div>
+  </div>
+  <!-- Sticky footer buttons -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-border p-4 flex gap-3">
+    <button onclick="resetAll()" class="flex-1 border border-primary text-primary font-semibold text-sm rounded-lg py-2.5 hover:bg-lightBg transition-colors">Reset</button>
+    <button id="apply-drawer-filters" class="flex-1 bg-primary text-white font-semibold text-sm rounded-lg py-2.5 hover:bg-blue-800 transition-colors">Show Results</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer class="mt-8">
+  <div class="bg-white border-t border-border">
+    <div class="max-w-[1320px] mx-auto px-4 py-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-lightBg transition-colors">
+        <div class="w-10 h-10 bg-lightBg rounded-full flex items-center justify-center text-primary shrink-0"><i class="fas fa-shipping-fast"></i></div>
+        <div class="text-left"><div class="text-xs font-bold text-textMain">Free Bulk Shipping</div><div class="text-[10px] text-textSub">Orders over $5,000</div></div>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-lightBg transition-colors">
+        <div class="w-10 h-10 bg-lightBg rounded-full flex items-center justify-center text-primary shrink-0"><i class="fas fa-shield-alt"></i></div>
+        <div class="text-left"><div class="text-xs font-bold text-textMain">Official Warranty</div><div class="text-[10px] text-textSub">All brands covered</div></div>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-lightBg transition-colors">
+        <div class="w-10 h-10 bg-lightBg rounded-full flex items-center justify-center text-primary shrink-0"><i class="fas fa-headset"></i></div>
+        <div class="text-left"><div class="text-xs font-bold text-textMain">24/7 Support</div><div class="text-[10px] text-textSub">International team</div></div>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-lightBg transition-colors">
+        <div class="w-10 h-10 bg-lightBg rounded-full flex items-center justify-center text-primary shrink-0"><i class="fas fa-undo"></i></div>
+        <div class="text-left"><div class="text-xs font-bold text-textMain">Easy Returns</div><div class="text-[10px] text-textSub">30-day hassle free</div></div>
+      </div>
+    </div>
+  </div>
+  <div id="footer-main" class="text-white">
+    <div class="max-w-[1320px] mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div class="col-span-2 md:col-span-1">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-9 h-9 bg-white/20 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-accent text-lg"></i></div>
+          <div><div class="font-black text-lg">PowerNest</div><div class="text-[9px] opacity-60 uppercase tracking-widest">Electronics &amp; Solar</div></div>
+        </div>
+        <p class="text-sm opacity-75 leading-relaxed mb-4">Trusted wholesale partner for premium electronics, air conditioners, and solar solutions — serving international buyers since 2010.</p>
+        <div class="flex gap-3">
+          <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-facebook-f text-sm"></i></a>
+          <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-instagram text-sm"></i></a>
+          <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-linkedin-in text-sm"></i></a>
+          <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-youtube text-sm"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-bold text-sm mb-4 text-accent">Products</h4>
+        <ul class="space-y-2 text-sm opacity-80">
+          <li><a href="?cat=air-conditioners" class="hover:text-accent transition-colors">Air Conditioners</a></li>
+          <li><a href="?cat=solar-panels" class="hover:text-accent transition-colors">Solar Panels</a></li>
+          <li><a href="?cat=televisions" class="hover:text-accent transition-colors">Televisions</a></li>
+          <li><a href="?cat=refrigerators" class="hover:text-accent transition-colors">Refrigerators</a></li>
+          <li><a href="?cat=washing-machines" class="hover:text-accent transition-colors">Washing Machines</a></li>
+          <li><a href="?cat=lighting" class="hover:text-accent transition-colors">Lighting &amp; Fixtures</a></li>
+          <li><a href="?cat=kitchen-cabinets" class="hover:text-accent transition-colors">Kitchen Cabinets</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-sm mb-4 text-accent">Company</h4>
+        <ul class="space-y-2 text-sm opacity-80">
+          <li><a href="about.html" class="hover:text-accent transition-colors">About Us</a></li>
+          <li><a href="#" class="hover:text-accent transition-colors">Careers</a></li>
+          <li><a href="#" class="hover:text-accent transition-colors">Dealer Program</a></li>
+          <li><a href="bulk-order.html" class="hover:text-accent transition-colors">Bulk Orders</a></li>
+          <li><a href="#" class="hover:text-accent transition-colors">Sustainability</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-sm mb-4 text-accent">Support</h4>
+        <ul class="space-y-2 text-sm opacity-80">
+          <li><a href="contact.html" class="hover:text-accent transition-colors">Contact Us</a></li>
+          <li><a href="#" class="hover:text-accent transition-colors">Track Order</a></li>
+          <li><a href="#" class="hover:text-accent transition-colors">Warranty Info</a></li>
+          <li><a href="#" class="hover:text-accent transition-colors">FAQs</a></li>
+        </ul>
+        <div class="mt-5 text-sm">
+          <div class="opacity-70 text-xs mb-1">Customer Support (24/7)</div>
+          <div class="font-bold text-accent text-base">+60 3-1234 5678</div>
+          <div class="opacity-70 text-xs mt-1">support@powernest.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="footer-bottom" class="text-white text-xs">
+    <div class="max-w-[1320px] mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-2 text-center md:text-left">
+      <span class="opacity-70">© 2026 PowerNest. All rights reserved.</span>
+      <div class="flex items-center gap-4 opacity-70">
+        <a href="#" class="hover:text-accent transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-accent transition-colors">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll-to-top -->
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+  class="fixed bottom-6 right-6 w-11 h-11 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-800 transition-all opacity-0 z-50">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- ════════════════════════════════════════════
+     PRODUCT DATA + SCRIPTS
+════════════════════════════════════════════ -->
+<script>
+
+/* ═══════════════════════════════
+   DATA
+═══════════════════════════════ */
+const CATEGORIES = [
+  { id:'all',              label:'All Products',       icon:'fa-boxes',         color:'#003087', bg:'from-[#003087] to-[#0050c8]' },
+  { id:'air-conditioners', label:'Air Conditioners',   icon:'fa-snowflake',     color:'#0ea5e9', bg:'from-[#0284c7] to-[#0ea5e9]' },
+  { id:'solar-panels',     label:'Solar Panels',       icon:'fa-solar-panel',   color:'#f59e0b', bg:'from-[#d97706] to-[#f59e0b]' },
+  { id:'televisions',      label:'Televisions',        icon:'fa-tv',            color:'#6366f1', bg:'from-[#4f46e5] to-[#6366f1]' },
+  { id:'refrigerators',    label:'Refrigerators',      icon:'fa-temperature-low',color:'#14b8a6',bg:'from-[#0d9488] to-[#14b8a6]' },
+  { id:'washing-machines', label:'Washing Machines',   icon:'fa-soap',          color:'#3b82f6', bg:'from-[#2563eb] to-[#3b82f6]' },
+  { id:'water-purifiers',  label:'Water Purifiers',    icon:'fa-tint',          color:'#06b6d4', bg:'from-[#0891b2] to-[#06b6d4]' },
+  { id:'kitchen-cabinets', label:'Kitchen Cabinets',   icon:'fa-cabinet-filing',color:'#a16207', bg:'from-[#92400e] to-[#b45309]' },
+  { id:'lighting',         label:'Lighting & Fixtures',icon:'fa-lightbulb',     color:'#eab308', bg:'from-[#ca8a04] to-[#eab308]' },
+];
+
+const BRANDS = ['Daikin','Midea','Panasonic','Samsung','LG','Mitsubishi','Gree','Haier','Fujitsu','Sharp','Toshiba','Hitachi','TCL','Philips','Xiaomi','Jinko Solar','Canadian Solar','LONGi','Sony','Hisense'];
+
+const FEATURES = ['Inverter Technology','Smart Wi-Fi Control','Energy Star Certified','5-Star Energy Rating','Self-Cleaning','Voice Control','Air Purifier Built-in','Auto Restart','Sleep Mode','Turbo Cooling'];
+
+const ALL_PRODUCTS = [
+  /* ── Air Conditioners ── */
+  { id:1,  name:'Daikin 1.5HP iSmile Eco Inverter Air Conditioner',          brand:'Daikin',        cat:'air-conditioners', price:1899, orig:2299, rating:4.8, reviews:324, badge:'BESTSELLER', img:'https://placehold.co/280x280/EBF8FF/003087?text=Daikin+AC',    features:['Inverter Technology','5-Star Energy Rating','Sleep Mode'],           isNew:false },
+  { id:2,  name:'Midea 2HP All Easy Pro Inverter Split AC with Wi-Fi',        brand:'Midea',         cat:'air-conditioners', price:2290, orig:2700, rating:4.6, reviews:187, badge:'SALE',       img:'https://placehold.co/280x280/F0F9FF/0284c7?text=Midea+AC',     features:['Inverter Technology','Smart Wi-Fi Control','Air Purifier Built-in'], isNew:false },
+  { id:3,  name:'Panasonic 1HP CS-PN9XKH Standard Inverter Wall Mounted',     brand:'Panasonic',     cat:'air-conditioners', price:1590, orig:1890, rating:4.5, reviews:211, badge:null,         img:'https://placehold.co/280x280/F0FDFF/0891b2?text=Panasonic+AC', features:['Inverter Technology','Auto Restart'],                                isNew:false },
+  { id:4,  name:'Samsung WindFree 2.5HP Inverter Air Conditioner AR24TYFCAWKN',brand:'Samsung',      cat:'air-conditioners', price:3299, orig:3899, rating:4.9, reviews:412, badge:'HOT',        img:'https://placehold.co/280x280/EFF6FF/2563eb?text=Samsung+AC',   features:['Inverter Technology','Smart Wi-Fi Control','5-Star Energy Rating','Sleep Mode'], isNew:false },
+  { id:5,  name:'Mitsubishi Heavy 1HP SRK10YN-S Standard Split System AC',    brand:'Mitsubishi',    cat:'air-conditioners', price:2150, orig:2500, rating:4.7, reviews:156, badge:null,         img:'https://placehold.co/280x280/F5F3FF/6d28d9?text=Mitsubishi+AC',features:['5-Star Energy Rating','Sleep Mode','Auto Restart'],                  isNew:true  },
+  { id:6,  name:'Gree 2HP GWC18AFD-D3DNA1A Inverter Cassette AC Unit',        brand:'Gree',          cat:'air-conditioners', price:2890, orig:3200, rating:4.4, reviews:89,  badge:'NEW',        img:'https://placehold.co/280x280/ECFDF5/047857?text=Gree+AC',      features:['Inverter Technology','Turbo Cooling'],                               isNew:true  },
+  { id:7,  name:'Fujitsu 3HP ASYA30LMTD Commercial Ceiling Cassette Inverter',brand:'Fujitsu',       cat:'air-conditioners', price:6800, orig:7500, rating:4.8, reviews:67,  badge:null,         img:'https://placehold.co/280x280/FFF7ED/c2410c?text=Fujitsu+AC',   features:['Inverter Technology','Smart Wi-Fi Control','Self-Cleaning'],         isNew:false },
+  { id:8,  name:'LG 1.5HP DUALCOOL Inverter with UVnano Air Conditioner',     brand:'LG',            cat:'air-conditioners', price:2099, orig:2499, rating:4.7, reviews:298, badge:'SALE',       img:'https://placehold.co/280x280/FEFCE8/854d0e?text=LG+AC',        features:['Inverter Technology','Air Purifier Built-in','Voice Control'],       isNew:false },
+
+  /* ── Solar Panels ── */
+  { id:9,  name:'Jinko Solar Tiger Neo 400W Mono Facial Solar Panel (Type N)', brand:'Jinko Solar',   cat:'solar-panels',     price:680,  orig:820,  rating:4.9, reviews:543, badge:'BESTSELLER', img:'https://placehold.co/280x280/FEFCE8/713f12?text=Jinko+400W',  features:['Energy Star Certified','5-Star Energy Rating'],                      isNew:false },
+  { id:10, name:'Canadian Solar HiKu7 450W Mono PERC Solar Panel CS7N-450MS',  brand:'Canadian Solar',cat:'solar-panels',     price:850,  orig:980,  rating:4.8, reviews:312, badge:'HOT',        img:'https://placehold.co/280x280/FEFCE8/78350f?text=Canadian+450W',features:['Energy Star Certified'],                                            isNew:false },
+  { id:11, name:'LONGi Hi-MO 6 Scientist 410W Solar Module LR5-66HTH-410M',   brand:'LONGi',         cat:'solar-panels',     price:750,  orig:900,  rating:4.7, reviews:198, badge:'NEW',        img:'https://placehold.co/280x280/FEF9C3/713f12?text=LONGi+410W',  features:['Energy Star Certified','5-Star Energy Rating'],                      isNew:true  },
+  { id:12, name:'PowerNest Complete 10kW Residential Solar System Package',    brand:'Panasonic',     cat:'solar-panels',     price:28000,orig:35000,rating:4.9, reviews:87,  badge:'SALE',       img:'https://placehold.co/280x280/FEF08A/713f12?text=10kW+System', features:['Smart Wi-Fi Control','Energy Star Certified'],                       isNew:false },
+  { id:13, name:'SunPower Maxeon 3 400W Premium Mono Solar Panel SPR-MAX3-400',brand:'Jinko Solar',   cat:'solar-panels',     price:1200, orig:1400, rating:5.0, reviews:245, badge:null,         img:'https://placehold.co/280x280/FDE68A/92400e?text=SunPower+400W',features:['Energy Star Certified','5-Star Energy Rating'],                      isNew:false },
+  { id:14, name:'Jinko Solar 550W N-Type Tiger Neo Bifacial Solar Module',     brand:'Jinko Solar',   cat:'solar-panels',     price:980,  orig:1100, rating:4.8, reviews:167, badge:'HOT',        img:'https://placehold.co/280x280/FCD34D/78350f?text=Jinko+550W',  features:['Energy Star Certified'],                                            isNew:false },
+
+  /* ── Televisions ── */
+  { id:15, name:'Samsung 55" Crystal UHD 4K Smart TV UA55CU8000KXXM (2024)',  brand:'Samsung',       cat:'televisions',      price:2699, orig:3299, rating:4.7, reviews:891, badge:'SALE',       img:'https://placehold.co/280x280/EDE9FE/4c1d95?text=Samsung+55"', features:['Smart Wi-Fi Control','Voice Control'],                               isNew:false },
+  { id:16, name:'LG 65" OLED evo C3 4K Smart TV OLED65C3PSA',                brand:'LG',            cat:'televisions',      price:6499, orig:7999, rating:4.9, reviews:534, badge:'BESTSELLER', img:'https://placehold.co/280x280/EDE9FE/5b21b6?text=LG+OLED+65"', features:['Smart Wi-Fi Control','Voice Control'],                               isNew:false },
+  { id:17, name:'Sony 50" X75L 4K Ultra HD LED Smart Google TV KD-50X75L',    brand:'Sony',          cat:'televisions',      price:2299, orig:2699, rating:4.6, reviews:423, badge:null,         img:'https://placehold.co/280x280/F5F3FF/6d28d9?text=Sony+50"',    features:['Smart Wi-Fi Control','Voice Control'],                               isNew:false },
+  { id:18, name:'TCL 75" QLED 4K Smart TV C745 with Dolby Vision & Atmos',    brand:'TCL',           cat:'televisions',      price:3499, orig:4500, rating:4.5, reviews:267, badge:'NEW',        img:'https://placehold.co/280x280/EFF6FF/1d4ed8?text=TCL+75"',     features:['Smart Wi-Fi Control','Voice Control'],                               isNew:true  },
+  { id:19, name:'Hisense 43" A6H Series 4K UHD Android Smart TV 43A6H',       brand:'Hisense',       cat:'televisions',      price:1299, orig:1599, rating:4.3, reviews:312, badge:'HOT',        img:'https://placehold.co/280x280/DBEAFE/1e40af?text=Hisense+43"', features:['Smart Wi-Fi Control'],                                               isNew:false },
+
+  /* ── Refrigerators ── */
+  { id:20, name:'Samsung 660L French Door Refrigerator RF65A977FSR/SP',       brand:'Samsung',       cat:'refrigerators',    price:5499, orig:6500, rating:4.8, reviews:234, badge:'BESTSELLER', img:'https://placehold.co/280x280/CCFBF1/0d9488?text=Samsung+Fridge',features:['Inverter Technology','Smart Wi-Fi Control'],                        isNew:false },
+  { id:21, name:'LG 509L InstaView Door-in-Door Refrigerator GR-X50MCSHL',    brand:'LG',            cat:'refrigerators',    price:4299, orig:5200, rating:4.7, reviews:178, badge:'SALE',       img:'https://placehold.co/280x280/CCFBF1/115e59?text=LG+Fridge',   features:['Inverter Technology','Smart Wi-Fi Control','Voice Control'],         isNew:false },
+  { id:22, name:'Panasonic 411L Prime Fresh Inverter Bottom Freezer NR-BX421GSSM',brand:'Panasonic',  cat:'refrigerators',    price:2890, orig:3299, rating:4.6, reviews:145, badge:null,         img:'https://placehold.co/280x280/D1FAE5/047857?text=Panasonic+Fridge',features:['Inverter Technology'],                                             isNew:false },
+  { id:23, name:'Sharp 600L Pelican Series French Door Refrigerator SJF-P60FTV',brand:'Sharp',        cat:'refrigerators',    price:3899, orig:4500, rating:4.5, reviews:98,  badge:'NEW',        img:'https://placehold.co/280x280/ECFDF5/065f46?text=Sharp+Fridge', features:['Inverter Technology','5-Star Energy Rating'],                        isNew:true  },
+  { id:24, name:'Hitachi 540L R-WB640P9H Operation French Bottom Freezer',    brand:'Hitachi',       cat:'refrigerators',    price:4599, orig:5299, rating:4.8, reviews:123, badge:'HOT',        img:'https://placehold.co/280x280/D1FAE5/064e3b?text=Hitachi+Fridge',features:['Inverter Technology','Smart Wi-Fi Control'],                        isNew:false },
+
+  /* ── Washing Machines ── */
+  { id:25, name:'Samsung 10.5kg EcoBubble Front Load Washer WW10TP44DSB/SP',  brand:'Samsung',       cat:'washing-machines',  price:2199, orig:2599, rating:4.8, reviews:567, badge:'BESTSELLER', img:'https://placehold.co/280x280/DBEAFE/1e3a8a?text=Samsung+WM',  features:['Inverter Technology','Smart Wi-Fi Control','Sleep Mode'],            isNew:false },
+  { id:26, name:'LG 10kg Vivace Front Load Washer FV1410S4W with AI DD',      brand:'LG',            cat:'washing-machines',  price:2490, orig:2899, rating:4.7, reviews:389, badge:'SALE',       img:'https://placehold.co/280x280/BFDBFE/1e40af?text=LG+WM',       features:['Inverter Technology','Smart Wi-Fi Control'],                         isNew:false },
+  { id:27, name:'Panasonic 8kg ActiveFoam System Front Load Washer NA-148MB3',brand:'Panasonic',      cat:'washing-machines',  price:1699, orig:2099, rating:4.5, reviews:234, badge:null,         img:'https://placehold.co/280x280/E0E7FF/3730a3?text=Panasonic+WM',features:['Inverter Technology'],                                               isNew:false },
+  { id:28, name:'Sharp 11kg Front Load Washing Machine ES-FLA1122C-BK (2024)',brand:'Sharp',          cat:'washing-machines',  price:1990, orig:2299, rating:4.4, reviews:145, badge:'NEW',        img:'https://placehold.co/280x280/C7D2FE/4338ca?text=Sharp+WM',    features:['Inverter Technology','Smart Wi-Fi Control'],                         isNew:true  },
+
+  /* ── Water Purifiers ── */
+  { id:29, name:'Coway Prime Plus AP-1512HH Water Purifier with 4-Stage Filter',brand:'Philips',      cat:'water-purifiers',   price:2490, orig:2899, rating:4.8, reviews:445, badge:'BESTSELLER', img:'https://placehold.co/280x280/E0F2FE/0369a1?text=Coway+WP',    features:['Self-Cleaning'],                                                     isNew:false },
+  { id:30, name:'A.O. Smith Z9 Green RO+UV+SCMT 10L Wall Mount Water Purifier',brand:'Haier',         cat:'water-purifiers',   price:1899, orig:2199, rating:4.6, reviews:267, badge:'SALE',       img:'https://placehold.co/280x280/BAE6FD/0284c7?text=AO+Smith+WP', features:[],                                                                    isNew:false },
+  { id:31, name:'Philips ADD6910/90 UltraClean Water Dispenser + RO Purifier', brand:'Philips',       cat:'water-purifiers',   price:3299, orig:3899, rating:4.7, reviews:189, badge:'HOT',        img:'https://placehold.co/280x280/7DD3FC/0c4a6e?text=Philips+WP',  features:['Smart Wi-Fi Control'],                                               isNew:false },
+
+  /* ── Kitchen Cabinets ── */
+  { id:32, name:'PowerNest Premium Island Kitchen Cabinet Set — Handleless Matte',brand:'Daikin',      cat:'kitchen-cabinets',  price:18500,orig:24000,rating:4.9, reviews:56,  badge:'BESTSELLER', img:'https://placehold.co/280x280/FEF3C7/78350f?text=Island+Cabinet',features:[],                                                                   isNew:false },
+  { id:33, name:'Modular L-Shape Kitchen Cabinet Full Set with Soft-Close Hinges',brand:'Midea',       cat:'kitchen-cabinets',  price:12800,orig:16000,rating:4.7, reviews:43,  badge:null,         img:'https://placehold.co/280x280/FEF9C3/713f12?text=L-Shape+Cabinet',features:[],                                                                  isNew:false },
+  { id:34, name:'Minimalist Handleless Modern Kitchen Cabinet with Quartz Top', brand:'Panasonic',     cat:'kitchen-cabinets',  price:9900, orig:12500,rating:4.6, reviews:67,  badge:'NEW',        img:'https://placehold.co/280x280/FFFBEB/92400e?text=Modern+Cabinet',features:[],                                                                   isNew:true  },
+  { id:35, name:'Full Height Pantry Cabinet with Pull-Out Drawers — White Gloss',brand:'Samsung',      cat:'kitchen-cabinets',  price:7500, orig:9200, rating:4.5, reviews:38,  badge:'SALE',       img:'https://placehold.co/280x280/FEF3C7/a16207?text=Pantry+Cabinet',features:[],                                                                  isNew:false },
+
+  /* ── Lighting ── */
+  { id:36, name:'Philips HUE Signe Floor Gradient Smart LED Light — Black 915005986801',brand:'Philips',cat:'lighting',        price:890,  orig:1090, rating:4.7, reviews:234, badge:'HOT',        img:'https://placehold.co/280x280/FEFCE8/713f12?text=Philips+Light',features:['Smart Wi-Fi Control','Voice Control'],                               isNew:false },
+  { id:37, name:'Nordic Crystal Chandelier 12-Head LED Pendant Dining Ceiling Light',brand:'Midea',     cat:'lighting',        price:1200, orig:1500, rating:4.6, reviews:123, badge:null,         img:'https://placehold.co/280x280/FEF9C3/78350f?text=Crystal+Chandelier',features:[],                                                              isNew:false },
+  { id:38, name:'Industrial Pipe Pendant Light 3-Light Edison Loft Hanging Fixture',brand:'Gree',       cat:'lighting',        price:450,  orig:599,  rating:4.5, reviews:189, badge:'SALE',       img:'https://placehold.co/280x280/FDE68A/a16207?text=Industrial+Light',features:[],                                                               isNew:false },
+  { id:39, name:'Smart LED Ring Chandelier 100cm Acrylic Ceiling Light CCT Dimmable',brand:'TCL',       cat:'lighting',        price:1350, orig:1699, rating:4.8, reviews:98,  badge:'NEW',        img:'https://placehold.co/280x280/FCD34D/92400e?text=LED+Ring',     features:['Smart Wi-Fi Control','Voice Control'],                               isNew:true  },
+  { id:40, name:'Xiaomi Mijia Smart Ceiling Light Pro 60W MJXDD01YL 450mm',   brand:'Xiaomi',          cat:'lighting',        price:599,  orig:799,  rating:4.7, reviews:445, badge:'BESTSELLER', img:'https://placehold.co/280x280/FEF3C7/b45309?text=Xiaomi+Light', features:['Smart Wi-Fi Control','Voice Control'],                               isNew:false },
+];
+
+/* ═══════════════════════════════
+   STATE
+═══════════════════════════════ */
+let state = {
+  activeCat:    'all',
+  activeBrands: [],
+  priceMin:     0,
+  priceMax:     100000,
+  minRating:    0,
+  features:     [],
+  sortBy:       'recommended',
+  viewMode:     'grid-4',
+  page:         1,
+  perPage:      12,
+  search:       '',
+};
+
+/* ═══════════════════════════════
+   INIT
+═══════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  readURLParams();
+  buildSidebarCategories();
+  buildCatTabs();
+  buildBrandFilters();
+  buildRatingFilter();
+  buildFeatureFilter();
+  renderCategoryBanner();
+  renderProducts();
+  setupEventListeners();
+  setupMobileMenu();
+  setupScrollTop();
+  setupAccordions();
+  syncDrawerFromSidebar();
+});
+
+/* ═══════════════════════════════
+   URL PARAMS
+═══════════════════════════════ */
+function readURLParams() {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('cat'))  state.activeCat  = p.get('cat');
+  if (p.get('q'))    state.search     = p.get('q');
+  if (p.get('brand'))state.activeBrands = [p.get('brand')];
+}
+
+function updateURL() {
+  const p = new URLSearchParams();
+  if (state.activeCat !== 'all') p.set('cat', state.activeCat);
+  if (state.search) p.set('q', state.search);
+  if (state.activeBrands.length === 1) p.set('brand', state.activeBrands[0]);
+  const url = window.location.pathname + (p.toString() ? '?' + p.toString() : '');
+  history.replaceState(null, '', url);
+}
+
+/* ═══════════════════════════════
+   BUILD UI ELEMENTS
+═══════════════════════════════ */
+function buildSidebarCategories() {
+  const cont1 = document.getElementById('sidebar-cat-list');
+  const cont2 = document.getElementById('drawer-cat-list');
+  let html = '';
+  CATEGORIES.forEach(c => {
+    const active = state.activeCat === c.id;
+    html += `<button onclick="setCat('${c.id}')" data-cat="${c.id}"
+      class="w-full flex items-center gap-3 px-2 py-2 rounded-lg text-left text-sm transition-all duration-150
+             ${active ? 'bg-[#EEF2FF] text-primary font-semibold' : 'text-textSub hover:bg-lightBg hover:text-textMain'}">
+      <i class="fas ${c.icon} text-xs w-4 text-center ${active ? 'text-primary' : 'text-textSub opacity-70'}"></i>
+      ${c.label}
+      <span class="ml-auto text-[10px] font-medium ${active ? 'text-primary' : 'text-textSub opacity-60'}">
+        (${c.id==='all'?ALL_PRODUCTS.length:ALL_PRODUCTS.filter(p=>p.cat===c.id).length})
+      </span>
+    </button>`;
+  });
+  if (cont1) cont1.innerHTML = html;
+  if (cont2) cont2.innerHTML = html;
+}
+
+function buildCatTabs() {
+  const cont = document.getElementById('cat-tabs');
+  if (!cont) return;
+  let html = '';
+  CATEGORIES.forEach(c => {
+    const active = state.activeCat === c.id;
+    html += `<button onclick="setCat('${c.id}')" data-tab="${c.id}"
+      class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-150 border
+             ${active ? 'bg-primary text-white border-primary' : 'bg-white text-textSub border-border hover:border-primary hover:text-primary'}">
+      <i class="fas ${c.icon}"></i> ${c.label}
+    </button>`;
+  });
+  cont.innerHTML = html;
+}
+
+function buildBrandFilters() {
+  const cont1 = document.getElementById('sidebar-brand-list');
+  const cont2 = document.getElementById('drawer-brand-list');
+  let html = '';
+  BRANDS.forEach(b => {
+    const checked = state.activeBrands.includes(b);
+    const count   = ALL_PRODUCTS.filter(p => p.brand === b).length;
+    if (!count) return;
+    html += `<div class="filter-option">
+      <label>
+        <input type="checkbox" value="${b}" class="brand-cb" ${checked?'checked':''} onchange="toggleBrand('${b}')"/>
+        ${b} <span class="ml-auto text-[10px] opacity-50">(${count})</span>
+      </label>
+    </div>`;
+  });
+  if (cont1) cont1.innerHTML = html;
+  if (cont2) cont2.innerHTML = html;
+}
+
+function buildRatingFilter() {
+  [5,4,3,2].forEach(r => {
+    const stars = '<i class="fas fa-star text-accent text-xs"></i>'.repeat(r) + '<i class="far fa-star text-accent text-xs"></i>'.repeat(5-r);
+    const html  = `<div class="filter-option">
+      <label>
+        <input type="radio" name="rating" value="${r}" class="rating-radio" ${state.minRating===r?'checked':''} onchange="setRating(${r})"/>
+        <span class="stars">${stars}</span><span class="text-xs opacity-60 ml-1">& up</span>
+      </label>
+    </div>`;
+    document.getElementById('rating-filter-list')?.insertAdjacentHTML('beforeend', html);
+    document.getElementById('drawer-rating-list')?.insertAdjacentHTML('beforeend', html);
+  });
+}
+
+function buildFeatureFilter() {
+  const cont = document.getElementById('feature-filter-list');
+  if (!cont) return;
+  FEATURES.forEach(f => {
+    cont.insertAdjacentHTML('beforeend', `<div class="filter-option">
+      <label>
+        <input type="checkbox" value="${f}" class="feat-cb" ${state.features.includes(f)?'checked':''} onchange="toggleFeature('${f}')"/>
+        ${f}
+      </label>
+    </div>`);
+  });
+}
+
+function renderCategoryBanner() {
+  const cat = CATEGORIES.find(c => c.id === state.activeCat) || CATEGORIES[0];
+  const el  = document.getElementById('category-banner');
+  if (!el) return;
+  if (state.activeCat === 'all' && !state.search) { el.innerHTML=''; return; }
+  const label = state.search ? `Search: "${state.search}"` : cat.label;
+  el.innerHTML = `
+    <div class="rounded-xl p-5 sm:p-6 flex items-center gap-4" style="background: linear-gradient(135deg, ${cat.color}22, ${cat.color}11); border: 1.5px solid ${cat.color}33;">
+      <div class="w-14 h-14 rounded-xl flex items-center justify-center shrink-0" style="background:${cat.color}22;">
+        <i class="fas ${cat.icon} text-2xl" style="color:${cat.color}"></i>
+      </div>
+      <div>
+        <div class="text-xs font-semibold uppercase tracking-widest opacity-60 mb-0.5">${state.search?'Search Results':'Category'}</div>
+        <h1 class="text-xl sm:text-2xl font-extrabold" style="color:${cat.color}">${label}</h1>
+        <p class="text-xs text-textSub mt-0.5">${filteredProducts().length} products available</p>
+      </div>
+    </div>`;
+  document.getElementById('breadcrumb-cat').textContent = label;
+}
+
+/* ═══════════════════════════════
+   FILTERING LOGIC
+═══════════════════════════════ */
+function filteredProducts() {
+  let list = [...ALL_PRODUCTS];
+  if (state.activeCat !== 'all')         list = list.filter(p => p.cat === state.activeCat);
+  if (state.activeBrands.length)         list = list.filter(p => state.activeBrands.includes(p.brand));
+  if (state.priceMin > 0)                list = list.filter(p => p.price >= state.priceMin);
+  if (state.priceMax < 100000)           list = list.filter(p => p.price <= state.priceMax);
+  if (state.minRating > 0)              list = list.filter(p => p.rating >= state.minRating);
+  if (state.features.length)            list = list.filter(p => state.features.every(f => p.features.includes(f)));
+  if (state.search)                     list = list.filter(p =>
+    p.name.toLowerCase().includes(state.search.toLowerCase()) ||
+    p.brand.toLowerCase().includes(state.search.toLowerCase())
+  );
+  // Sort
+  switch(state.sortBy) {
+    case 'price-asc':   list.sort((a,b) => a.price - b.price);           break;
+    case 'price-desc':  list.sort((a,b) => b.price - a.price);           break;
+    case 'newest':      list.sort((a,b) => b.isNew - a.isNew);           break;
+    case 'rating':      list.sort((a,b) => b.rating - a.rating);         break;
+    case 'reviews':     list.sort((a,b) => b.reviews - a.reviews);       break;
+    default: break;
+  }
+  return list;
+}
+
+/* ═══════════════════════════════
+   RENDER PRODUCTS
+═══════════════════════════════ */
+function renderProducts() {
+  const list  = filteredProducts();
+  const grid  = document.getElementById('products-grid');
+  const empty = document.getElementById('empty-state');
+  const count = document.getElementById('results-count');
+  const pg    = document.getElementById('pagination');
+  const total = list.length;
+  const pages = Math.ceil(total / state.perPage);
+  const start = (state.page - 1) * state.perPage;
+  const page  = list.slice(start, start + state.perPage);
+
+  count.textContent = `Showing ${start+1}–${Math.min(start+state.perPage, total)} of ${total} products`;
+
+  if (!page.length) {
+    grid.innerHTML = '';
+    empty.classList.remove('hidden');
+    pg.innerHTML = '';
+    updateActiveFiltersBar();
+    return;
+  }
+  empty.classList.add('hidden');
+
+  grid.className = state.viewMode;
+
+  const isListView = state.viewMode === 'list-view';
+  grid.innerHTML = page.map(p => productCard(p, isListView)).join('');
+
+  renderPagination(pages);
+  updateActiveFiltersBar();
+  renderCategoryBanner();
+  updateClearFiltersBtnVisibility();
+}
+
+function productCard(p, listView) {
+  const badgeMap = { BESTSELLER:'badge-best', SALE:'badge-sale', HOT:'badge-hot', NEW:'badge-new' };
+  const badgeClass = p.badge ? badgeMap[p.badge] || 'badge-new' : '';
+  const discount = p.orig > p.price ? Math.round((1 - p.price/p.orig)*100) : 0;
+  const stars = renderStars(p.rating);
+
+  if (listView) {
+    return `
+    <div class="product-card">
+      <div class="card-img-wrap" style="width:160px;flex-shrink:0;">
+        <img src="${p.img}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />
+        ${p.badge?`<span class="badge ${badgeClass}">${p.badge}</span>`:''}
+        <button class="wish-btn" onclick="toggleWish(this,${p.id})" title="Add to Wishlist"><i class="far fa-heart"></i></button>
+      </div>
+      <div class="p-3 flex flex-col justify-between flex-1 min-w-0">
+        <div>
+          <div class="text-[10px] text-textSub font-semibold uppercase tracking-wide mb-0.5">${p.brand}</div>
+          <a href="product-detail.html?id=${p.id}" class="text-sm font-semibold text-textMain hover:text-primary transition-colors line-clamp-2 block">${p.name}</a>
+          <div class="flex items-center gap-1.5 mt-1.5">
+            <span class="stars">${stars}</span>
+            <span class="text-[11px] text-textSub">${p.rating} (${p.reviews.toLocaleString()})</span>
+          </div>
+          ${p.features.slice(0,2).map(f=>`<span class="inline-block mt-1 text-[10px] bg-lightBg text-textSub rounded px-2 py-0.5 mr-1">${f}</span>`).join('')}
+        </div>
+        <div class="flex items-center justify-between mt-2 flex-wrap gap-2">
+          <div>
+            <span class="price-current text-base">$${p.price.toLocaleString()}</span>
+            ${p.orig > p.price ? `<span class="price-original ml-1.5">$${p.orig.toLocaleString()}</span>` : ''}
+            ${discount>=5?`<span class="ml-1 text-[10px] text-green-700 font-bold bg-green-50 px-1.5 py-0.5 rounded">-${discount}%</span>`:''}
+          </div>
+          <div class="flex gap-2">
+            <button onclick="addToCart(${p.id})" class="add-to-cart-btn"><i class="fas fa-cart-plus mr-1"></i>Add</button>
+            <a href="product-detail.html?id=${p.id}" class="text-xs text-primary font-semibold border border-primary rounded px-3 py-1 hover:bg-primary hover:text-white transition-colors">View</a>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  return `
+  <div class="product-card">
+    <div class="card-img-wrap aspect-square relative">
+      <img src="${p.img}" alt="${p.name}" loading="lazy" class="w-full h-full object-cover" />
+      ${p.badge?`<span class="badge ${badgeClass}">${p.badge}</span>`:''}
+      <button class="wish-btn" onclick="toggleWish(this,${p.id})" title="Add to Wishlist"><i class="far fa-heart"></i></button>
+      <div class="card-quick-actions">
+        <button onclick="addToCart(${p.id})" class="add-to-cart-btn flex items-center gap-1.5 shadow-md"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+      </div>
+    </div>
+    <div class="p-3">
+      <div class="text-[10px] text-textSub font-semibold uppercase tracking-wide mb-0.5">${p.brand}</div>
+      <a href="product-detail.html?id=${p.id}" class="text-xs sm:text-sm font-semibold text-textMain hover:text-primary transition-colors line-clamp-2 block leading-snug h-8 sm:h-10">${p.name}</a>
+      <div class="flex items-center gap-1 mt-1.5">
+        <span class="stars">${stars}</span>
+        <span class="text-[10px] text-textSub">${p.rating} (${p.reviews.toLocaleString()})</span>
+      </div>
+      <div class="mt-2 flex items-end justify-between gap-1">
+        <div>
+          <div class="price-current text-sm sm:text-base">$${p.price.toLocaleString()}</div>
+          ${p.orig > p.price ? `<div class="flex items-center gap-1"><span class="price-original">$${p.orig.toLocaleString()}</span>${discount>=5?`<span class="text-[9px] text-green-700 font-bold bg-green-50 px-1 rounded">-${discount}%</span>`:''}</div>` : ''}
+        </div>
+        <a href="product-detail.html?id=${p.id}" class="text-[11px] text-primary font-semibold border border-primary rounded px-2 py-1 hover:bg-primary hover:text-white transition-colors whitespace-nowrap">View</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderStars(rating) {
+  let h = '';
+  for(let i=1;i<=5;i++) {
+    if (i <= Math.floor(rating))          h += '<i class="fas fa-star"></i>';
+    else if (i - rating < 1 && i - rating > 0) h += '<i class="fas fa-star-half-alt"></i>';
+    else                                  h += '<i class="far fa-star"></i>';
+  }
+  return `<span class="stars">${h}</span>`;
+}
+
+function renderPagination(pages) {
+  const pg = document.getElementById('pagination');
+  if (pages <= 1) { pg.innerHTML=''; return; }
+  let h = '';
+  h += `<button class="pg-btn ${state.page===1?'disabled':''}" onclick="goPage(${state.page-1})"><i class="fas fa-chevron-left text-xs"></i></button>`;
+  for(let i=1;i<=pages;i++) {
+    if (i===1 || i===pages || Math.abs(i-state.page)<=2) {
+      h += `<button class="pg-btn ${i===state.page?'active':''}" onclick="goPage(${i})">${i}</button>`;
+    } else if (Math.abs(i-state.page)===3) {
+      h += `<span class="text-textSub px-1">…</span>`;
+    }
+  }
+  h += `<button class="pg-btn ${state.page===pages?'disabled':''}" onclick="goPage(${state.page+1})"><i class="fas fa-chevron-right text-xs"></i></button>`;
+  pg.innerHTML = h;
+}
+
+/* ═══════════════════════════════
+   ACTIVE FILTERS BAR
+═══════════════════════════════ */
+function updateActiveFiltersBar() {
+  const cont = document.getElementById('active-filters');
+  const chips = [];
+
+  if (state.activeBrands.length) {
+    state.activeBrands.forEach(b => {
+      chips.push(`<span class="filter-chip">${b} <button onclick="toggleBrand('${b}')" class="hover:text-red-500"><i class="fas fa-times text-[10px]"></i></button></span>`);
+    });
+  }
+  if (state.priceMin > 0 || state.priceMax < 100000) {
+    chips.push(`<span class="filter-chip">$${state.priceMin.toLocaleString()}–$${state.priceMax.toLocaleString()} <button onclick="resetPrice()" class="hover:text-red-500"><i class="fas fa-times text-[10px]"></i></button></span>`);
+  }
+  if (state.minRating > 0) {
+    chips.push(`<span class="filter-chip">${state.minRating}★ & up <button onclick="setRating(0)" class="hover:text-red-500"><i class="fas fa-times text-[10px]"></i></button></span>`);
+  }
+  state.features.forEach(f => {
+    chips.push(`<span class="filter-chip">${f} <button onclick="toggleFeature('${f}')" class="hover:text-red-500"><i class="fas fa-times text-[10px]"></i></button></span>`);
+  });
+
+  if (!chips.length) { cont.classList.add('hidden'); return; }
+  cont.classList.remove('hidden');
+  cont.innerHTML = `<span class="text-xs font-semibold text-textSub whitespace-nowrap self-center">Active:</span>${chips.join('')}
+    <button onclick="resetAll()" class="text-xs text-accentRed font-semibold hover:underline whitespace-nowrap">Clear all</button>`;
+
+  const badge = document.getElementById('filter-badge');
+  if (badge) { badge.textContent=chips.length; badge.classList.toggle('hidden', !chips.length); }
+}
+
+function updateClearFiltersBtnVisibility() {
+  const hasFilters = state.activeBrands.length || state.priceMin>0 || state.priceMax<100000 || state.minRating>0 || state.features.length;
+  document.getElementById('clear-all-filters')?.classList.toggle('hidden', !hasFilters);
+}
+
+/* ═══════════════════════════════
+   FILTER ACTIONS
+═══════════════════════════════ */
+function setCat(id) {
+  state.activeCat = id;
+  state.page = 1;
+  buildSidebarCategories();
+  buildCatTabs();
+  renderProducts();
+  updateURL();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleBrand(brand) {
+  const idx = state.activeBrands.indexOf(brand);
+  if (idx === -1) state.activeBrands.push(brand);
+  else state.activeBrands.splice(idx, 1);
+  state.page = 1;
+  buildBrandFilters();
+  renderProducts();
+  updateURL();
+}
+
+function setRating(r) {
+  state.minRating = state.minRating === r ? 0 : r;
+  document.querySelectorAll('.rating-radio').forEach(el => el.checked = parseInt(el.value) === state.minRating);
+  state.page = 1;
+  renderProducts();
+}
+
+function toggleFeature(f) {
+  const idx = state.features.indexOf(f);
+  if (idx === -1) state.features.push(f);
+  else state.features.splice(idx, 1);
+  document.querySelectorAll('.feat-cb').forEach(el => el.checked = state.features.includes(el.value));
+  state.page = 1;
+  renderProducts();
+}
+
+function resetPrice() {
+  state.priceMin = 0; state.priceMax = 100000;
+  document.getElementById('price-min').value = 0;
+  document.getElementById('price-max').value = 100000;
+  document.getElementById('price-slider').value = 100000;
+  state.page = 1;
+  renderProducts();
+}
+
+function resetAll() {
+  state.activeBrands = []; state.priceMin = 0; state.priceMax = 100000;
+  state.minRating = 0; state.features = []; state.page = 1; state.search = '';
+  document.getElementById('price-min').value = 0;
+  document.getElementById('price-max').value = 100000;
+  document.getElementById('price-slider').value = 100000;
+  document.querySelectorAll('.brand-cb, .feat-cb').forEach(el => el.checked = false);
+  document.querySelectorAll('.rating-radio').forEach(el => el.checked = false);
+  buildSidebarCategories();
+  buildCatTabs();
+  renderProducts();
+  updateURL();
+}
+
+function goPage(n) {
+  const pages = Math.ceil(filteredProducts().length / state.perPage);
+  if (n < 1 || n > pages) return;
+  state.page = n;
+  renderProducts();
+  document.querySelector('.max-w-\\[1320px\\]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ═══════════════════════════════
+   CART + WISHLIST
+═══════════════════════════════ */
+function addToCart(id) {
+  const cart = JSON.parse(localStorage.getItem('pn_cart') || '[]');
+  cart.push({ id, ts: Date.now() });
+  localStorage.setItem('pn_cart', JSON.stringify(cart));
+  showToast('<i class="fas fa-check-circle mr-1.5 text-green-400"></i> Added to cart!');
+}
+
+function toggleWish(btn, id) {
+  const wish = JSON.parse(localStorage.getItem('pn_wish') || '[]');
+  const idx  = wish.indexOf(id);
+  if (idx === -1) { wish.push(id); btn.classList.add('active'); btn.innerHTML='<i class="fas fa-heart"></i>'; }
+  else { wish.splice(idx,1); btn.classList.remove('active'); btn.innerHTML='<i class="far fa-heart"></i>'; }
+  localStorage.setItem('pn_wish', JSON.stringify(wish));
+}
+
+function showToast(html) {
+  const t = document.createElement('div');
+  t.className = 'fixed bottom-20 right-5 z-[999] bg-gray-900 text-white text-sm px-4 py-2.5 rounded-xl shadow-xl flex items-center';
+  t.innerHTML = html;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .4s'; setTimeout(()=>t.remove(), 400); }, 2000);
+}
+
+/* ═══════════════════════════════
+   EVENT LISTENERS
+═══════════════════════════════ */
+function setupEventListeners() {
+  document.getElementById('sort-select')?.addEventListener('change', e => {
+    state.sortBy = e.target.value; state.page = 1; renderProducts();
+  });
+
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.viewMode = btn.dataset.view;
+      renderProducts();
+    });
+  });
+
+  document.getElementById('price-slider')?.addEventListener('input', e => {
+    state.priceMax = parseInt(e.target.value);
+    document.getElementById('price-max').value = state.priceMax;
+  });
+
+  document.getElementById('apply-price')?.addEventListener('click', () => {
+    state.priceMin = parseInt(document.getElementById('price-min').value)||0;
+    state.priceMax = parseInt(document.getElementById('price-max').value)||100000;
+    state.page = 1; renderProducts();
+  });
+
+  document.getElementById('nav-search-btn')?.addEventListener('click', () => {
+    const q = document.getElementById('nav-search-input')?.value.trim();
+    const cat = document.getElementById('cat-select-nav')?.value;
+    if (cat) { state.activeCat = cat; buildSidebarCategories(); buildCatTabs(); }
+    state.search = q || '';
+    state.page = 1; renderProducts(); updateURL();
+  });
+  document.getElementById('nav-search-input')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('nav-search-btn')?.click();
+  });
+
+  document.getElementById('mobile-search-btn')?.addEventListener('click', () => {
+    document.getElementById('mobile-search-bar')?.classList.toggle('hidden');
+  });
+
+  document.getElementById('open-filter-drawer')?.addEventListener('click', openFilterDrawer);
+  document.getElementById('close-filter-drawer')?.addEventListener('click', closeFilterDrawer);
+  document.getElementById('filter-drawer-overlay')?.addEventListener('click', closeFilterDrawer);
+  document.getElementById('apply-drawer-filters')?.addEventListener('click', () => {
+    state.priceMin = parseInt(document.getElementById('drawer-price-min').value)||0;
+    state.priceMax = parseInt(document.getElementById('drawer-price-max').value)||100000;
+    state.page = 1; renderProducts(); closeFilterDrawer();
+  });
+
+  document.getElementById('clear-all-filters')?.addEventListener('click', resetAll);
+}
+
+function openFilterDrawer() {
+  document.getElementById('filter-drawer-overlay').classList.add('open');
+  document.getElementById('filter-drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeFilterDrawer() {
+  document.getElementById('filter-drawer-overlay').classList.remove('open');
+  document.getElementById('filter-drawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function syncDrawerFromSidebar() {
+  document.getElementById('drawer-price-min').value = state.priceMin;
+  document.getElementById('drawer-price-max').value = state.priceMax;
+}
+
+/* ═══════════════════════════════
+   ACCORDIONS
+═══════════════════════════════ */
+function setupAccordions() {
+  document.querySelectorAll('.accordion-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      const icon   = btn.querySelector('.accordion-icon');
+      target?.classList.toggle('open');
+      icon?.classList.toggle('open');
+    });
+  });
+}
+
+/* ═══════════════════════════════
+   MOBILE MENU
+═══════════════════════════════ */
+function setupMobileMenu() {
+  const overlay = document.getElementById('mobile-menu-overlay');
+  const panel   = document.getElementById('mobile-menu-panel');
+  const open  = () => { overlay.classList.add('open'); panel.classList.add('open'); document.body.style.overflow='hidden'; };
+  const close = () => { overlay.classList.remove('open'); panel.classList.remove('open'); document.body.style.overflow=''; };
+  document.getElementById('mobile-menu-btn')?.addEventListener('click', open);
+  document.getElementById('mobile-menu-close')?.addEventListener('click', close);
+  overlay?.addEventListener('click', close);
+}
+
+/* ═══════════════════════════════
+   SCROLL TO TOP
+═══════════════════════════════ */
+function setupScrollTop() {
+  const btn = document.getElementById('scroll-top');
+  window.addEventListener('scroll', () => {
+    if (btn) btn.style.opacity = window.scrollY > 300 ? '1' : '0';
+  });
+}
+
+</script>
+</body>
+</html>

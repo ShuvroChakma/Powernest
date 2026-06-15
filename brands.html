@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Brands – PowerNest | Premium Electronics &amp; Solar Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary:   '#003087',
+            accent:    '#F5A623',
+            accentRed: '#E63329',
+            lightBg:   '#F4F6FA',
+            cardBg:    '#FFFFFF',
+            textMain:  '#1A1A2E',
+            textSub:   '#555770',
+            border:    '#E2E6EF',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #F4F6FA; color: #1A1A2E; margin: 0; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: #003087; border-radius: 3px; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ── Announcement & Nav ── */
+    #announcement-bar { background: #003087; }
+    #main-nav { background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.08); position: sticky; top: 0; z-index: 100; }
+    .cart-btn { background: #003087; }
+    .cart-btn:hover { background: #00236b; }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position: absolute; left:0; bottom:-2px; width:0; height:2px; background:#F5A623; transition: width .2s; }
+    .nav-link:hover::after { width: 100%; }
+    .hamburger-btn { width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:8px; }
+    .hamburger-btn:hover { background: #F4F6FA; }
+
+    /* ── Mobile Menu Panel ── */
+    #mobile-menu-overlay { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:199; opacity:0; visibility:hidden; transition:opacity .25s ease; }
+    #mobile-menu-overlay.open { opacity:1; visibility:visible; }
+    #mobile-menu-panel { position:fixed; top:0; left:0; height:100%; width:85%; max-width:340px; background:#fff; z-index:200; overflow-y:auto; transform:translateX(-100%); transition:transform .28s ease; box-shadow:4px 0 24px rgba(0,0,0,.15); }
+    #mobile-menu-panel.open { transform:translateX(0); }
+
+    /* ── Brand Cards ── */
+    .brand-card { background: #fff; border: 1px solid #E2E6EF; border-radius: 12px; overflow: hidden; transition: all 0.2s ease; }
+    .brand-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0, 48, 135, 0.08); border-color: #003087; }
+    
+    /* ── Section Header Accent ── */
+    .section-eyebrow { color: #F5A623; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* ── Footer ── */
+    #footer-main { background: #003087; }
+  </style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div id="announcement-bar" class="text-white text-center text-xs py-2 px-4 flex items-center justify-center md:justify-between flex-wrap gap-2">
+  <div class="flex items-center gap-2 md:gap-4 flex-wrap justify-center">
+    <span><i class="fas fa-shipping-fast mr-1"></i> Free shipping on bulk orders over $5,000</span>
+    <span class="hidden md:inline">|</span>
+    <span class="hidden md:inline"><i class="fas fa-headset mr-1"></i> 24/7 International Support</span>
+  </div>
+  <div class="hidden sm:flex items-center gap-4">
+    <a href="#" class="hover:text-accent transition-colors">Track Order</a>
+    <a href="#" class="hover:text-accent transition-colors">Become a Dealer</a>
+    <span class="bg-accent text-white rounded px-2 py-0.5 text-xs font-bold">USD</span>
+  </div>
+</div>
+
+<!-- MAIN NAVIGATION -->
+<nav id="main-nav" class="bg-white">
+  <div class="max-w-[1320px] mx-auto px-4">
+    <div class="flex items-center gap-2 sm:gap-4 py-3">
+      <button id="mobile-menu-btn" class="hamburger-btn lg:hidden text-primary shrink-0" aria-label="Open menu">
+        <i class="fas fa-bars text-lg"></i>
+      </button>
+      <a href="../homepage.html" class="flex items-center gap-2 shrink-0">
+        <div class="w-9 h-9 bg-primary rounded-lg flex items-center justify-center shrink-0">
+          <i class="fas fa-bolt text-accent text-lg"></i>
+        </div>
+        <div class="leading-tight">
+          <div class="font-black text-primary text-base sm:text-lg tracking-tight">PowerNest</div>
+          <div class="text-[9px] text-textSub font-medium uppercase tracking-widest hidden sm:block">Electronics &amp; Solar</div>
+        </div>
+      </a>
+      
+      <!-- Central Nav Search Bar -->
+      <div class="flex-1 relative max-w-[540px] mx-4 hidden md:block">
+        <div class="flex border-2 border-primary rounded-lg overflow-hidden">
+          <input id="brand-search-input" type="text" placeholder="Search direct brand lines..." class="flex-1 px-4 py-2 text-sm outline-none min-w-0" />
+          <button class="bg-primary text-white px-5 py-2 hover:bg-blue-800 transition-colors shrink-0">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3 ml-auto shrink-0">
+        <button id="mobile-search-btn" class="md:hidden hamburger-btn text-textSub"><i class="fas fa-search text-lg"></i></button>
+        <a href="account.html" class="hidden sm:flex flex-col items-center text-textSub hover:text-primary text-xs font-medium transition-colors">
+          <i class="far fa-user text-lg mb-0.5"></i><span>Account</span>
+        </a>
+        <a href="wishlist.html" class="hidden sm:flex flex-col items-center text-textSub hover:text-primary text-xs font-medium transition-colors relative">
+          <i class="far fa-heart text-lg mb-0.5"></i><span>Wishlist</span>
+          <span class="absolute -top-1 -right-1 bg-accentRed text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">3</span>
+        </a>
+        <a href="cart.html" class="cart-btn flex items-center gap-2 text-white rounded-lg px-3 sm:px-4 py-2 text-sm font-semibold relative">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="hidden sm:inline">Cart</span>
+          <span class="bg-accent text-white text-[9px] rounded-full w-5 h-5 flex items-center justify-center font-bold">2</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile Search Toggle Area -->
+    <div id="mobile-search-bar" class="hidden md:hidden pb-3">
+      <div class="flex border-2 border-primary rounded-lg overflow-hidden">
+        <input id="mobile-brand-search" type="text" placeholder="Search brands..." class="flex-1 px-4 py-2 text-sm outline-none min-w-0" />
+        <button class="bg-primary text-white px-4 py-2 hover:bg-blue-800 transition-colors shrink-0"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+
+    <!-- Main Navigation Links -->
+    <div class="hidden lg:flex items-center gap-6 pb-2 border-t border-border pt-2 overflow-x-auto scrollbar-hide">
+      <a href="../homepage.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Home</a>
+      <a href="products.html"    class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Products</a>
+      <a href="brands.html"      class="nav-link text-sm text-primary font-bold whitespace-nowrap">Brands</a>
+      <a href="bulk-order.html"  class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Bulk Orders</a>
+      <a href="solar.html"       class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Solar Solutions</a>
+      <a href="deals.html"       class="nav-link text-sm text-accentRed font-semibold whitespace-nowrap"><i class="fas fa-fire mr-1"></i>Deals</a>
+      <a href="about.html"       class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">About Us</a>
+      <a href="contact.html"     class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu panel overlay -->
+<div id="mobile-menu-overlay"></div>
+<div id="mobile-menu-panel">
+  <div class="flex items-center justify-between px-4 py-4 border-b border-border bg-primary">
+    <div class="flex items-center gap-2 text-white">
+      <div class="w-9 h-9 bg-white/15 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-accent text-lg"></i></div>
+      <div><div class="font-black text-base">PowerNest</div><div class="text-[9px] opacity-70 uppercase tracking-widest">Electronics &amp; Solar</div></div>
+    </div>
+    <button id="mobile-menu-close" class="text-white w-9 h-9 flex items-center justify-center rounded-lg hover:bg-white/10"><i class="fas fa-times text-lg"></i></button>
+  </div>
+  <div class="px-2 py-2 border-b border-border">
+    <a href="../homepage.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Home</a>
+    <a href="products.html"   class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Products</a>
+    <a href="brands.html"     class="block px-4 py-2.5 rounded-lg text-sm font-bold text-primary bg-lightBg">Brands</a>
+    <a href="bulk-order.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Bulk Orders</a>
+    <a href="solar.html"      class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Solar Solutions</a>
+    <a href="deals.html"      class="block px-4 py-2.5 rounded-lg text-sm font-semibold text-accentRed hover:bg-lightBg"><i class="fas fa-fire mr-1"></i>Deals</a>
+    <a href="about.html"      class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">About Us</a>
+    <a href="contact.html"    class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Contact</a>
+  </div>
+</div>
+
+<!-- MAIN CONTENT CONTAINER -->
+<main class="max-w-[1320px] mx-auto px-4 py-8">
+  
+  <!-- PAGE INTRO -->
+  <div class="text-center max-w-2xl mx-auto mb-12">
+    <span class="section-eyebrow">Authorized Global Distribution Lines</span>
+    <h1 class="text-3xl font-extrabold text-textMain tracking-tight mt-1 mb-3">Shop Safely By Brand Partner</h1>
+    <p class="text-sm text-textSub leading-relaxed">
+      Filter through original manufacturing partners mapped completely to our distribution network catalog segments.
+    </p>
+  </div>
+
+  <!-- PRODUCT PAGE CATEGORY FILTER TABS -->
+  <div class="flex items-center justify-center flex-wrap gap-2 mb-10 max-w-5xl mx-auto">
+    <button class="filter-tab bg-primary text-white text-xs font-semibold px-4 py-2 rounded-full shadow-sm transition-all" onclick="filterCategory('all', this)">
+      All Brands
+    </button>
+    <button class="filter-tab bg-white text-textSub border border-border text-xs font-medium px-4 py-2 rounded-full hover:bg-lightBg transition-all" onclick="filterCategory('air-conditioners', this)">
+      Air Conditioners
+    </button>
+    <button class="filter-tab bg-white text-textSub border border-border text-xs font-medium px-4 py-2 rounded-full hover:bg-lightBg transition-all" onclick="filterCategory('solar-panels', this)">
+      Solar Panels
+    </button>
+    <button class="filter-tab bg-white text-textSub border border-border text-xs font-medium px-4 py-2 rounded-full hover:bg-lightBg transition-all" onclick="filterCategory('televisions', this)">
+      Televisions
+    </button>
+    <button class="filter-tab bg-white text-textSub border border-border text-xs font-medium px-4 py-2 rounded-full hover:bg-lightBg transition-all" onclick="filterCategory('refrigerators', this)">
+      Refrigerators
+    </button>
+    <button class="filter-tab bg-white text-textSub border border-border text-xs font-medium px-4 py-2 rounded-full hover:bg-lightBg transition-all" onclick="filterCategory('washing-machines', this)">
+      Washing Machines
+    </button>
+    <button class="filter-tab bg-white text-textSub border border-border text-xs font-medium px-4 py-2 rounded-full hover:bg-lightBg transition-all" onclick="filterCategory('water-purifiers', this)">
+      Water Purifiers
+    </button>
+    <button class="filter-tab bg-white text-textSub border border-border text-xs font-medium px-4 py-2 rounded-full hover:bg-lightBg transition-all" onclick="filterCategory('kitchen-cabinets', this)">
+      Kitchen Cabinets
+    </button>
+    <button class="filter-tab bg-white text-textSub border border-border text-xs font-medium px-4 py-2 rounded-full hover:bg-lightBg transition-all" onclick="filterCategory('lighting', this)">
+      Lighting
+    </button>
+  </div>
+
+  <!-- BRANDS SYNCED GRID -->
+  <div id="brands-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    
+    <!-- Brand Card: Daikin -->
+    <div class="brand-card" data-category="air-conditioners" data-name="daikin">
+      <div class="relative h-44 bg-gray-100 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=500&q=80" alt="Daikin Smart Air Units" class="w-full h-full object-cover">
+        <div class="absolute top-3 left-3 bg-white/95 text-primary text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">Premium Core Line</div>
+      </div>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-lg text-textMain">Daikin</h3>
+          <span class="text-[10px] font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Air Conditioners</span>
+        </div>
+        <p class="text-xs text-textSub line-clamp-2 mb-4">High-efficiency split inverter systems and smart commercial air control technologies.</p>
+        <a href="products.html?category=air-conditioners" class="inline-flex items-center text-xs font-bold text-primary hover:text-blue-800 transition-colors">
+          Explore Products <i class="fas fa-arrow-right ml-1.5 text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Brand Card: Jinko Solar -->
+    <div class="brand-card" data-category="solar-panels" data-name="jinko solar">
+      <div class="relative h-44 bg-gray-100 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=500&q=80" alt="Solar Array Infrastructure" class="w-full h-full object-cover">
+      </div>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-lg text-textMain">Jinko Solar</h3>
+          <span class="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Solar Panels</span>
+        </div>
+        <p class="text-xs text-textSub line-clamp-2 mb-4">Industrial and residential photovoltaic modules built with high-efficiency cell conversion tiers.</p>
+        <a href="products.html?category=solar-panels" class="inline-flex items-center text-xs font-bold text-primary hover:text-blue-800 transition-colors">
+          Explore Products <i class="fas fa-arrow-right ml-1.5 text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Brand Card: Sony -->
+    <div class="brand-card" data-category="televisions" data-name="sony">
+      <div class="relative h-44 bg-gray-100 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=500&q=80" alt="Sony Smart Home Displays" class="w-full h-full object-cover">
+      </div>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-lg text-textMain">Sony</h3>
+          <span class="text-[10px] font-semibold text-purple-600 bg-purple-50 px-2 py-0.5 rounded">Televisions</span>
+        </div>
+        <p class="text-xs text-textSub line-clamp-2 mb-4">Cinematic BRAVIA processing systems, true OLED array architectures, and premium audio syncing.</p>
+        <a href="products.html?category=televisions" class="inline-flex items-center text-xs font-bold text-primary hover:text-blue-800 transition-colors">
+          Explore Products <i class="fas fa-arrow-right ml-1.5 text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Brand Card: Samsung -->
+    <div class="brand-card" data-category="refrigerators" data-name="samsung">
+      <div class="relative h-44 bg-gray-100 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1571175432244-5f29d76bee9f?auto=format&fit=crop&w=500&q=80" alt="Samsung Kitchen Innovation" class="w-full h-full object-cover">
+      </div>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-lg text-textMain">Samsung</h3>
+          <span class="text-[10px] font-semibold text-teal-600 bg-teal-50 px-2 py-0.5 rounded">Refrigerators</span>
+        </div>
+        <p class="text-xs text-textSub line-clamp-2 mb-4">Multi-door cooling hubs with digital inverter technology and customized internal layouts.</p>
+        <a href="products.html?category=refrigerators" class="inline-flex items-center text-xs font-bold text-primary hover:text-blue-800 transition-colors">
+          Explore Products <i class="fas fa-arrow-right ml-1.5 text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Brand Card: LG Electronics -->
+    <div class="brand-card" data-category="washing-machines" data-name="lg electronics">
+      <div class="relative h-44 bg-gray-100 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1545173168-9f18d8e27495?auto=format&fit=crop&w=500&q=80" alt="Modern Utility Appliances" class="w-full h-full object-cover">
+      </div>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-lg text-textMain">LG</h3>
+          <span class="text-[10px] font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded">Washing Machines</span>
+        </div>
+        <p class="text-xs text-textSub line-clamp-2 mb-4">DirectDrive motor stabilization and turbo laundry cycles engineered for dynamic fiber protection.</p>
+        <a href="products.html?category=washing-machines" class="inline-flex items-center text-xs font-bold text-primary hover:text-blue-800 transition-colors">
+          Explore Products <i class="fas fa-arrow-right ml-1.5 text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Brand Card: Coway -->
+    <div class="brand-card" data-category="water-purifiers" data-name="coway">
+      <div class="relative h-44 bg-gray-100 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1609842947419-ba4f04d5d60f?auto=format&fit=crop&w=500&q=80" alt="Filtration Units" class="w-full h-full object-cover">
+      </div>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-lg text-textMain">Coway</h3>
+          <span class="text-[10px] font-semibold text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded">Water Purifiers</span>
+        </div>
+        <p class="text-xs text-textSub line-clamp-2 mb-4">Multi-stage reverse osmosis setups delivering instant thermal control and absolute containment filtration.</p>
+        <a href="products.html?category=water-purifiers" class="inline-flex items-center text-xs font-bold text-primary hover:text-blue-800 transition-colors">
+          Explore Products <i class="fas fa-arrow-right ml-1.5 text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Brand Card: Signature Kitchen -->
+    <div class="brand-card" data-category="kitchen-cabinets" data-name="signature kitchen">
+      <div class="relative h-44 bg-gray-100 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1556912173-3bb406ef7e77?auto=format&fit=crop&w=500&q=80" alt="Premium Counter Hardware" class="w-full h-full object-cover">
+      </div>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-lg text-textMain">Signature</h3>
+          <span class="text-[10px] font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">Kitchen Cabinets</span>
+        </div>
+        <p class="text-xs text-textSub line-clamp-2 mb-4">Modular architectural storage designs, premium soft-closing pathways, and layout options.</p>
+        <a href="products.html?category=kitchen-cabinets" class="inline-flex items-center text-xs font-bold text-primary hover:text-blue-800 transition-colors">
+          Explore Products <i class="fas fa-arrow-right ml-1.5 text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Brand Card: Philips Lighting -->
+    <div class="brand-card" data-category="lighting" data-name="philips lighting">
+      <div class="relative h-44 bg-gray-100 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?auto=format&fit=crop&w=500&q=80" alt="Smart LED Solutions" class="w-full h-full object-cover">
+      </div>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-lg text-textMain">Philips</h3>
+          <span class="text-[10px] font-semibold text-yellow-600 bg-yellow-50 px-2 py-0.5 rounded">Lighting</span>
+        </div>
+        <p class="text-xs text-textSub line-clamp-2 mb-4">Eco-conscious luminous LED lamps, Hue integration protocols, and smart indoor arrays.</p>
+        <a href="products.html?category=lighting" class="inline-flex items-center text-xs font-bold text-primary hover:text-blue-800 transition-colors">
+          Explore Products <i class="fas fa-arrow-right ml-1.5 text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EMPTY RESULTS PROMPT -->
+  <div id="no-brands-msg" class="hidden text-center py-16 bg-white rounded-xl border border-border mt-6">
+    <i class="fas fa-search text-3xl text-textSub/40 mb-3"></i>
+    <p class="text-sm font-semibold text-textMain">No matching brand found</p>
+    <p class="text-xs text-textSub mt-1">Try adjusting your category layout or search spelling parameters.</p>
+  </div>
+</main>
+
+<!-- FOOTER STANDARD METADATA -->
+<footer id="footer-main" class="text-white mt-12">
+  <div class="max-w-[1320px] mx-auto px-4 py-10 text-center md:text-left">
+    <p class="text-sm opacity-75">© 2026 PowerNest Sdn. Bhd. All rights reserved. Kuala Lumpur, Malaysia.</p>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    setupMobileMenu();
+    setupBrandSearch();
+  });
+
+  function setupMobileMenu() {
+    const overlay = document.getElementById('mobile-menu-overlay');
+    const panel   = document.getElementById('mobile-menu-panel');
+    const open  = () => { overlay.classList.add('open'); panel.classList.add('open'); document.body.style.overflow='hidden'; };
+    const close = () => { overlay.classList.remove('open'); panel.classList.remove('open'); document.body.style.overflow=''; };
+    
+    document.getElementById('mobile-menu-btn')?.addEventListener('click', open);
+    document.getElementById('mobile-menu-close')?.addEventListener('click', close);
+    overlay?.addEventListener('click', close);
+
+    document.getElementById('mobile-search-btn')?.addEventListener('click', () => {
+      document.getElementById('mobile-search-bar')?.classList.toggle('hidden');
+    });
+  }
+
+  // Sync Filtering Configuration Loop
+  function filterCategory(category, buttonElement) {
+    document.querySelectorAll('.filter-tab').forEach(btn => {
+      btn.classList.remove('bg-primary', 'text-white', 'shadow-sm');
+      btn.classList.add('bg-white', 'text-textSub', 'border', 'border-border', 'font-medium');
+    });
+    buttonElement.classList.remove('bg-white', 'text-textSub', 'border', 'border-border', 'font-medium');
+    buttonElement.classList.add('bg-primary', 'text-white', 'shadow-sm');
+
+    const cards = document.querySelectorAll('.brand-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      if(category === 'all' || card.getAttribute('data-category') === category) {
+        card.style.display = 'block';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    toggleEmptyMessage(visibleCount);
+  }
+
+  // Combined Live Search Handler
+  function setupBrandSearch() {
+    const desktopInput = document.getElementById('brand-search-input');
+    const mobileInput = document.getElementById('mobile-brand-search');
+    const cards = document.querySelectorAll('.brand-card');
+
+    function handleSearch(term) {
+      const cleanTerm = term.toLowerCase().trim();
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const brandName = card.getAttribute('data-name').toLowerCase();
+        if(brandName.includes(cleanTerm)) {
+          card.style.display = 'block';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      toggleEmptyMessage(visibleCount);
+    }
+
+    desktopInput?.addEventListener('input', (e) => handleSearch(e.target.value));
+    mobileInput?.addEventListener('input', (e) => handleSearch(e.target.value));
+  }
+
+  function toggleEmptyMessage(count) {
+    const msg = document.getElementById('no-brands-msg');
+    if(count === 0) {
+      msg.classList.remove('hidden');
+    } else {
+      msg.classList.add('hidden');
+    }
+  }
+</script>
+</body>
+</html>

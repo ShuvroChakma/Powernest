@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solar Solutions – PowerNest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary:   '#003087',
+            accent:    '#F5A623',
+            accentRed: '#E63329',
+            lightBg:   '#F4F6FA',
+            cardBg:    '#FFFFFF',
+            textMain:  '#1A1A2E',
+            textSub:   '#555770',
+            border:    '#E2E6EF',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #F4F6FA; color: #1A1A2E; margin: 0; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: #003087; border-radius: 3px; }
+
+    /* ── Top announcement bar ── */
+    #announcement-bar { background: #003087; }
+
+    /* ── Navbar ── */
+    #main-nav { background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.08); position: sticky; top: 0; z-index: 100; }
+    .nav-search input:focus { outline: 2px solid #003087; }
+    .cart-btn { background: #003087; }
+    .cart-btn:hover { background: #00236b; }
+
+    /* Smooth underline nav */
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position: absolute; left:0; bottom:-2px; width:0; height:2px; background:#F5A623; transition: width .2s; }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .nav-link.active { color: #003087; font-weight: 700; }
+
+    .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid #E2E6EF; border-radius: 8px; min-width: 200px; box-shadow: 0 8px 32px rgba(0,0,0,.12); z-index: 200; }
+    .dropdown-parent:hover .dropdown-menu { display: block; }
+
+    /* ── Mobile menu ── */
+    #mobile-menu-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.45);
+      z-index: 199; opacity: 0; visibility: hidden; transition: opacity .25s ease;
+    }
+    #mobile-menu-overlay.open { opacity: 1; visibility: visible; }
+
+    #mobile-menu-panel {
+      position: fixed; top: 0; left: 0; height: 100%; width: 85%; max-width: 340px;
+      background: #fff; z-index: 200; overflow-y: auto;
+      transform: translateX(-100%); transition: transform .28s ease;
+      box-shadow: 4px 0 24px rgba(0,0,0,.15);
+    }
+    #mobile-menu-panel.open { transform: translateX(0); }
+    .hamburger-btn { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+    .hamburger-btn:hover { background: #F4F6FA; }
+
+    /* ── Reusable Styles ── */
+    .section-eyebrow { color: #F5A623; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .feature-card { transition: box-shadow .2s, transform .2s; }
+    .feature-card:hover { box-shadow: 0 12px 32px rgba(0,48,135,.08); transform: translateY(-4px); }
+    
+    .cat-card { position: relative; overflow: hidden; border-radius: 10px; display: block; }
+    .cat-card img { transition: transform .35s; width: 100%; height: 100%; object-fit: cover; }
+    .cat-card:hover img { transform: scale(1.06); }
+    .cat-card-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent,rgba(0,0,0,.8)); color: #fff; padding: 24px 16px 12px; }
+
+    /* ── Footer ── */
+    #footer-main { background: #003087; }
+    #footer-bottom { background: #00236b; }
+
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     ANNOUNCEMENT BAR
+════════════════════════════════════════════ -->
+<div id="announcement-bar" class="text-white text-center text-xs py-2 px-4 flex items-center justify-center md:justify-between flex-wrap gap-2">
+  <div class="flex items-center gap-2 md:gap-4 flex-wrap justify-center">
+    <span><i class="fas fa-shipping-fast mr-1"></i> Free shipping on bulk orders over $5,000</span>
+    <span class="hidden md:inline">|</span>
+    <span class="hidden md:inline"><i class="fas fa-headset mr-1"></i> 24/7 International Support</span>
+  </div>
+  <div class="hidden sm:flex items-center gap-4">
+    <a href="#" class="hover:text-accent transition-colors">Track Order</a>
+    <a href="#" class="hover:text-accent transition-colors">Become a Dealer</a>
+    <span class="bg-accent text-white rounded px-2 py-0.5 text-xs font-bold">USD</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     MAIN NAVIGATION
+════════════════════════════════════════════ -->
+<nav id="main-nav" class="bg-white">
+  <div class="max-w-[1320px] mx-auto px-4">
+    <div class="flex items-center gap-2 sm:gap-4 py-3">
+
+      <!-- Hamburger (mobile only) -->
+      <button id="mobile-menu-btn" class="hamburger-btn lg:hidden text-primary shrink-0" aria-label="Open menu">
+        <i class="fas fa-bars text-lg"></i>
+      </button>
+
+      <!-- Logo -->
+      <a href="/homepage.html" class="flex items-center gap-2 shrink-0">
+        <div class="w-9 h-9 bg-primary rounded-lg flex items-center justify-center shrink-0">
+          <i class="fas fa-bolt text-accent text-lg"></i>
+        </div>
+        <div class="leading-tight">
+          <div class="font-black text-primary text-base sm:text-lg tracking-tight">PowerNest</div>
+          <div class="text-[9px] text-textSub font-medium uppercase tracking-widest hidden sm:block">Electronics &amp; Solar</div>
+        </div>
+      </a>
+
+      <!-- Search bar (desktop / tablet) -->
+      <div class="flex-1 nav-search relative max-w-[540px] mx-4 hidden md:block">
+        <div class="flex border-2 border-primary rounded-lg overflow-hidden">
+          <select class="bg-lightBg text-xs text-textSub font-medium px-3 py-2 border-r border-border outline-none shrink-0">
+            <option>All Categories</option>
+            <option>Solar Panels</option>
+            <option>Inverters</option>
+            <option>Energy Storage</option>
+            <option>Mounting Systems</option>
+            <option>Electronics</option>
+          </select>
+          <input type="text" placeholder="Search solar products, brands, models…" class="flex-1 px-4 py-2 text-sm outline-none min-w-0" />
+          <button class="bg-primary text-white px-5 py-2 hover:bg-blue-800 transition-colors shrink-0">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right actions -->
+      <div class="flex items-center gap-2 sm:gap-3 ml-auto shrink-0">
+        <button id="mobile-search-btn" class="md:hidden hamburger-btn text-textSub" aria-label="Search">
+          <i class="fas fa-search text-lg"></i>
+        </button>
+        <a href="/account.html" class="hidden sm:flex flex-col items-center text-textSub hover:text-primary text-xs font-medium transition-colors">
+          <i class="far fa-user text-lg mb-0.5"></i>
+          <span>Account</span>
+        </a>
+        <a href="/wishlist.html" class="hidden sm:flex flex-col items-center text-textSub hover:text-primary text-xs font-medium transition-colors relative">
+          <i class="far fa-heart text-lg mb-0.5"></i>
+          <span>Wishlist</span>
+          <span class="absolute -top-1 -right-1 bg-accentRed text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">3</span>
+        </a>
+        <a href="/cart.html" class="cart-btn flex items-center gap-2 text-white rounded-lg px-3 sm:px-4 py-2 text-sm font-semibold relative">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="hidden sm:inline">Cart</span>
+          <span class="bg-accent text-white text-[9px] rounded-full w-5 h-5 flex items-center justify-center font-bold">2</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile search bar -->
+    <div id="mobile-search-bar" class="hidden md:hidden pb-3">
+      <div class="flex border-2 border-primary rounded-lg overflow-hidden">
+        <input type="text" placeholder="Search products, brands, categories…" class="flex-1 px-4 py-2 text-sm outline-none min-w-0" />
+        <button class="bg-primary text-white px-4 py-2 hover:bg-blue-800 transition-colors shrink-0">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Secondary nav links (desktop only) -->
+    <div class="hidden lg:flex items-center gap-6 pb-2 border-t border-border pt-2 overflow-x-auto scrollbar-hide">
+      <a href="/homepage.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Home</a>
+      <div class="relative dropdown-parent z-100">
+        <a href="/products.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap flex items-center gap-1">
+          Products 
+        </a>
+      </div>
+      <a href="/brands.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Brands</a>
+      <a href="/bulk-order.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Bulk Orders</a>
+      <a href="/solar.html" class="nav-link active text-sm whitespace-nowrap">Solar Solutions</a>
+      <a href="/deals.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap text-accentRed font-semibold">
+        <i class="fas fa-fire mr-1"></i>Deals
+      </a>
+      <a href="/about.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">About Us</a>
+      <a href="/contact.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════
+     MOBILE MENU (off-canvas)
+════════════════════════════════════════════ -->
+<div id="mobile-menu-overlay"></div>
+<div id="mobile-menu-panel">
+  <div class="flex items-center justify-between px-4 py-4 border-b border-border bg-primary">
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 bg-white/15 rounded-lg flex items-center justify-center">
+        <i class="fas fa-bolt text-accent text-lg"></i>
+      </div>
+      <div class="leading-tight text-white">
+        <div class="font-black text-base tracking-tight">PowerNest</div>
+        <div class="text-[9px] opacity-70 uppercase tracking-widest">Electronics &amp; Solar</div>
+      </div>
+    </div>
+    <button id="mobile-menu-close" class="text-white w-9 h-9 flex items-center justify-center rounded-lg hover:bg-white/10" aria-label="Close menu">
+      <i class="fas fa-times text-lg"></i>
+    </button>
+  </div>
+
+  <div class="px-2 py-2 border-t border-border">
+    <a href="/homepage.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Home</a>
+    <a href="/products.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Products</a>
+    <a href="/brands.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Brands</a>
+    <a href="/bulk-order.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Bulk Orders</a>
+    <a href="/solar.html" class="block px-4 py-2.5 rounded-lg text-sm font-bold text-primary bg-lightBg">Solar Solutions</a>
+    <a href="/deals.html" class="block px-4 py-2.5 rounded-lg text-sm font-semibold text-accentRed hover:bg-lightBg"><i class="fas fa-fire mr-1"></i> Deals</a>
+    <a href="/about.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">About Us</a>
+    <a href="/contact.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Contact</a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SOLAR HERO BANNER
+════════════════════════════════════════════ -->
+<section class="relative bg-primary overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <img src="https://images.unsplash.com/photo-1509391366360-120023be69e6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Solar Panels on Roof" class="w-full h-full object-cover opacity-30 mix-blend-overlay">
+    <div class="absolute inset-0 bg-gradient-to-r from-primary to-transparent opacity-90"></div>
+  </div>
+  
+  <div class="max-w-[1320px] mx-auto px-4 py-16 md:py-24 relative z-10 flex flex-col md:flex-row items-center gap-8">
+    <div class="text-white max-w-2xl">
+      <div class="text-accent font-bold tracking-widest text-sm uppercase mb-3"><i class="fas fa-sun mr-2"></i> Power Your Future</div>
+      <h1 class="text-3xl md:text-5xl font-extrabold leading-tight mb-4">Smart Solar Solutions for Homes & Businesses</h1>
+      <p class="text-base md:text-lg opacity-90 mb-8 max-w-xl">Harness the power of the sun with Tier 1 solar panels, advanced inverters, and scalable energy storage. Reduce your carbon footprint and energy bills today.</p>
+      
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="/products.html" class="bg-accent text-white font-bold px-6 py-3 rounded-lg hover:bg-yellow-500 transition-colors text-center shadow-lg">
+          Shop Solar Products
+        </a>
+        <a href="/contact.html" class="bg-white/20 text-white font-bold px-6 py-3 rounded-lg hover:bg-white/30 transition-colors border border-white/30 text-center backdrop-blur-sm">
+          Get a Free Consultation
+        </a>
+      </div>
+    </div>
+    
+    <!-- Hero Stats -->
+    <div class="hidden md:flex ml-auto flex-col gap-4">
+      <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5 text-white w-64">
+        <div class="text-3xl font-black text-accent mb-1">10M+</div>
+        <div class="text-sm font-medium">Watts Installed Regionally</div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5 text-white w-64">
+        <div class="text-3xl font-black text-accent mb-1">25 Yrs</div>
+        <div class="text-sm font-medium">Performance Warranty</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     WHY CHOOSE SOLAR / BENEFITS
+════════════════════════════════════════════ -->
+<section class="max-w-[1320px] mx-auto px-4 py-12">
+  <div class="text-center mb-10">
+    <div class="section-eyebrow mb-2">Sustainable & Profitable</div>
+    <h2 class="text-2xl md:text-3xl font-bold text-textMain">Why make the switch to solar?</h2>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="feature-card bg-white rounded-xl p-8 border border-border text-center">
+      <div class="w-16 h-16 bg-lightBg text-primary rounded-full flex items-center justify-center text-2xl mx-auto mb-5">
+        <i class="fas fa-piggy-bank"></i>
+      </div>
+      <h3 class="text-lg font-bold text-textMain mb-2">Massive Cost Savings</h3>
+      <p class="text-textSub text-sm leading-relaxed">Dramatically reduce or completely eliminate your monthly electricity bills. Protect yourself against rising utility rates.</p>
+    </div>
+    
+    <div class="feature-card bg-white rounded-xl p-8 border border-border text-center">
+      <div class="w-16 h-16 bg-lightBg text-primary rounded-full flex items-center justify-center text-2xl mx-auto mb-5">
+        <i class="fas fa-leaf"></i>
+      </div>
+      <h3 class="text-lg font-bold text-textMain mb-2">Eco-Friendly Energy</h3>
+      <p class="text-textSub text-sm leading-relaxed">Reduce your carbon footprint. Solar is a 100% clean, renewable energy source that helps fight climate change.</p>
+    </div>
+
+    <div class="feature-card bg-white rounded-xl p-8 border border-border text-center">
+      <div class="w-16 h-16 bg-lightBg text-primary rounded-full flex items-center justify-center text-2xl mx-auto mb-5">
+        <i class="fas fa-shield-alt"></i>
+      </div>
+      <h3 class="text-lg font-bold text-textMain mb-2">Reliable & Low Maintenance</h3>
+      <p class="text-textSub text-sm leading-relaxed">With no moving parts, solar systems require minimal maintenance and come with industry-leading 25-year warranties.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SHOP BY SOLAR CATEGORY (UPDATED ROUTING)
+════════════════════════════════════════════ -->
+<section id="solar-products" class="max-w-[1320px] mx-auto px-4 py-8">
+  <div class="flex items-center justify-between mb-6 gap-2">
+    <div>
+      <div class="section-eyebrow mb-1"><i class="fas fa-th-large mr-1"></i> Equipment</div>
+      <h2 class="text-xl md:text-2xl font-bold text-textMain">Browse Solar Equipment</h2>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+    <!-- Solar Panels Card -->
+    <a href="/products.html?category=solar-panels" class="cat-card h-64 shadow-sm border border-border">
+      <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=600&q=80" alt="Solar Panels">
+      <div class="cat-card-label">
+        <h3 class="text-lg font-bold">Solar Panels</h3>
+        <p class="text-xs opacity-80 mt-1">Monocrystalline & Polycrystalline</p>
+      </div>
+    </a>
+    
+    <!-- Inverters Card -->
+    <a href="/products.html?category=inverters" class="cat-card h-64 shadow-sm border border-border">
+      <img src="https://images.unsplash.com/photo-1620022378943-7f2479f6d628?auto=format&fit=crop&w=600&q=80" alt="Solar Inverters">
+      <div class="cat-card-label">
+        <h3 class="text-lg font-bold">Inverters</h3>
+        <p class="text-xs opacity-80 mt-1">String, Micro & Hybrid Inverters</p>
+      </div>
+    </a>
+    
+    <!-- Energy Storage Card -->
+    <a href="/products.html?category=energy-storage" class="cat-card h-64 shadow-sm border border-border">
+      <img src="https://images.unsplash.com/photo-1620241608701-94ef138c7eb9?auto=format&fit=crop&w=600&q=80" alt="Energy Storage">
+      <div class="cat-card-label">
+        <h3 class="text-lg font-bold">Energy Storage</h3>
+        <p class="text-xs opacity-80 mt-1">Lithium-ion Batteries & Backup</p>
+      </div>
+    </a>
+    
+    <!-- Mounting Systems Card -->
+    <a href="/products.html?category=mounting-systems" class="cat-card h-64 shadow-sm border border-border">
+      <img src="https://images.unsplash.com/photo-1592833159155-c62df1b65634?auto=format&fit=crop&w=600&q=80" alt="Mounting Systems">
+      <div class="cat-card-label">
+        <h3 class="text-lg font-bold">Mounting & Accessories</h3>
+        <p class="text-xs opacity-80 mt-1">Cables, Rails, Connectors</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     RESIDENTIAL VS COMMERCIAL
+════════════════════════════════════════════ -->
+<section class="max-w-[1320px] mx-auto px-4 py-12">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+    
+    <!-- Residential -->
+    <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-border flex flex-col h-full">
+      <div class="h-48 bg-lightBg relative">
+        <img src="https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=800&q=80" alt="Residential Solar" class="w-full h-full object-cover">
+        <div class="absolute top-4 left-4 bg-white text-primary px-3 py-1 rounded text-xs font-bold shadow"><i class="fas fa-home mr-1"></i> Residential</div>
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <h3 class="text-xl font-bold text-textMain mb-3">Home Solar Systems</h3>
+        <p class="text-textSub text-sm mb-6 leading-relaxed">Turn your roof into a power plant. Our residential kits range from 3kW to 10kW, perfect for single-family homes looking to achieve energy independence.</p>
+        <ul class="space-y-2 text-sm text-textMain font-medium mb-6 flex-1">
+          <li><i class="fas fa-check text-accent mr-2"></i> Grid-tied & Off-grid options</li>
+          <li><i class="fas fa-check text-accent mr-2"></i> Smart app monitoring</li>
+          <li><i class="fas fa-check text-accent mr-2"></i> Quick installation</li>
+        </ul>
+        <a href="/products.html?category=residential-solar" class="bg-primary text-white font-bold py-2 px-4 rounded text-center text-sm hover:bg-blue-800 transition-colors block">View Residential Kits</a>
+      </div>
+    </div>
+
+    <!-- Commercial -->
+    <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-border flex flex-col h-full">
+      <div class="h-48 bg-lightBg relative">
+        <img src="https://images.unsplash.com/photo-1559302504-64aae6ca6b6f?auto=format&fit=crop&w=800&q=80" alt="Commercial Solar" class="w-full h-full object-cover">
+        <div class="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded text-xs font-bold shadow"><i class="fas fa-industry mr-1"></i> Commercial</div>
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <h3 class="text-xl font-bold text-textMain mb-3">Enterprise & Industrial</h3>
+        <p class="text-textSub text-sm mb-6 leading-relaxed">High-capacity solutions designed for factories, warehouses, and office buildings. Drastically cut overhead costs and meet corporate sustainability goals.</p>
+        <ul class="space-y-2 text-sm text-textMain font-medium mb-6 flex-1">
+          <li><i class="fas fa-check text-accent mr-2"></i> Custom system sizing (50kW+)</li>
+          <li><i class="fas fa-check text-accent mr-2"></i> Peak shaving technology</li>
+          <li><i class="fas fa-check text-accent mr-2"></i> Wholesale bulk pricing</li>
+        </ul>
+        <a href="/bulk-order.html" class="bg-primary text-white font-bold py-2 px-4 rounded text-center text-sm hover:bg-blue-800 transition-colors block">Request B2B Quote</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     TOP SOLAR BRANDS
+════════════════════════════════════════════ -->
+<section class="max-w-[1320px] mx-auto px-4 py-8 mb-4">
+  <div class="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-border text-center">
+    <div class="section-eyebrow mb-2">Tier 1 Manufacturers</div>
+    <h2 class="text-xl font-bold text-textMain mb-8">Authorized Distributor for Industry Leaders</h2>
+    
+    <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12 opacity-70">
+      <div class="font-black text-xl md:text-2xl text-textMain tracking-tighter">LONGI <span class="text-accent text-sm">Solar</span></div>
+      <div class="font-black text-xl md:text-2xl text-textMain tracking-tighter">Jinko<span class="text-primary">Solar</span></div>
+      <div class="font-black text-xl md:text-2xl text-textMain tracking-tighter">Trina<span class="text-accentRed">Solar</span></div>
+      <div class="font-black text-xl md:text-2xl text-textMain tracking-tighter">Growatt</div>
+      <div class="font-black text-xl md:text-2xl text-textMain tracking-tighter">HUAWEI</div>
+      <div class="font-black text-xl md:text-2xl text-textMain tracking-tighter">SMA</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     CTA BANNER
+════════════════════════════════════════════ -->
+<section class="max-w-[1320px] mx-auto px-4 mb-10">
+  <div class="rounded-xl overflow-hidden relative" style="background: linear-gradient(120deg,#003087 0%,#0050c8 70%,#0077ff 100%); min-height:160px;">
+    <div class="flex flex-col md:flex-row items-center justify-between px-6 sm:px-10 py-10 gap-6 h-full">
+      <div class="text-white text-center md:text-left">
+        <div class="text-xs font-semibold uppercase tracking-widest opacity-80 mb-2">Start Saving Today</div>
+        <h3 class="text-2xl md:text-3xl font-extrabold leading-tight">Ready to switch to solar?</h3>
+        <p class="text-sm opacity-90 mt-2 max-w-lg">Our engineering team can help you design the perfect system. Send us your energy bill for a free, no-obligation ROI analysis.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">
+        <a href="/contact.html" class="bg-accent text-white font-bold px-6 py-3 rounded-lg hover:bg-yellow-500 transition-colors text-sm text-center shadow-lg">
+          <i class="fas fa-file-invoice-dollar mr-2"></i>Get Free Quote
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer>
+  <div id="footer-main" class="text-white">
+    <div class="max-w-[1320px] mx-auto px-4 py-10">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+
+        <!-- Col 1: Brand -->
+        <div class="col-span-2 md:col-span-1">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-white/20 rounded-lg flex items-center justify-center">
+              <i class="fas fa-bolt text-accent text-lg"></i>
+            </div>
+            <div>
+              <div class="font-black text-lg">PowerNest</div>
+              <div class="text-[9px] opacity-60 uppercase tracking-widest">Electronics &amp; Solar</div>
+            </div>
+          </div>
+          <p class="text-sm opacity-75 leading-relaxed mb-4">Malaysia's trusted wholesale partner for premium electronics, air conditioners, and solar solutions — serving international buyers since 2010.</p>
+          <div class="flex gap-3">
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-facebook-f text-sm"></i></a>
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-instagram text-sm"></i></a>
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-linkedin-in text-sm"></i></a>
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-youtube text-sm"></i></a>
+          </div>
+        </div>
+
+        <!-- Col 2: Products -->
+        <div>
+          <h4 class="font-bold text-sm mb-4 text-accent">Products</h4>
+          <ul class="space-y-2 text-sm opacity-80" id="footer-products">
+            <li><a href="#" class="hover:text-accent transition-colors">Air Conditioners</a></li>
+            <li><a href="/solar.html" class="hover:text-accent transition-colors">Solar Panels</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Televisions</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Refrigerators</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Washing Machines</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Water Purifiers</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Small Appliances</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Company -->
+        <div>
+          <h4 class="font-bold text-sm mb-4 text-accent">Company</h4>
+          <ul class="space-y-2 text-sm opacity-80">
+            <li><a href="/about.html" class="hover:text-accent transition-colors">About Us</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Careers</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Press &amp; Media</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Dealer Program</a></li>
+            <li><a href="/bulk-order.html" class="hover:text-accent transition-colors">Bulk Orders</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Sustainability</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Support -->
+        <div>
+          <h4 class="font-bold text-sm mb-4 text-accent">Support</h4>
+          <ul class="space-y-2 text-sm opacity-80">
+            <li><a href="/contact.html" class="hover:text-accent transition-colors">Contact Us</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Track Order</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Return Policy</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Warranty Info</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">FAQs</a></li>
+          </ul>
+          <div class="mt-5 text-sm">
+            <div class="opacity-70 text-xs mb-1">Customer Support (24/7)</div>
+            <div class="font-bold text-accent text-base">+60 3-1234 5678</div>
+            <div class="opacity-70 text-xs mt-1">support@powernest.com.my</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer bottom -->
+  <div id="footer-bottom" class="text-white text-xs">
+    <div class="max-w-[1320px] mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-2 text-center md:text-left">
+      <span class="opacity-70">© 2024 PowerNest Sdn. Bhd. All rights reserved. Kuala Lumpur, Malaysia.</span>
+      <div class="flex items-center gap-4 opacity-70">
+        <a href="#" class="hover:text-accent transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-accent transition-colors">Terms of Service</a>
+        <a href="#" class="hover:text-accent transition-colors">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll-to-top -->
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+  class="fixed bottom-6 right-6 w-11 h-11 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-800 transition-all opacity-0 z-50">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<script>
+  // Mobile menu scripts
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
+  const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+  const mobileMenuPanel = document.getElementById('mobile-menu-panel');
+  const mobileSearchBtn = document.getElementById('mobile-search-btn');
+  const mobileSearchBar = document.getElementById('mobile-search-bar');
+  const scrollTopBtn = document.getElementById('scroll-top');
+
+  function openMenu() {
+    mobileMenuOverlay.classList.add('open');
+    mobileMenuPanel.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    mobileMenuOverlay.classList.remove('open');
+    mobileMenuPanel.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  mobileMenuBtn?.addEventListener('click', openMenu);
+  mobileMenuClose?.addEventListener('click', closeMenu);
+  mobileMenuOverlay?.addEventListener('click', closeMenu);
+
+  mobileSearchBtn?.addEventListener('click', () => {
+    mobileSearchBar.classList.toggle('hidden');
+  });
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollTopBtn.style.opacity = '1';
+      scrollTopBtn.style.visibility = 'visible';
+    } else {
+      scrollTopBtn.style.opacity = '0';
+      scrollTopBtn.style.visibility = 'hidden';
+    }
+  });
+</script>
+</body>
+</html>

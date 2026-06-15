@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Cart – PowerNest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary:   '#003087',
+            accent:    '#F5A623',
+            accentRed: '#E63329',
+            lightBg:   '#F4F6FA',
+            cardBg:    '#FFFFFF',
+            textMain:  '#1A1A2E',
+            textSub:   '#555770',
+            border:    '#E2E6EF',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #F4F6FA; color: #1A1A2E; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: #003087; border-radius: 3px; }
+    #announcement-bar { background: #003087; }
+    #main-nav { background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.08); position: sticky; top: 0; z-index: 100; }
+    .nav-search input:focus { outline: 2px solid #003087; }
+    .cart-btn { background: #003087; }
+    .cart-btn:hover { background: #00236b; }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position: absolute; left:0; bottom:-2px; width:0; height:2px; background:#F5A623; transition: width .2s; }
+    .nav-link:hover::after { width: 100%; }
+    #mobile-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 199; opacity: 0; visibility: hidden; transition: opacity .25s ease; }
+    #mobile-menu-overlay.open { opacity: 1; visibility: visible; }
+    #mobile-menu-panel { position: fixed; top: 0; left: 0; height: 100%; width: 85%; max-width: 340px; background: #fff; z-index: 200; overflow-y: auto; transform: translateX(-100%); transition: transform .28s ease; box-shadow: 4px 0 24px rgba(0,0,0,.15); }
+    #mobile-menu-panel.open { transform: translateX(0); }
+    .hamburger-btn { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+    .hamburger-btn:hover { background: #F4F6FA; }
+    #footer-main { background: #003087; }
+    #footer-bottom { background: #00236b; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+
+<div id="announcement-bar" class="text-white text-center text-xs py-2 px-4 flex items-center justify-center md:justify-between flex-wrap gap-2">
+  <div class="flex items-center gap-2 md:gap-4 flex-wrap justify-center">
+    <span><i class="fas fa-shipping-fast mr-1"></i> Free shipping on bulk orders over $5,000</span>
+    <span class="hidden md:inline">|</span>
+    <span class="hidden md:inline"><i class="fas fa-headset mr-1"></i> 24/7 International Support</span>
+  </div>
+  <div class="hidden sm:flex items-center gap-4">
+    <a href="#" class="hover:text-accent transition-colors">Track Order</a>
+    <a href="#" class="hover:text-accent transition-colors">Become a Dealer</a>
+    <span class="bg-accent text-white rounded px-2 py-0.5 text-xs font-bold">USD</span>
+  </div>
+</div>
+
+<nav id="main-nav" class="bg-white">
+  <div class="max-w-[1320px] mx-auto px-4">
+    <div class="flex items-center gap-2 sm:gap-4 py-3">
+      <button id="mobile-menu-btn" class="hamburger-btn lg:hidden text-primary shrink-0" aria-label="Open menu"><i class="fas fa-bars text-lg"></i></button>
+      
+      <a href="/homepage.html" class="flex items-center gap-2 shrink-0">
+        <div class="w-9 h-9 bg-primary rounded-lg flex items-center justify-center shrink-0"><i class="fas fa-bolt text-accent text-lg"></i></div>
+        <div class="leading-tight">
+          <div class="font-black text-primary text-base sm:text-lg tracking-tight">PowerNest</div>
+          <div class="text-[9px] text-textSub font-medium uppercase tracking-widest hidden sm:block">Electronics &amp; Solar</div>
+        </div>
+      </a>
+
+      <div class="flex-1 nav-search relative max-w-[540px] mx-4 hidden md:block">
+        <div class="flex border-2 border-primary rounded-lg overflow-hidden">
+          <select class="bg-lightBg text-xs text-textSub font-medium px-3 py-2 border-r border-border outline-none shrink-0">
+            <option>All Categories</option>
+            <option>Air Conditioners</option>
+            <option>Solar Panels</option>
+            <option>Televisions</option>
+            <option>Refrigerators</option>
+            <option>Washing Machines</option>
+          </select>
+          <input type="text" placeholder="Search products, brands, categories…" class="flex-1 px-4 py-2 text-sm outline-none min-w-0" />
+          <button class="bg-primary text-white px-5 py-2 hover:bg-blue-800 transition-colors shrink-0"><i class="fas fa-search"></i></button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3 ml-auto shrink-0">
+        <button id="mobile-search-btn" class="md:hidden hamburger-btn text-textSub" aria-label="Search"><i class="fas fa-search text-lg"></i></button>
+        <a href="/account.html" class="hidden sm:flex flex-col items-center text-textSub hover:text-primary text-xs font-medium transition-colors">
+          <i class="far fa-user text-lg mb-0.5"></i><span>Account</span>
+        </a>
+        <a href="/wishlist.html" class="hidden sm:flex flex-col items-center text-textSub hover:text-primary text-xs font-medium transition-colors relative">
+          <i class="far fa-heart text-lg mb-0.5"></i><span>Wishlist</span>
+          <span class="absolute -top-1 -right-1 bg-accentRed text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">3</span>
+        </a>
+        <a href="/cart.html" class="cart-btn flex items-center gap-2 text-white rounded-lg px-3 sm:px-4 py-2 text-sm font-semibold relative">
+          <i class="fas fa-shopping-cart"></i><span class="hidden sm:inline">Cart</span>
+          <span id="nav-cart-count" class="bg-accent text-white text-[9px] rounded-full w-5 h-5 flex items-center justify-center font-bold">2</span>
+        </a>
+      </div>
+    </div>
+
+    <div id="mobile-search-bar" class="hidden md:hidden pb-3">
+      <div class="flex border-2 border-primary rounded-lg overflow-hidden">
+        <input type="text" placeholder="Search products, brands, categories…" class="flex-1 px-4 py-2 text-sm outline-none min-w-0" />
+        <button class="bg-primary text-white px-4 py-2 hover:bg-blue-800 transition-colors shrink-0"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+
+    <div class="hidden lg:flex items-center gap-6 pb-2 border-t border-border pt-2 overflow-x-auto scrollbar-hide">
+      <a href="/homepage.html" class="nav-link text-textSub hover:text-primary font-medium text-sm whitespace-nowrap">Home</a>
+      <a href="/products.html" class="nav-link text-textSub hover:text-primary font-medium text-sm whitespace-nowrap">Products</a>
+      <a href="/brands.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Brands</a>
+      <a href="/bulk-order.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Bulk Orders</a>
+      <a href="/solar.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Solar Solutions</a>
+      <a href="/deals.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap text-accentRed font-semibold"><i class="fas fa-fire mr-1"></i>Deals</a>
+      <a href="/about.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">About Us</a>
+      <a href="/contact.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div id="mobile-menu-overlay"></div>
+<div id="mobile-menu-panel">
+  <div class="flex items-center justify-between px-4 py-4 border-b border-border bg-primary">
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 bg-white/15 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-accent text-lg"></i></div>
+      <div class="leading-tight text-white">
+        <div class="font-black text-base tracking-tight">PowerNest</div>
+        <div class="text-[9px] opacity-70 uppercase tracking-widest">Electronics &amp; Solar</div>
+      </div>
+    </div>
+    <button id="mobile-menu-close" class="text-white w-9 h-9 flex items-center justify-center rounded-lg hover:bg-white/10" aria-label="Close menu"><i class="fas fa-times text-lg"></i></button>
+  </div>
+  <div class="grid grid-cols-2 gap-2 p-4 sm:hidden">
+    <a href="/account.html" class="flex items-center gap-2 bg-lightBg rounded-lg px-3 py-2 text-sm font-medium text-textSub"><i class="far fa-user text-primary"></i> Account</a>
+    <a href="/wishlist.html" class="flex items-center gap-2 bg-lightBg rounded-lg px-3 py-2 text-sm font-medium text-textSub"><i class="far fa-heart text-primary"></i> Wishlist <span class="ml-auto bg-accentRed text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center font-bold">3</span></a>
+  </div>
+  <div class="px-2 py-2 border-t border-border">
+    <a href="/homepage.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Home</a>
+    <a href="/products.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Products</a>
+    <a href="/brands.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Brands</a>
+    <a href="/bulk-order.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Bulk Orders</a>
+    <a href="/solar.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Solar Solutions</a>
+    <a href="/deals.html" class="block px-4 py-2.5 rounded-lg text-sm font-semibold text-accentRed hover:bg-lightBg"><i class="fas fa-fire mr-1"></i> Deals</a>
+    <a href="/about.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">About Us</a>
+    <a href="/contact.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Contact</a>
+  </div>
+</div>
+
+<main class="max-w-[1320px] mx-auto px-4 py-8">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-xl sm:text-2xl font-extrabold text-textMain flex items-center gap-2">
+      <i class="fas fa-shopping-cart text-primary"></i> Your Procurement Cart
+    </h1>
+    <a href="/products.html" class="text-xs font-semibold text-primary hover:underline flex items-center gap-1">
+      <i class="fas fa-arrow-left"></i> Continue Shopping
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div class="lg:col-span-8 bg-white border border-border rounded-xl shadow-sm overflow-hidden">
+      <div class="hidden sm:grid grid-cols-12 gap-4 px-6 py-3.5 bg-lightBg/50 border-b border-border text-[11px] font-bold text-textSub uppercase tracking-wider">
+        <div class="col-span-6">Product Details</div>
+        <div class="col-span-2 text-center">Unit Price</div>
+        <div class="col-span-2 text-center">Quantity</div>
+        <div class="col-span-2 text-right">Subtotal</div>
+      </div>
+
+      <div class="divide-y divide-border" id="cart-items-container">
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 p-4 sm:p-6 items-center cart-row" data-price="185.00">
+          <div class="col-span-1 sm:col-span-6 flex gap-4 items-center">
+            <div class="w-20 h-20 bg-lightBg border border-border rounded-lg flex items-center justify-center shrink-0 p-1">
+              <i class="fas fa-solar-panel text-3xl text-primary opacity-60"></i>
+            </div>
+            <div class="min-w-0">
+              <span class="text-[10px] uppercase font-bold text-accent tracking-wider block mb-0.5">Jinko Solar</span>
+              <a href="#" class="font-semibold text-sm text-textMain hover:text-primary transition-colors block truncate">Tiger Neo N-type 575W Solar Module</a>
+              <p class="text-xs text-textSub mt-1">SKU: JK-575N-HD</p>
+              <button onclick="removeRow(this)" class="text-[11px] font-semibold text-accentRed hover:underline mt-2 flex items-center gap-1"><i class="far fa-trash-alt"></i> Remove</button>
+            </div>
+          </div>
+          <div class="col-span-1 sm:col-span-2 text-left sm:text-center flex sm:block justify-between items-center text-sm font-semibold text-textMain mt-2 sm:mt-0">
+            <span class="sm:hidden text-xs text-textSub font-normal">Unit Price:</span>
+            <span>$185.00</span>
+          </div>
+          <div class="col-span-1 sm:col-span-2 flex sm:justify-center items-center justify-between mt-2 sm:mt-0">
+            <span class="sm:hidden text-xs text-textSub font-normal">Quantity:</span>
+            <div class="flex border border-border rounded bg-white overflow-hidden max-w-[100px]">
+              <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-textSub hover:bg-lightBg transition-colors font-bold text-sm">-</button>
+              <input type="text" value="10" readonly class="w-10 text-center text-xs font-bold text-textMain select-none focus:outline-none" />
+              <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-textSub hover:bg-lightBg transition-colors font-bold text-sm">+</button>
+            </div>
+          </div>
+          <div class="col-span-1 sm:col-span-2 text-right flex sm:block justify-between items-center text-sm font-bold text-textMain mt-2 sm:mt-0">
+            <span class="sm:hidden text-xs text-textSub font-normal">Subtotal:</span>
+            <span class="row-total text-primary">$1,850.00</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 p-4 sm:p-6 items-center cart-row" data-price="2100.00">
+          <div class="col-span-1 sm:col-span-6 flex gap-4 items-center">
+            <div class="w-20 h-20 bg-lightBg border border-border rounded-lg flex items-center justify-center shrink-0 p-1">
+              <i class="fas fa-charging-station text-3xl text-primary opacity-60"></i>
+            </div>
+            <div class="min-w-0">
+              <span class="text-[10px] uppercase font-bold text-accent tracking-wider block mb-0.5">Deye Electronics</span>
+              <a href="#" class="font-semibold text-sm text-textMain hover:text-primary transition-colors block truncate">12kW Hybrid Three-Phase Inverter</a>
+              <p class="text-xs text-textSub mt-1">SKU: DY-3P12K-HYB</p>
+              <button onclick="removeRow(this)" class="text-[11px] font-semibold text-accentRed hover:underline mt-2 flex items-center gap-1"><i class="far fa-trash-alt"></i> Remove</button>
+            </div>
+          </div>
+          <div class="col-span-1 sm:col-span-2 text-left sm:text-center flex sm:block justify-between items-center text-sm font-semibold text-textMain mt-2 sm:mt-0">
+            <span class="sm:hidden text-xs text-textSub font-normal">Unit Price:</span>
+            <span>$2,100.00</span>
+          </div>
+          <div class="col-span-1 sm:col-span-2 flex sm:justify-center items-center justify-between mt-2 sm:mt-0">
+            <span class="sm:hidden text-xs text-textSub font-normal">Quantity:</span>
+            <div class="flex border border-border rounded bg-white overflow-hidden max-w-[100px]">
+              <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-textSub hover:bg-lightBg transition-colors font-bold text-sm">-</button>
+              <input type="text" value="1" readonly class="w-10 text-center text-xs font-bold text-textMain select-none focus:outline-none" />
+              <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-textSub hover:bg-lightBg transition-colors font-bold text-sm">+</button>
+            </div>
+          </div>
+          <div class="col-span-1 sm:col-span-2 text-right flex sm:block justify-between items-center text-sm font-bold text-textMain mt-2 sm:mt-0">
+            <span class="sm:hidden text-xs text-textSub font-normal">Subtotal:</span>
+            <span class="row-total text-primary">$2,100.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-4 bg-white border border-border rounded-xl shadow-sm p-6 space-y-4">
+      <h3 class="text-sm font-bold text-textMain uppercase tracking-wide border-b border-border pb-3">Procurement Summary</h3>
+      
+      <div class="space-y-3 text-xs">
+        <div class="flex justify-between text-textSub">
+          <span>Items Subtotal:</span>
+          <span class="font-semibold text-textMain" id="summary-subtotal">$3,950.00</span>
+        </div>
+        <div class="flex justify-between text-textSub">
+          <span>Maritime Transit Insurance:</span>
+          <span class="font-semibold text-textMain">$85.00</span>
+        </div>
+        <div class="flex justify-between text-textSub">
+          <span>Ocean Freight / Logistics Fee:</span>
+          <span class="font-semibold text-textMain" id="summary-freight">$120.00</span>
+        </div>
+        
+        <div class="bg-blue-50/50 rounded-lg p-3 border border-blue-100 text-[11px] text-textSub leading-relaxed">
+          <i class="fas fa-info-circle text-primary mr-1"></i> Bulk pricing discounts and tailored freight updates apply dynamically at checkout setup.
+        </div>
+
+        <div class="border-t border-border pt-4 flex justify-between text-base font-extrabold text-primary">
+          <span>Total Estimate:</span>
+          <span id="summary-total">$4,155.00</span>
+        </div>
+      </div>
+
+      <a href="checkout.html" class="w-full block bg-accent hover:bg-yellow-500 text-white font-bold text-center py-3.5 rounded-lg transition-colors shadow-sm text-sm uppercase tracking-wider">
+        Proceed to Secure Checkout <i class="fas fa-arrow-right ml-1"></i>
+      </a>
+
+      <div class="flex items-center justify-center gap-4 text-[10px] text-textSub pt-1 border-t border-border/60">
+        <span class="flex items-center gap-1"><i class="fas fa-shield-alt text-green-600"></i> SSL Protected</span>
+        <span class="flex items-center gap-1"><i class="fas fa-check-double text-blue-700"></i> PCI Compliant</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="bg-white border-t border-border">
+    <div class="max-w-[1320px] mx-auto px-4 py-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-xs text-textSub font-medium">
+        <div class="flex items-center justify-center gap-2 border-r border-border last:border-0"><i class="fas fa-truck text-primary text-base"></i> Real-time Cargo Tracking</div>
+        <div class="flex items-center justify-center gap-2 border-r border-border last:border-0"><i class="fas fa-undo text-primary text-base"></i> 14-Day Corporate Return</div>
+        <div class="flex items-center justify-center gap-2 border-r border-border last:border-0"><i class="fas fa-shield-alt text-primary text-base"></i> Comprehensive Warranty</div>
+        <div class="flex items-center justify-center gap-2 border-r border-border last:border-0"><i class="fas fa-user-shield text-primary text-base"></i> 100% Secure Procurement</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-main" class="text-white">
+    <div class="max-w-[1320px] mx-auto px-4 py-10">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-white/20 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-accent text-lg"></i></div>
+            <div>
+              <div class="font-black text-lg">PowerNest</div>
+              <div class="text-[9px] opacity-60 uppercase tracking-widest">Electronics &amp; Solar</div>
+            </div>
+          </div>
+          <p class="text-sm opacity-75 leading-relaxed mb-4">Malaysia's trusted wholesale partner for premium electronics, air conditioners, and solar solutions — serving international buyers since 2010.</p>
+          <div class="flex gap-3">
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-facebook-f text-sm"></i></a>
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-instagram text-sm"></i></a>
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-linkedin-in text-sm"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-4 text-accent">Products</h4>
+          <ul class="space-y-2 text-sm opacity-80">
+            <li><a href="#" class="hover:text-accent transition-colors">Air Conditioners</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Solar Panels</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Televisions</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Refrigerators</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-4 text-accent">Company</h4>
+          <ul class="space-y-2 text-sm opacity-80">
+            <li><a href="/about.html" class="hover:text-accent transition-colors">About Us</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Careers</a></li>
+            <li><a href="/bulk-order.html" class="hover:text-accent transition-colors">Bulk Orders</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-4 text-accent">Support</h4>
+          <ul class="space-y-2 text-sm opacity-80">
+            <li><a href="/contact.html" class="hover:text-accent transition-colors">Contact Us</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">Warranty Info</a></li>
+            <li><a href="#" class="hover:text-accent transition-colors">FAQs</a></li>
+          </ul>
+          <div class="mt-5 text-sm">
+            <div class="opacity-70 text-xs mb-1">Customer Support (24/7)</div>
+            <div class="font-bold text-accent text-base">+60 3-1234 5678</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-bottom" class="text-white text-xs">
+    <div class="max-w-[1320px] mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-2 text-center md:text-left">
+      <span class="opacity-70">© 2026 PowerNest Sdn. Bhd. All rights reserved. Kuala Lumpur, Malaysia.</span>
+      <div class="flex items-center gap-4 opacity-70">
+        <a href="#" class="hover:text-accent transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-accent transition-colors">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Dynamic Real-time Calculations UI Engine
+  function calculateTotal() {
+    let subtotal = 0;
+    let itemCount = 0;
+    const rows = document.querySelectorAll('.cart-row');
+    
+    rows.forEach(row => {
+      const price = parseFloat(row.getAttribute('data-price'));
+      const input = row.querySelector('input');
+      const qty = parseInt(input.value) || 0;
+      
+      const rowSubtotal = price * qty;
+      row.querySelector('.row-total').innerText = '$' + rowSubtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      
+      subtotal += rowSubtotal;
+      itemCount += qty;
+    });
+
+    // Custom bulk shipping scaling adjustments
+    let freight = subtotal > 5000 || subtotal === 0 ? 0.00 : 120.00;
+    let insurance = subtotal === 0 ? 0.00 : 85.00;
+    let grandTotal = subtotal + freight + insurance;
+
+    document.getElementById('summary-subtotal').innerText = '$' + subtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.getElementById('summary-freight').innerText = freight === 0 ? 'FREE' : '$' + freight.toFixed(2);
+    document.getElementById('summary-total').innerText = '$' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.getElementById('nav-cart-count').innerText = itemCount;
+  }
+
+  function changeQty(btn, delta) {
+    const input = btn.parentElement.querySelector('input');
+    let currentVal = parseInt(input.value) || 0;
+    currentVal += delta;
+    if (currentVal < 1) currentVal = 1; // Minimum constraint rule bounds
+    input.value = currentVal;
+    calculateTotal();
+  }
+
+  function removeRow(btn) {
+    const row = btn.closest('.cart-row');
+    row.remove();
+    calculateTotal();
+  }
+
+  // Mobile Topbar/Search Toggle Mechanics matching layout definitions
+  document.getElementById('mobile-search-btn')?.addEventListener('click', () => {
+    document.getElementById('mobile-search-bar').classList.toggle('hidden');
+  });
+
+  document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu-overlay').classList.add('open');
+    document.getElementById('mobile-menu-panel').classList.add('open');
+  });
+
+  const hideMobileNav = () => {
+    document.getElementById('mobile-menu-overlay').classList.remove('open');
+    document.getElementById('mobile-menu-panel').classList.remove('open');
+  };
+
+  document.getElementById('mobile-menu-close')?.addEventListener('click', hideMobileNav);
+  document.getElementById('mobile-menu-overlay')?.addEventListener('click', hideMobileNav);
+</script>
+</body>
+</html>

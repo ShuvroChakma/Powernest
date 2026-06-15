@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us – PowerNest Electronics &amp; Solar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary:   '#003087',
+            accent:    '#F5A623',
+            accentRed: '#E63329',
+            lightBg:   '#F4F6FA',
+            textMain:  '#1A1A2E',
+            textSub:   '#555770',
+            border:    '#E2E6EF',
+          },
+          fontFamily: { sans: ['Inter','sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #F4F6FA; color: #1A1A2E; margin: 0; overflow-x: hidden; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-thumb { background: #003087; border-radius: 3px; }
+
+    /* ── Nav ── */
+    #main-nav { position: sticky; top: 0; z-index: 200; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; left:0; bottom:-2px; width:0; height:2px; background:#F5A623; transition:width .2s; }
+    .nav-link:hover::after, .nav-link.active::after { width:100%; }
+    .dd-parent { position: relative; }
+    .dd-menu { display:none; position:absolute; top:calc(100% + 6px); left:0; background:#fff; border:1px solid #E2E6EF; border-radius:10px; min-width:200px; box-shadow:0 8px 32px rgba(0,0,0,.12); z-index:300; padding:6px; }
+    .dd-parent:hover .dd-menu { display:block; }
+    .dd-menu a { display:block; padding:8px 12px; font-size:13px; color:#555770; border-radius:6px; text-decoration:none; }
+    .dd-menu a:hover { background:#F4F6FA; color:#003087; }
+
+    /* ── Mobile drawer ── */
+    #mobile-drawer { transform: translateX(-100%); transition: transform .3s ease; }
+    #mobile-drawer.open { transform: translateX(0); }
+    #drawer-overlay { display: none; }
+    #drawer-overlay.open { display: block; }
+
+    /* ── Form inputs ── */
+    .form-input {
+      width: 100%;
+      border: 1.5px solid #E2E6EF;
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      color: #1A1A2E;
+      background: #fff;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-input:focus {
+      border-color: #003087;
+      box-shadow: 0 0 0 3px rgba(0,48,135,.08);
+    }
+    .form-input::placeholder { color: #aab0c0; }
+    .form-label { font-size: 13px; font-weight: 600; color: #1A1A2E; margin-bottom: 6px; display: block; }
+    .form-label span { color: #E63329; }
+
+    /* ── Contact info cards ── */
+    .info-card { background: #fff; border: 1.5px solid #E2E6EF; border-radius: 12px; padding: 20px 16px; text-align: center; transition: box-shadow .2s, border-color .2s; cursor: default; }
+    .info-card:hover { box-shadow: 0 6px 20px rgba(0,48,135,.1); border-color: #003087; }
+
+    /* ── Reply badge ── */
+    .reply-badge { background: #EEF4FF; border: 1.5px solid #C3D4F5; color: #003087; border-radius: 999px; font-size: 12px; font-weight: 600; padding: 5px 14px; display: inline-flex; align-items: center; gap: 6px; }
+
+    /* ── Send button ── */
+    .send-btn { background: #003087; color: #fff; font-weight: 700; font-size: 15px; border-radius: 8px; width: 100%; padding: 13px; border: none; cursor: pointer; letter-spacing: .01em; transition: background .18s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .send-btn:hover { background: #0050c8; }
+
+    /* ── Map container ── */
+    .map-frame { width: 100%; height: 220px; border: none; border-radius: 0 0 10px 10px; display: block; }
+
+    /* ── Stats row ── */
+    #stats-row { background: #fff; border-top: 1px solid #E2E6EF; }
+
+    /* ── Trust strip ── */
+    #trust-strip { background: #F4F6FA; border-top: 1px solid #E2E6EF; border-bottom: 1px solid #E2E6EF; }
+
+    /* ── Footer ── */
+    #footer-main { background: #003087; }
+    #footer-bot  { background: #00236b; }
+
+    /* ── Mobile ── */
+    #secondary-nav  { display: flex; }
+    #mobile-bottom-bar { display: none; }
+    @media(max-width:767px) {
+      #secondary-nav { display: none; }
+      #mobile-bottom-bar { display: flex; }
+    }
+    @media(max-width:640px) {
+      #announcement-bar .hide-mob { display: none; }
+    }
+    @media(max-width:480px) {
+      .info-cards-grid { grid-template-columns: 1fr !important; }
+    }
+
+    /* character counter */
+    #char-count { font-size: 11px; color: #aab0c0; text-align: right; margin-top: 4px; }
+
+    /* success toast */
+    #toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: #003087; color: #fff; font-size: 13px; font-weight: 600; padding: 12px 24px; border-radius: 999px; opacity: 0; pointer-events: none; transition: all .35s; z-index: 9999; white-space: nowrap; }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     ANNOUNCEMENT BAR
+══════════════════════════════════════════ -->
+<div id="announcement-bar" class="bg-primary text-white text-xs py-1.5 px-4 flex items-center justify-between gap-2">
+  <div class="flex items-center gap-3">
+    <span><i class="fas fa-shipping-fast mr-1"></i>Free shipping on bulk orders $5,000+</span>
+    <span class="hide-mob">|</span>
+    <span class="hide-mob"><i class="fas fa-headset mr-1"></i>24/7 International Support</span>
+  </div>
+  <div class="hide-mob flex items-center gap-3">
+    <a href="../homepage.html" class="hover:text-accent">Track Order</a>
+    <a href="#"                class="hover:text-accent">Become a Dealer</a>
+    <span class="bg-accent rounded px-2 py-0.5 font-bold">USD</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN NAV
+══════════════════════════════════════════ -->
+<nav id="main-nav">
+  <div class="max-w-[1320px] mx-auto px-3 sm:px-4">
+    <!-- Top row -->
+    <div class="flex items-center gap-2 sm:gap-4 py-2.5">
+
+      <button onclick="openDrawer()" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-primary hover:bg-lightBg shrink-0">
+        <i class="fas fa-bars text-lg"></i>
+      </button>
+
+      <a href="../homepage.html" class="flex items-center gap-2 shrink-0">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 bg-primary rounded-lg flex items-center justify-center">
+          <i class="fas fa-bolt text-accent text-sm sm:text-base"></i>
+        </div>
+        <div class="leading-tight">
+          <div class="font-black text-primary text-base sm:text-lg tracking-tight">PowerNest</div>
+          <div class="text-[8px] text-textSub font-medium uppercase tracking-widest hidden sm:block">Electronics &amp; Solar</div>
+        </div>
+      </a>
+
+      <div class="flex-1 min-w-0">
+        <div class="flex border-2 border-primary rounded-lg overflow-hidden">
+          <select class="bg-lightBg text-xs text-textSub font-medium px-2 sm:px-3 py-2 border-r border-border outline-none shrink-0 hidden sm:block">
+            <option>All Categories</option>
+            <option>Air Conditioners</option>
+            <option>Solar Panels</option>
+            <option>Televisions</option>
+          </select>
+          <input type="text" placeholder="Search products, brands…" class="flex-1 px-3 py-2 text-sm outline-none min-w-0" />
+          <button class="bg-primary text-white px-3 sm:px-5 py-2 hover:bg-blue-800 transition-colors shrink-0">
+            <i class="fas fa-search text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+        <a href="account.html" class="hidden sm:flex flex-col items-center text-textSub hover:text-primary text-xs font-medium px-1 transition-colors">
+          <i class="far fa-user text-lg mb-0.5"></i><span>Account</span>
+        </a>
+        <a href="wishlist.html" class="hidden sm:flex flex-col items-center text-textSub hover:text-primary text-xs font-medium px-1 transition-colors relative">
+          <i class="far fa-heart text-lg mb-0.5"></i><span>Wishlist</span>
+          <span class="absolute -top-0.5 right-0 bg-accentRed text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">3</span>
+        </a>
+        <a href="cart.html" class="flex items-center gap-1.5 bg-primary text-white rounded-lg px-3 py-2 text-sm font-semibold">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="hidden sm:inline">Cart</span>
+          <span class="bg-accent text-white text-[9px] rounded-full w-5 h-5 flex items-center justify-center font-bold">2</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Secondary nav (desktop) -->
+    <div id="secondary-nav" class="items-center gap-5 pb-2 border-t border-border pt-2 overflow-x-auto">
+      <a href="../homepage.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Home</a>
+      <div class="dd-parent">
+        <a href="products.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap flex items-center gap-1">
+          Products 
+        </a>
+        <div class="dd-menu">
+          <a href="#">Air Conditioners</a>
+          <a href="#">Solar Panels</a>
+          <a href="#">Televisions</a>
+          <a href="#">Refrigerators</a>
+          <a href="#">Washing Machines</a>
+        </div>
+      </div>
+      <a href="brands.html"     class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Brands</a>
+      <a href="bulk-order.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Bulk Orders</a>
+      <a href="solar.html"      class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Solar Solutions</a>
+      <a href="deals.html"      class="nav-link text-sm text-accentRed font-semibold whitespace-nowrap"><i class="fas fa-fire mr-1"></i>Deals</a>
+      <a href="about.html"      class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">About Us</a>
+      <a href="contact.html"    class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     MOBILE DRAWER OVERLAY
+══════════════════════════════════════════ -->
+<div id="drawer-overlay" class="fixed inset-0 bg-black/50 z-[300]" onclick="closeDrawer()"></div>
+<div id="mobile-drawer" class="fixed top-0 left-0 h-full w-[280px] bg-white z-[400] overflow-y-auto shadow-2xl">
+  <div class="bg-primary text-white px-4 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-accent"></i></div>
+      <div><div class="font-black text-base">PowerNest</div><div class="text-[8px] opacity-70 uppercase tracking-widest">Electronics &amp; Solar</div></div>
+    </div>
+    <button onclick="closeDrawer()" class="w-8 h-8 flex items-center justify-center bg-white/10 rounded-lg"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="py-3">
+    <a href="../homepage.html" class="flex items-center gap-3 px-4 py-2.5 text-sm text-textMain hover:bg-lightBg"><i class="fas fa-home w-4 text-center text-primary/60"></i>Home</a>
+    <a href="products.html"    class="flex items-center gap-3 px-4 py-2.5 text-sm text-textMain hover:bg-lightBg"><i class="fas fa-th-large w-4 text-center text-primary/60"></i>Products</a>
+    <a href="brands.html"      class="flex items-center gap-3 px-4 py-2.5 text-sm text-textMain hover:bg-lightBg"><i class="fas fa-award w-4 text-center text-primary/60"></i>Brands</a>
+    <a href="deals.html"       class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-accentRed hover:bg-red-50"><i class="fas fa-fire w-4 text-center"></i>Flash Deals</a>
+    <a href="about.html"       class="flex items-center gap-3 px-4 py-2.5 text-sm text-textMain hover:bg-lightBg"><i class="fas fa-info-circle w-4 text-center text-primary/60"></i>About Us</a>
+    <a href="contact.html"     class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-primary bg-blue-50"><i class="fas fa-envelope w-4 text-center"></i>Contact</a>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN CONTENT — narrow centered column
+══════════════════════════════════════════ -->
+<main class="max-w-[660px] mx-auto px-4 sm:px-6 py-10 sm:py-14">
+
+  <!-- Reply badge -->
+  <div class="flex justify-center mb-5">
+    <span class="reply-badge">
+      <i class="far fa-comment-dots"></i>
+      We typically reply within 1–2 business days
+    </span>
+  </div>
+
+  <!-- Page title -->
+  <h1 class="text-3xl sm:text-4xl font-black text-textMain text-center mb-3">Contact Us!</h1>
+  <p class="text-textSub text-sm text-center leading-relaxed max-w-lg mx-auto mb-10">
+    PowerNest has been Malaysia's trusted destination for premium electronics since 2010. Whether you need help choosing the right product, want a custom quotation for bulk or corporate orders, need after-sales support, or have feedback to share — we're here for you. Fill out the form below and our team will respond within one working day.
+  </p>
+
+  <!-- ── Contact Info Cards ── -->
+  <div class="info-cards-grid grid grid-cols-3 gap-3 mb-8 sm:gap-4">
+
+    <div class="info-card">
+      <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+        <i class="fas fa-phone-alt text-primary text-lg"></i>
+      </div>
+      <div class="text-[11px] text-textSub font-medium mb-1">Call sales &amp; support</div>
+      <div class="font-black text-primary text-sm">+60 3-1234 5678</div>
+    </div>
+
+    <div class="info-card">
+      <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+        <i class="fas fa-envelope text-primary text-lg"></i>
+      </div>
+      <div class="text-[11px] text-textSub font-medium mb-1">Email us</div>
+      <div class="font-black text-primary text-sm break-all">support@powernest.com.my</div>
+    </div>
+
+    <div class="info-card">
+      <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+        <i class="fas fa-clock text-primary text-lg"></i>
+      </div>
+      <div class="text-[11px] text-textSub font-medium mb-1">Store hours</div>
+      <div class="font-black text-primary text-sm">10 AM — 7 PM, daily</div>
+    </div>
+
+  </div>
+
+  <!-- ── Contact Form ── -->
+  <div class="bg-white rounded-2xl border border-border shadow-sm p-6 sm:p-7 mb-6">
+    <h2 class="font-bold text-textMain text-base mb-1">Send us a message</h2>
+    <p class="text-textSub text-xs mb-6">Tell us what you need — our team will follow up by email or phone.</p>
+
+    <div id="contact-form" class="space-y-5">
+
+      <!-- Name -->
+      <div>
+        <label class="form-label">Name <span>*</span></label>
+        <input id="f-name" type="text" class="form-input" placeholder="Your full name" autocomplete="name" />
+        <div id="err-name" class="text-accentRed text-xs mt-1 hidden">Please enter your name.</div>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="form-label">Email <span>*</span></label>
+        <input id="f-email" type="email" class="form-input" placeholder="you@example.com" autocomplete="email" />
+        <div id="err-email" class="text-accentRed text-xs mt-1 hidden">Please enter a valid email address.</div>
+      </div>
+
+      <!-- Phone -->
+      <div>
+        <label class="form-label">Phone <span>*</span></label>
+        <input id="f-phone" type="tel" class="form-input" placeholder="+60 XXXXXXXXX" autocomplete="tel" />
+        <div id="err-phone" class="text-accentRed text-xs mt-1 hidden">Please enter your phone number.</div>
+      </div>
+
+      <!-- Query Type -->
+      <div>
+        <label class="form-label">Query Type <span>*</span></label>
+        <select id="f-query" class="form-input" style="appearance:none; background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 20 20%22><path fill=%22%23555770%22 d=%22M7 7l3 3 3-3%22/></svg>'); background-repeat:no-repeat; background-position:right 12px center; background-size:16px; cursor:pointer;">
+          <option value="" disabled selected>Select a query type…</option>
+          <option>Bulk / Corporate Order</option>
+          <option>Product Enquiry</option>
+          <option>Solar Solutions</option>
+          <option>After-Sales Support</option>
+          <option>Warranty Claim</option>
+          <option>Delivery / Logistics</option>
+          <option>Dealer / Partnership</option>
+          <option>General Feedback</option>
+          <option>Other</option>
+        </select>
+        <div id="err-query" class="text-accentRed text-xs mt-1 hidden">Please select a query type.</div>
+      </div>
+
+      <!-- Company (optional) -->
+      <div>
+        <label class="form-label">Company <span class="text-textSub font-normal">(optional)</span></label>
+        <input id="f-company" type="text" class="form-input" placeholder="Your company name" />
+      </div>
+
+      <!-- Message -->
+      <div>
+        <label class="form-label">Message <span>*</span></label>
+        <textarea id="f-message" class="form-input resize-none" rows="5" placeholder="How can we help you?" maxlength="2000" oninput="updateCount(this)"></textarea>
+        <div id="char-count">0/2000</div>
+        <div id="err-message" class="text-accentRed text-xs mt-0.5 hidden">Please write your message.</div>
+      </div>
+
+      <!-- Submit -->
+      <button type="button" onclick="submitForm()" class="send-btn">
+        Send Message <i class="fas fa-paper-plane text-sm"></i>
+      </button>
+
+    </div>
+
+    <!-- Success state (hidden by default) -->
+    <div id="success-state" class="hidden text-center py-8">
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-check-circle text-green-600 text-3xl"></i>
+      </div>
+      <h3 class="font-black text-textMain text-lg mb-2">Message Sent!</h3>
+      <p class="text-textSub text-sm">Thanks for reaching out. Our team will get back to you within 1–2 business days.</p>
+      <button onclick="resetForm()" class="mt-5 text-primary text-sm font-semibold hover:underline">Send another message</button>
+    </div>
+  </div>
+
+  <!-- ── Head Office + Map ── -->
+  <div class="bg-white rounded-2xl border border-border shadow-sm overflow-hidden mb-2">
+
+    <!-- Address header -->
+    <div class="flex items-start gap-3 p-5 border-b border-border">
+      <div class="w-9 h-9 bg-primary/10 rounded-xl flex items-center justify-center shrink-0 mt-0.5">
+        <i class="fas fa-map-marker-alt text-primary"></i>
+      </div>
+      <div>
+        <div class="font-bold text-textMain text-sm mb-0.5">PowerNest Head Office</div>
+        <div class="text-textSub text-xs leading-relaxed">
+          Menara PowerNest, Level 8, Jalan Ampang<br>
+          50450 Kuala Lumpur<br>
+          Malaysia
+        </div>
+        <a
+          href="https://www.google.com/maps/search/Jalan+Ampang+Kuala+Lumpur"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-1.5 text-primary text-xs font-semibold mt-2 hover:underline"
+        >
+          <i class="fas fa-external-link-alt text-[10px]"></i>
+          Open in Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- Embedded map -->
+    <iframe
+      class="map-frame"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3983.7955014491665!2d101.70800987496842!3d3.1596720532637747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc36329f456e29%3A0x9cf9da5bf3e1af75!2sJalan%20Ampang%2C%20Kuala%20Lumpur%2C%20Federal%20Territory%20of%20Kuala%20Lumpur!5e0!3m2!1sen!2smy!4v1700000000000!5m2!1sen!2smy"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="PowerNest Office Location"
+    ></iframe>
+  </div>
+
+  <!-- Multiple showrooms note -->
+  <p class="text-center text-xs text-textSub mt-3 mb-2">
+    <i class="fas fa-store mr-1 text-primary/60"></i>
+    We have <strong class="text-textMain">16 showrooms</strong> across Malaysia — Kuala Lumpur, Penang, Johor Bahru, Kuching &amp; more.
+    <a href="about.html" class="text-primary font-semibold hover:underline ml-1">View all locations →</a>
+  </p>
+
+</main>
+
+<!-- ══════════════════════════════════════════
+     STATS ROW
+══════════════════════════════════════════ -->
+<div id="stats-row">
+  <div class="max-w-[1100px] mx-auto px-4 py-8">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+
+      <div class="flex items-center gap-4">
+        <div class="w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+          <i class="fas fa-history text-primary text-lg"></i>
+        </div>
+        <div>
+          <div class="font-black text-textMain text-lg leading-tight">40+ <span class="text-sm font-bold">Years</span></div>
+          <div class="text-xs text-textSub">Serving Malaysia since 1983</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+          <i class="fas fa-store text-primary text-lg"></i>
+        </div>
+        <div>
+          <div class="font-black text-textMain text-lg leading-tight">16 <span class="text-sm font-bold">Superstores</span></div>
+          <div class="text-xs text-textSub">Showrooms nationwide</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+          <i class="fas fa-certificate text-primary text-lg"></i>
+        </div>
+        <div>
+          <div class="font-black text-textMain text-lg leading-tight">ISO <span class="text-sm font-bold">9001</span></div>
+          <div class="text-xs text-textSub">Quality management certified</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+          <i class="fas fa-tools text-primary text-lg"></i>
+        </div>
+        <div>
+          <div class="font-black text-textMain text-lg leading-tight">24+ <span class="text-sm font-bold">Centers</span></div>
+          <div class="text-xs text-textSub">Authorised service locations</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TRUST STRIP
+══════════════════════════════════════════ -->
+<div id="trust-strip">
+  <div class="max-w-[1100px] mx-auto px-4 py-3">
+    <div class="flex flex-wrap items-center justify-center sm:justify-between gap-4 sm:gap-0 text-xs text-textSub font-medium">
+      <span class="flex items-center gap-2"><i class="fas fa-check-circle text-green-500"></i>100% Genuine Products</span>
+      <span class="hidden sm:block text-border">|</span>
+      <span class="flex items-center gap-2"><i class="fas fa-headset text-primary"></i>10am–7pm Support, 7 Days</span>
+      <span class="hidden sm:block text-border">|</span>
+      <span class="flex items-center gap-2"><i class="fas fa-truck text-primary"></i>2–48hr Delivery in Major Cities</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer>
+  <div id="footer-main" class="text-white">
+    <div class="max-w-[1320px] mx-auto px-4 sm:px-6 py-10">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+
+        <!-- Brand -->
+        <div class="col-span-2 md:col-span-1">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-white/20 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-accent text-base"></i></div>
+            <div><div class="font-black text-lg">PowerNest</div><div class="text-[8px] opacity-60 uppercase tracking-widest">Electronics &amp; Solar</div></div>
+          </div>
+          <p class="text-xs sm:text-sm opacity-75 leading-relaxed mb-4">Malaysia's trusted wholesale partner for premium electronics, ACs, and solar — serving international buyers since 2010.</p>
+          <div class="flex gap-2.5">
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-facebook-f text-xs"></i></a>
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-instagram text-xs"></i></a>
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-linkedin-in text-xs"></i></a>
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-youtube text-xs"></i></a>
+          </div>
+        </div>
+
+        <!-- Shop -->
+        <div>
+          <h4 class="font-bold text-sm mb-3 text-accent">Shop</h4>
+          <ul class="space-y-1.5 text-xs opacity-80">
+            <li><a href="products.html" class="hover:text-accent">All Categories</a></li>
+            <li><a href="brands.html"   class="hover:text-accent">All Brands</a></li>
+            <li><a href="products.html" class="hover:text-accent">New Arrivals</a></li>
+            <li><a href="products.html" class="hover:text-accent">Best Sellers</a></li>
+            <li><a href="deals.html"    class="hover:text-accent">Deals &amp; Offers</a></li>
+          </ul>
+        </div>
+
+        <!-- Service -->
+        <div>
+          <h4 class="font-bold text-sm mb-3 text-accent">Service</h4>
+          <ul class="space-y-1.5 text-xs opacity-80">
+            <li><a href="#" class="hover:text-accent">Warranty Policy</a></li>
+            <li><a href="#" class="hover:text-accent">Service Centres</a></li>
+            <li><a href="#" class="hover:text-accent">Support</a></li>
+            <li><a href="#" class="hover:text-accent">Store Locator</a></li>
+            <li><a href="#" class="hover:text-accent">Track Order</a></li>
+          </ul>
+        </div>
+
+        <!-- Company -->
+        <div>
+          <h4 class="font-bold text-sm mb-3 text-accent">Company</h4>
+          <ul class="space-y-1.5 text-xs opacity-80">
+            <li><a href="about.html"      class="hover:text-accent">About PowerNest</a></li>
+            <li><a href="about.html"      class="hover:text-accent">Our Showrooms</a></li>
+            <li><a href="contact.html"    class="hover:text-accent">Contact Us</a></li>
+            <li><a href="#"               class="hover:text-accent">Terms &amp; Conditions</a></li>
+            <li><a href="#"               class="hover:text-accent">Privacy Policy</a></li>
+          </ul>
+          <div class="mt-4">
+            <div class="opacity-60 text-[10px] mb-0.5">Sales &amp; Support</div>
+            <div class="font-bold text-accent text-sm">+60 3-1234 5678</div>
+            <div class="opacity-60 text-[10px] mt-0.5">support@powernest.com.my</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer bottom -->
+  <div id="footer-bot" class="text-white text-[11px]">
+    <div class="max-w-[1320px] mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <span class="opacity-70 text-center">© 2024 PowerNest Sdn. Bhd. All rights reserved.</span>
+      <div class="flex items-center gap-4 opacity-70">
+        <a href="#" class="hover:text-accent">Privacy</a>
+        <a href="#" class="hover:text-accent">Terms</a>
+        <a href="#" class="hover:text-accent">Warranty</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Mobile bottom nav -->
+<div id="mobile-bottom-bar" class="fixed bottom-0 left-0 right-0 bg-white border-t border-border z-[150] items-center justify-around py-2 px-2">
+  <a href="../homepage.html" class="flex flex-col items-center gap-0.5 text-textSub hover:text-primary"><i class="fas fa-home text-lg"></i><span class="text-[10px]">Home</span></a>
+  <a href="products.html"    class="flex flex-col items-center gap-0.5 text-textSub hover:text-primary"><i class="fas fa-th-large text-lg"></i><span class="text-[10px]">Products</span></a>
+  <a href="deals.html"       class="flex flex-col items-center gap-0.5 text-accentRed"><i class="fas fa-fire text-lg"></i><span class="text-[10px] font-semibold">Deals</span></a>
+  <a href="wishlist.html"    class="flex flex-col items-center gap-0.5 text-textSub hover:text-primary relative"><i class="far fa-heart text-lg"></i><span class="text-[10px]">Wishlist</span><span class="absolute top-0 right-1 bg-accentRed text-white text-[8px] rounded-full w-3.5 h-3.5 flex items-center justify-center font-bold">3</span></a>
+  <a href="account.html"     class="flex flex-col items-center gap-0.5 text-textSub hover:text-primary"><i class="far fa-user text-lg"></i><span class="text-[10px]">Account</span></a>
+</div>
+<div class="h-16 md:h-0"></div>
+
+<!-- Scroll to top -->
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+  class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 w-10 h-10 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-800 transition-all z-[140]"
+  style="opacity:0; transition:opacity .3s;">
+  <i class="fas fa-arrow-up text-sm"></i>
+</button>
+
+<!-- Toast -->
+<div id="toast"><i class="fas fa-check-circle mr-2"></i>Message sent successfully!</div>
+
+<!-- ══════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════ -->
+<script>
+  /* ── Drawer ── */
+  function openDrawer() {
+    document.getElementById('mobile-drawer').classList.add('open');
+    document.getElementById('drawer-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    document.getElementById('mobile-drawer').classList.remove('open');
+    document.getElementById('drawer-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ── Scroll to top ── */
+  window.addEventListener('scroll', function () {
+    document.getElementById('scroll-top').style.opacity = window.scrollY > 300 ? '1' : '0';
+  });
+
+  /* ── Character counter ── */
+  function updateCount(el) {
+    document.getElementById('char-count').textContent = el.value.length + '/2000';
+  }
+
+  /* ── Form validation & submit ── */
+  function showErr(id, msg) {
+    var el = document.getElementById('err-' + id);
+    if (el) { el.textContent = msg; el.classList.remove('hidden'); }
+    var input = document.getElementById('f-' + id);
+    if (input) input.style.borderColor = '#E63329';
+  }
+  function clearErr(id) {
+    var el = document.getElementById('err-' + id);
+    if (el) el.classList.add('hidden');
+    var input = document.getElementById('f-' + id);
+    if (input) input.style.borderColor = '#E2E6EF';
+  }
+
+  function submitForm() {
+    var name    = document.getElementById('f-name').value.trim();
+    var email   = document.getElementById('f-email').value.trim();
+    var phone   = document.getElementById('f-phone').value.trim();
+    var query   = document.getElementById('f-query').value;
+    var message = document.getElementById('f-message').value.trim();
+
+    var valid = true;
+
+    // reset
+    ['name','email','phone','query','message'].forEach(function(k){ clearErr(k); });
+
+    if (!name)    { showErr('name', 'Please enter your name.'); valid = false; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('email', 'Please enter a valid email address.'); valid = false; }
+    if (!phone)   { showErr('phone', 'Please enter your phone number.'); valid = false; }
+    if (!query)   { showErr('query', 'Please select a query type.'); valid = false; }
+    if (!message) { showErr('message', 'Please write your message.'); valid = false; }
+
+    if (!valid) return;
+
+    // Simulate send
+    var btn = document.querySelector('.send-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending…';
+
+    setTimeout(function () {
+      // Show success state
+      document.getElementById('contact-form').classList.add('hidden');
+      document.getElementById('success-state').classList.remove('hidden');
+      // Show toast
+      var toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(function () { toast.classList.remove('show'); }, 3500);
+    }, 1400);
+  }
+
+  function resetForm() {
+    document.getElementById('contact-form').classList.remove('hidden');
+    document.getElementById('success-state').classList.add('hidden');
+    ['f-name','f-email','f-phone','f-message'].forEach(function(id){
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('f-query').selectedIndex = 0;
+    document.getElementById('f-company').value = '';
+    document.getElementById('char-count').textContent = '0/2000';
+    var btn = document.querySelector('.send-btn');
+    btn.disabled = false;
+    btn.innerHTML = 'Send Message <i class="fas fa-paper-plane text-sm"></i>';
+  }
+
+  /* ── Input focus highlight ── */
+  document.querySelectorAll('.form-input').forEach(function(el) {
+    el.addEventListener('focus', function() { this.style.borderColor = '#003087'; });
+    el.addEventListener('blur',  function() {
+      if (!this.value) this.style.borderColor = '#E2E6EF';
+    });
+  });
+</script>
+</body>
+</html>

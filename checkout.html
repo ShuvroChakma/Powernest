@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Checkout – PowerNest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary:   '#003087',
+            accent:    '#F5A623',
+            accentRed: '#E63329',
+            lightBg:   '#F4F6FA',
+            cardBg:    '#FFFFFF',
+            textMain:  '#1A1A2E',
+            textSub:   '#555770',
+            border:    '#E2E6EF',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #F4F6FA; color: #1A1A2E; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: #003087; border-radius: 3px; }
+    #announcement-bar { background: #003087; }
+    #main-nav { background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.08); position: sticky; top: 0; z-index: 100; }
+    .form-input {
+      width: 100%; padding: 10px 14px; font-size: 0.875rem; border: 1px solid #E2E6EF;
+      border-radius: 6px; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input:focus { border-color: #003087; box-shadow: 0 0 0 3px rgba(0, 48, 135, 0.1); }
+    #mobile-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 199; opacity: 0; visibility: hidden; transition: opacity .25s ease; }
+    #mobile-menu-overlay.open { opacity: 1; visibility: visible; }
+    #mobile-menu-panel { position: fixed; top: 0; left: 0; height: 100%; width: 85%; max-width: 340px; background: #fff; z-index: 200; overflow-y: auto; transform: translateX(-100%); transition: transform .28s ease; box-shadow: 4px 0 24px rgba(0,0,0,.15); }
+    #mobile-menu-panel.open { transform: translateX(0); }
+    .hamburger-btn { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+    .hamburger-btn:hover { background: #F4F6FA; }
+    #footer-main { background: #003087; }
+    #footer-bottom { background: #00236b; }
+  </style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div id="announcement-bar" class="text-white text-center text-xs py-2 px-4 flex items-center justify-center md:justify-between flex-wrap gap-2">
+  <div class="flex items-center gap-2 md:gap-4 flex-wrap justify-center">
+    <span><i class="fas fa-shipping-fast mr-1"></i> Free shipping on bulk orders over $5,000</span>
+    <span class="hidden md:inline">|</span>
+    <span class="hidden md:inline"><i class="fas fa-headset mr-1"></i> 24/7 International Support</span>
+  </div>
+  <div class="hidden sm:flex items-center gap-4">
+    <a href="#" class="hover:text-accent transition-colors">Track Order</a>
+    <span class="bg-accent text-white rounded px-2 py-0.5 text-xs font-bold">USD</span>
+  </div>
+</div>
+
+<!-- MAIN NAVIGATION -->
+<nav id="main-nav" class="bg-white">
+  <div class="max-w-[1320px] mx-auto px-4">
+    <div class="flex items-center gap-2 sm:gap-4 py-3">
+      <button id="mobile-menu-btn" class="hamburger-btn lg:hidden text-primary shrink-0" aria-label="Open menu"><i class="fas fa-bars text-lg"></i></button>
+      
+      <a href="/homepage.html" class="flex items-center gap-2 shrink-0">
+        <div class="w-9 h-9 bg-primary rounded-lg flex items-center justify-center shrink-0"><i class="fas fa-bolt text-accent text-lg"></i></div>
+        <div class="leading-tight">
+          <div class="font-black text-primary text-base sm:text-lg tracking-tight">PowerNest</div>
+          <div class="text-[9px] text-textSub font-medium uppercase tracking-widest hidden sm:block">Electronics &amp; Solar</div>
+        </div>
+      </a>
+
+      <!-- Security Title (Replaces search box on checkout for conversion optimization) -->
+      <div class="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-green-700 ml-8 bg-green-50 px-3 py-1.5 rounded-lg border border-green-200">
+        <i class="fas fa-shield-alt"></i> 256-Bit SSL Encrypted Secure Checkout Portal
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3 ml-auto shrink-0">
+        <a href="/cart.html" class="text-textSub hover:text-primary text-xs font-medium flex items-center gap-1">
+          <i class="fas fa-arrow-left"></i> <span>Return to Cart</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- OFF-CANVAS MOBILE MENU -->
+<div id="mobile-menu-overlay"></div>
+<div id="mobile-menu-panel">
+  <div class="flex items-center justify-between px-4 py-4 border-b border-border bg-primary text-white">
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 bg-white/15 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-accent text-lg"></i></div>
+      <div class="font-black text-base tracking-tight leading-tight">PowerNest</div>
+    </div>
+    <button id="mobile-menu-close" class="text-white w-9 h-9 flex items-center justify-center rounded-lg hover:bg-white/10"><i class="fas fa-times text-lg"></i></button>
+  </div>
+  <div class="px-2 py-2">
+    <a href="/homepage.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Home</a>
+    <a href="/products.html" class="block px-4 py-2.5 rounded-lg text-sm font-medium text-textSub hover:bg-lightBg">Products</a>
+  </div>
+</div>
+
+<!-- CHECKOUT CONTENT -->
+<main class="max-w-[1320px] mx-auto px-4 py-8">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    
+    <!-- LEFT: SHIPPING & PAYMENT GATEWAY FORM -->
+    <form id="checkout-form" class="lg:col-span-8 space-y-6" action="/order/process" method="POST">
+      
+      <!-- Section 1: Shipping Address -->
+      <div class="bg-white rounded-xl border border-border shadow-sm p-6 sm:p-8 space-y-6">
+        <div class="flex items-center gap-2.5 pb-3 border-b border-border">
+          <div class="w-6 h-6 bg-primary text-white text-xs font-bold rounded-full flex items-center justify-center">1</div>
+          <h2 class="text-base font-bold text-textMain uppercase tracking-wide">Delivery &amp; Freight Destination</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="sm:col-span-2">
+            <label class="block text-[11px] font-bold text-textSub uppercase mb-1.5">Company / Entity Name</label>
+            <input type="text" placeholder="As registered with corporate portal" required class="form-input" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-textSub uppercase mb-1.5">Contact Person (Consignee Name)</label>
+            <input type="text" placeholder="Full legal name" required class="form-input" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-textSub uppercase mb-1.5">Delivery Phone Number</label>
+            <input type="tel" placeholder="+60 1x-xxxxxxx" required class="form-input" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-[11px] font-bold text-textSub uppercase mb-1.5">Street Address / Warehouse Yard</label>
+            <input type="text" placeholder="Building, Industrial zone, Lot number, Street name" required class="form-input" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-textSub uppercase mb-1.5">City / Port Area</label>
+            <input type="text" placeholder="e.g. Shah Alam or Port Klang" required class="form-input" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-textSub uppercase mb-1.5">State / Postal Code</label>
+            <div class="grid grid-cols-2 gap-2">
+              <select class="form-input bg-white" required>
+                <option value="">State...</option>
+                <option>Selangor</option>
+                <option>Kuala Lumpur</option>
+                <option>Johor</option>
+                <option>Penang</option>
+              </select>
+              <input type="text" placeholder="Postcode" required class="form-input" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Payment Gateway Selection -->
+      <div class="bg-white rounded-xl border border-border shadow-sm p-6 sm:p-8 space-y-6">
+        <div class="flex items-center gap-2.5 pb-3 border-b border-border">
+          <div class="w-6 h-6 bg-primary text-white text-xs font-bold rounded-full flex items-center justify-center">2</div>
+          <h2 class="text-base font-bold text-textMain uppercase tracking-wide">Direct Payment Gateway</h2>
+        </div>
+
+        <!-- Custom Radio Toggles -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Card Payment Block Option -->
+          <label class="border-2 border-primary rounded-xl p-4 flex items-start gap-3 cursor-pointer bg-lightBg/30" id="card-option-label">
+            <input type="radio" name="payment_method" value="card" checked onchange="togglePaymentFields('card')" class="mt-1 text-primary focus:ring-primary" />
+            <div>
+              <span class="block font-bold text-sm text-textMain">Credit / Debit Card</span>
+              <span class="block text-xs text-textSub mt-0.5">Instant verification via secure banking gateway.</span>
+              <div class="flex gap-2 mt-2 text-lg text-textSub opacity-70">
+                <i class="fab fa-cc-visa text-blue-900"></i>
+                <i class="fab fa-cc-mastercard text-red-600"></i>
+                <i class="fab fa-cc-amex text-blue-400"></i>
+              </div>
+            </div>
+          </label>
+
+          <!-- Telegraphic Transfer Block Option -->
+          <label class="border border-border rounded-xl p-4 flex items-start gap-3 cursor-pointer hover:bg-lightBg/30 transition-colors" id="bank-option-label">
+            <input type="radio" name="payment_method" value="bank" onchange="togglePaymentFields('bank')" class="mt-1 text-primary focus:ring-primary" />
+            <div>
+              <span class="block font-bold text-sm text-textMain">Corporate TT / Bank Wire</span>
+              <span class="block text-xs text-textSub mt-0.5">Generate formal proforma invoice with bank credentials.</span>
+              <div class="flex gap-2 mt-2 text-xs font-bold text-primary uppercase tracking-wider">
+                <i class="fas fa-university mt-0.5"></i> B2B Invoicing Term
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <!-- Dynamic Payment Sub-Panels -->
+        <!-- 1. CREDIT CARD INPUT FIELDS -->
+        <div id="payment-card-fields" class="space-y-4 bg-lightBg/40 p-4 rounded-lg border border-border">
+          <div>
+            <label class="block text-[11px] font-bold text-textSub uppercase mb-1.5">Name On Card</label>
+            <input type="text" id="card-name" placeholder="John Doe" class="form-input bg-white" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-textSub uppercase mb-1.5">Card Number</label>
+            <div class="relative">
+              <input type="text" id="card-num" placeholder="0000 0000 0000 0000" maxlength="19" class="form-input bg-white pl-10" />
+              <i class="far fa-credit-card absolute left-3.5 top-3.5 text-textSub opacity-60 text-sm"></i>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] font-bold text-textSub uppercase mb-1.5">Expiration Date</label>
+              <input type="text" id="card-expiry" placeholder="MM / YY" maxlength="5" class="form-input bg-white text-center" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-textSub uppercase mb-1.5">Security Code (CVV)</label>
+              <input type="password" id="card-cvv" placeholder="•••" maxlength="4" class="form-input bg-white text-center" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. BANK WIRE DIRECTIONS (HIDDEN BY DEFAULT) -->
+        <div id="payment-bank-fields" class="hidden space-y-3 bg-blue-50/50 p-4 rounded-lg border border-blue-200 text-sm text-textMain">
+          <p class="font-semibold text-primary"><i class="fas fa-info-circle mr-1"></i> Bank Account Allocation Instructions</p>
+          <p class="text-xs text-textSub leading-relaxed">Upon confirming order submission below, system locking holds your stock reservation allocation for 72 operational business hours. Remit payments directly to our primary escrow clearance account:</p>
+          <div class="bg-white border border-border rounded-lg p-3 text-xs space-y-1 font-mono text-textMain shadow-inner">
+            <div><span class="font-sans font-bold text-textSub inline-block w-24">Beneficiary:</span> PowerNest Commercial Solutions Sdn. Bhd.</div>
+            <div><span class="font-sans font-bold text-textSub inline-block w-24">Bank Name:</span> Malayan Banking Berhad (Maybank)</div>
+            <div><span class="font-sans font-bold text-textSub inline-block w-24">Account Num:</span> 5140-xxxx-xxxx</div>
+            <div><span class="font-sans font-bold text-textSub inline-block w-24">SWIFT Code:</span> MBBEMYKLXXXX</div>
+          </div>
+          <p class="text-[11px] text-textSub">Kindly update transfer slips quoting generated Order IDs via procurement dashboard to execute immediate release verification.</p>
+        </div>
+      </div>
+    </form>
+
+    <!-- RIGHT: STICKY COMMERCIAL ORDER SUMMARY -->
+    <div class="lg:col-span-4 space-y-4 lg:sticky lg:top-24">
+      <div class="bg-white rounded-xl border border-border shadow-sm p-6 space-y-4">
+        <h3 class="text-sm font-bold text-textMain uppercase tracking-wide border-b border-border pb-3">Review Order Manifest</h3>
+        
+        <!-- Quick Mini Product Rollup -->
+        <div class="divide-y divide-border max-h-[190px] overflow-y-auto pr-1">
+          <div class="py-2.5 flex justify-between items-center text-xs gap-3">
+            <span class="font-medium text-textMain truncate">Jinko Solar Tiger Neo N-type 575W <strong class="text-primary font-bold">× 10</strong></span>
+            <span class="font-bold text-textMain shrink-0">$1,850.00</span>
+          </div>
+          <div class="py-2.5 flex justify-between items-center text-xs gap-3">
+            <span class="font-medium text-textMain truncate">Deye 12kW Hybrid Inverter <strong class="text-primary font-bold">× 1</strong></span>
+            <span class="font-bold text-textMain shrink-0">$2,100.00</span>
+          </div>
+        </div>
+
+        <!-- Accounting Calculations breakdown -->
+        <div class="border-t border-border pt-4 space-y-2.5 text-xs">
+          <div class="flex justify-between text-textSub">
+            <span>Subtotal:</span>
+            <span class="font-semibold text-textMain">$3,950.00</span>
+          </div>
+          <div class="flex justify-between text-textSub">
+            <span>Maritime Transit Insurance:</span>
+            <span class="font-semibold text-textMain">$85.00</span>
+          </div>
+          <div class="flex justify-between text-textSub">
+            <span>Ocean Freight / Logistics Fee:</span>
+            <span class="font-semibold text-textMain">$120.00</span>
+          </div>
+          <div class="border-t border-border pt-3 flex justify-between text-base font-extrabold text-primary">
+            <span>Total Payable Amt:</span>
+            <span>$4,155.00</span>
+          </div>
+        </div>
+
+        <!-- Master Trigger Call to Action Button -->
+        <button type="button" onclick="submitCustomCheckout()" class="w-full bg-accent text-white font-bold py-3.5 rounded-lg hover:bg-yellow-500 transition-colors shadow-sm text-sm uppercase tracking-wider">
+          Authorize &amp; Pay Securely
+        </button>
+
+        <div class="flex items-center justify-center gap-4 text-xs text-textSub pt-1 border-t border-border/60">
+          <span class="flex items-center gap-1"><i class="fas fa-lock text-green-600"></i> AES-256</span>
+          <span class="flex items-center gap-1"><i class="fas fa-check-double text-blue-700"></i> PCI-DSS</span>
+          <span class="flex items-center gap-1"><i class="fas fa-truck text-amber-600"></i> Insured</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- GLOBAL FOOTER COMPONENT -->
+<footer>
+  <div id="footer-main" class="text-white mt-12">
+    <div class="max-w-[1320px] mx-auto px-4 py-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-accent text-base"></i></div>
+          <span class="font-black text-base">PowerNest Logistics Terminal</span>
+        </div>
+        <p class="text-xs opacity-70 max-w-md">Authorized corporate wholesale clearing hub. Operations subject to standard trade terms, clearing procedures, and local statutory commercial regulations.</p>
+      </div>
+    </div>
+  </div>
+  <div id="footer-bottom" class="text-white text-[11px] py-3 opacity-60 text-center border-t border-white/5">
+    © 2026 PowerNest Commercial Core Systems. All rights reserved. Registered Trade Entity.
+  </div>
+</footer>
+
+<script>
+  // UI Function to handle switching visual form layouts for Payment Gateways
+  function togglePaymentFields(method) {
+    const cardFields = document.getElementById('payment-card-fields');
+    const bankFields = document.getElementById('payment-bank-fields');
+    const cardLabel = document.getElementById('card-option-label');
+    const bankLabel = document.getElementById('bank-option-label');
+
+    if (method === 'card') {
+      cardFields.classList.remove('hidden');
+      bankFields.classList.add('hidden');
+      cardLabel.className = "border-2 border-primary rounded-xl p-4 flex items-start gap-3 cursor-pointer bg-lightBg/30";
+      bankLabel.className = "border border-border rounded-xl p-4 flex items-start gap-3 cursor-pointer hover:bg-lightBg/30 transition-colors";
+      
+      // Enforce form validation requirements dynamically
+      document.getElementById('card-name').required = true;
+      document.getElementById('card-num').required = true;
+      document.getElementById('card-expiry').required = true;
+      document.getElementById('card-cvv').required = true;
+    } else {
+      cardFields.classList.add('hidden');
+      bankFields.classList.remove('hidden');
+      bankLabel.className = "border-2 border-primary rounded-xl p-4 flex items-start gap-3 cursor-pointer bg-lightBg/30";
+      cardLabel.className = "border border-border rounded-xl p-4 flex items-start gap-3 cursor-pointer hover:bg-lightBg/30 transition-colors";
+      
+      // Wipe structural rules for card elements when banking mode runs
+      document.getElementById('card-name').required = false;
+      document.getElementById('card-num').required = false;
+      document.getElementById('card-expiry').required = false;
+      document.getElementById('card-cvv').required = false;
+    }
+  }
+
+  // Pre-initialize configuration parameters on initial file download
+  window.addEventListener('DOMContentLoaded', () => {
+    togglePaymentFields('card');
+  });
+
+  // Action script interface to trigger native browser submission mechanisms 
+  function submitCustomCheckout() {
+    const mainForm = document.getElementById('checkout-form');
+    if(mainForm.reportValidity()) {
+       mainForm.submit();
+    }
+  }
+
+  // Mobile menu tracking handles
+  document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu-overlay').classList.add('open');
+    document.getElementById('mobile-menu-panel').classList.add('open');
+  });
+  const dismissMobileNav = () => {
+    document.getElementById('mobile-menu-overlay').classList.remove('open');
+    document.getElementById('mobile-menu-panel').classList.remove('open');
+  };
+  document.getElementById('mobile-menu-close')?.addEventListener('click', dismissMobileNav);
+  document.getElementById('mobile-menu-overlay')?.addEventListener('click', dismissMobileNav);
+</script>
+</body>
+</html>

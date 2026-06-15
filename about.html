@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us – PowerNest Electronics &amp; Solar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary:   '#003087',
+            accent:    '#F5A623',
+            accentRed: '#E63329',
+            lightBg:   '#F4F6FA',
+            textMain:  '#1A1A2E',
+            textSub:   '#555770',
+            border:    '#E2E6EF',
+          },
+          fontFamily: { sans: ['Inter','sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #F4F6FA; color: #1A1A2E; margin: 0; overflow-x: hidden; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-thumb { background: #003087; border-radius: 3px; }
+
+    /* ─── Nav ─── */
+    #main-nav { position: sticky; top: 0; z-index: 200; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; left:0; bottom:-2px; width:0; height:2px; background:#F5A623; transition:width .2s; }
+    .nav-link:hover::after { width:100%; }
+    .nav-link.active::after { width:100%; }
+    .dd-parent { position: relative; }
+    .dd-menu { display:none; position:absolute; top:calc(100% + 6px); left:0; background:#fff; border:1px solid #E2E6EF; border-radius:10px; min-width:200px; box-shadow:0 8px 32px rgba(0,0,0,.12); z-index:300; padding:6px; }
+    .dd-parent:hover .dd-menu { display:block; }
+    .dd-menu a { display:block; padding:8px 12px; font-size:13px; color:#555770; border-radius:6px; text-decoration:none; }
+    .dd-menu a:hover { background:#F4F6FA; color:#003087; }
+
+    /* ─── Mobile drawer ─── */
+    #mobile-drawer { transform: translateX(-100%); transition: transform .3s ease; }
+    #mobile-drawer.open { transform: translateX(0); }
+    #drawer-overlay { display:none; }
+    #drawer-overlay.open { display:block; }
+
+    /* ─── Hero ─── */
+    .about-hero { background: linear-gradient(135deg, #003087 0%, #0050c8 50%, #0077ff 100%); }
+
+    /* ─── Timeline ─── */
+    .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #003087, #F5A623); transform: translateX(-50%); }
+    .tl-dot { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2; }
+    .tl-item { position: relative; display: grid; grid-template-columns: 1fr 60px 1fr; align-items: center; gap: 0; min-height: 120px; }
+    .tl-item:nth-child(odd) .tl-content { grid-column: 1; text-align: right; padding-right: 30px; }
+    .tl-item:nth-child(odd) .tl-empty  { grid-column: 3; }
+    .tl-item:nth-child(even) .tl-content { grid-column: 3; text-align: left; padding-left: 30px; }
+    .tl-item:nth-child(even) .tl-empty  { grid-column: 1; }
+    .tl-center { grid-column: 2; display: flex; justify-content: center; }
+
+    /* ─── Value card hover ─── */
+    .value-card { transition: transform .2s, box-shadow .2s; }
+    .value-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,48,135,.12); }
+
+    /* ─── Brand logos ─── */
+    .brand-tile { filter: grayscale(1); opacity: .55; transition: filter .25s, opacity .25s; }
+    .brand-tile:hover { filter: grayscale(0); opacity: 1; }
+
+    /* ─── Counter animation ─── */
+    .stat-num { font-size: 2.5rem; font-weight: 900; color: #003087; line-height: 1; }
+
+    /* ─── Section eye ─── */
+    .section-eye { color: #F5A623; font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+    /* ─── Mobile nav ─── */
+    #secondary-nav { display: flex; }
+    @media(max-width:767px) { #secondary-nav { display: none; } }
+    #mobile-bottom-bar { display: none; }
+    @media(max-width:767px) { #mobile-bottom-bar { display: flex; } }
+    @media(max-width:640px) { #announcement-bar .hide-mob { display: none; } }
+
+    /* ─── Timeline mobile ─── */
+    @media(max-width:640px) {
+      .timeline-line { left: 20px; }
+      .tl-dot { left: 20px; }
+      .tl-item { grid-template-columns: 40px 1fr; min-height: auto; }
+      .tl-item:nth-child(odd) .tl-content,
+      .tl-item:nth-child(even) .tl-content { grid-column: 2; text-align: left; padding: 0 0 0 16px; }
+      .tl-item:nth-child(odd) .tl-empty,
+      .tl-item:nth-child(even) .tl-empty { display: none; }
+      .tl-center { grid-column: 1; }
+    }
+
+    #footer-main { background: #003087; }
+    #footer-bot  { background: #00236b; }
+
+    /* Video play button */
+    .play-btn { transition: transform .2s, box-shadow .2s; }
+    .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 0 12px rgba(255,255,255,.15); }
+
+    /* Institutions scroll */
+    .inst-scroll { display: flex; gap: 32px; overflow-x: auto; padding-bottom: 4px; }
+    .inst-scroll::-webkit-scrollbar { height: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     ANNOUNCEMENT BAR
+══════════════════════════════════════════ -->
+<div id="announcement-bar" class="bg-primary text-white text-xs py-1.5 px-4 flex items-center justify-between gap-2">
+  <div class="flex items-center gap-3">
+    <span><i class="fas fa-shipping-fast mr-1"></i>Free shipping on bulk orders $5,000+</span>
+    <span class="hide-mob">|</span>
+    <span class="hide-mob"><i class="fas fa-headset mr-1"></i>24/7 International Support</span>
+  </div>
+  <div class="hide-mob flex items-center gap-3">
+    <a href="../homepage.html" class="hover:text-accent">Track Order</a>
+    <a href="#" class="hover:text-accent">Become a Dealer</a>
+    <span class="bg-accent rounded px-2 py-0.5 font-bold">USD</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN NAV
+══════════════════════════════════════════ -->
+<nav id="main-nav">
+  <div class="max-w-[1320px] mx-auto px-3 sm:px-4">
+    <div class="flex items-center gap-2 sm:gap-4 py-2.5">
+
+      <!-- Hamburger -->
+      <button id="hamburger-btn" onclick="openDrawer()" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-primary hover:bg-lightBg shrink-0">
+        <i class="fas fa-bars text-lg"></i>
+      </button>
+
+      <!-- Logo -->
+      <a href="../homepage.html" class="flex items-center gap-2 shrink-0">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 bg-primary rounded-lg flex items-center justify-center">
+          <i class="fas fa-bolt text-accent text-sm sm:text-base"></i>
+        </div>
+        <div class="leading-tight">
+          <div class="font-black text-primary text-base sm:text-lg tracking-tight">PowerNest</div>
+          <div class="text-[8px] text-textSub font-medium uppercase tracking-widest hidden sm:block">Electronics &amp; Solar</div>
+        </div>
+      </a>
+
+      <!-- Search -->
+      <div class="flex-1 min-w-0">
+        <div class="flex border-2 border-primary rounded-lg overflow-hidden">
+          <select class="bg-lightBg text-xs text-textSub font-medium px-2 sm:px-3 py-2 border-r border-border outline-none shrink-0 hidden sm:block">
+            <option>All Categories</option>
+            <option>Air Conditioners</option>
+            <option>Solar Panels</option>
+            <option>Televisions</option>
+          </select>
+          <input type="text" placeholder="Search products, brands…" class="flex-1 px-3 py-2 text-sm outline-none min-w-0" />
+          <button class="bg-primary text-white px-3 sm:px-5 py-2 hover:bg-blue-800 transition-colors shrink-0">
+            <i class="fas fa-search text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Icons -->
+      <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+        <a href="account.html" class="hidden sm:flex flex-col items-center text-textSub hover:text-primary text-xs font-medium px-1 transition-colors">
+          <i class="far fa-user text-lg mb-0.5"></i><span>Account</span>
+        </a>
+        <a href="wishlist.html" class="hidden sm:flex flex-col items-center text-textSub hover:text-primary text-xs font-medium px-1 transition-colors relative">
+          <i class="far fa-heart text-lg mb-0.5"></i><span>Wishlist</span>
+          <span class="absolute -top-0.5 right-0 bg-accentRed text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">3</span>
+        </a>
+        <a href="cart.html" class="flex items-center gap-1.5 bg-primary text-white rounded-lg px-3 py-2 text-sm font-semibold">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="hidden sm:inline">Cart</span>
+          <span class="bg-accent text-white text-[9px] rounded-full w-5 h-5 flex items-center justify-center font-bold">2</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Secondary nav -->
+    <div id="secondary-nav" class="items-center gap-5 pb-2 border-t border-border pt-2 overflow-x-auto">
+      <a href="../homepage.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Home</a>
+      <div class="dd-parent">
+        <a href="products.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap flex items-center gap-1">
+          Products 
+        </a>
+        <div class="dd-menu">
+          <a href="#">Air Conditioners</a>
+          <a href="#">Solar Panels</a>
+          <a href="#">Televisions</a>
+          <a href="#">Refrigerators</a>
+          <a href="#">Washing Machines</a>
+          <a href="#">Water Purifiers</a>
+        </div>
+      </div>
+      <a href="brands.html"     class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Brands</a>
+      <a href="bulk-order.html" class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Bulk Orders</a>
+      <a href="solar.html"      class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Solar Solutions</a>
+      <a href="deals.html"      class="nav-link text-sm text-accentRed font-semibold whitespace-nowrap"><i class="fas fa-fire mr-1"></i>Deals</a>
+      <a href="about.html"      class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">About Us</a>
+      <a href="contact.html"    class="nav-link text-sm text-textSub hover:text-primary font-medium whitespace-nowrap">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     MOBILE DRAWER OVERLAY
+══════════════════════════════════════════ -->
+<div id="drawer-overlay" class="fixed inset-0 bg-black/50 z-[300]" onclick="closeDrawer()"></div>
+
+<!-- ══════════════════════════════════════════
+     MOBILE DRAWER
+══════════════════════════════════════════ -->
+<div id="mobile-drawer" class="fixed top-0 left-0 h-full w-[280px] bg-white z-[400] overflow-y-auto shadow-2xl">
+  <div class="bg-primary text-white px-4 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-accent"></i></div>
+      <div><div class="font-black text-base">PowerNest</div><div class="text-[8px] opacity-70 uppercase tracking-widest">Electronics &amp; Solar</div></div>
+    </div>
+    <button onclick="closeDrawer()" class="w-8 h-8 flex items-center justify-center bg-white/10 rounded-lg"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="py-3">
+    <a href="../homepage.html" class="flex items-center gap-3 px-4 py-2.5 text-sm text-textMain hover:bg-lightBg"><i class="fas fa-home w-4 text-center text-primary/60"></i>Home</a>
+    <a href="products.html"    class="flex items-center gap-3 px-4 py-2.5 text-sm text-textMain hover:bg-lightBg"><i class="fas fa-th-large w-4 text-center text-primary/60"></i>Products</a>
+    <a href="brands.html"      class="flex items-center gap-3 px-4 py-2.5 text-sm text-textMain hover:bg-lightBg"><i class="fas fa-award w-4 text-center text-primary/60"></i>Brands</a>
+    <a href="deals.html"       class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-accentRed hover:bg-red-50"><i class="fas fa-fire w-4 text-center"></i>Flash Deals</a>
+    <a href="about.html"       class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-primary bg-blue-50"><i class="fas fa-info-circle w-4 text-center"></i>About Us</a>
+    <a href="contact.html"     class="flex items-center gap-3 px-4 py-2.5 text-sm text-textMain hover:bg-lightBg"><i class="fas fa-envelope w-4 text-center text-primary/60"></i>Contact</a>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HERO BANNER
+══════════════════════════════════════════ -->
+<section class="about-hero text-white relative overflow-hidden">
+  <!-- Background circles -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3"></div>
+  <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/4"></div>
+
+  <div class="max-w-[1320px] mx-auto px-4 sm:px-6 py-16 sm:py-24 relative z-10">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="section-eye text-white/70 mb-3">A Family Company · Since 2010</div>
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-4">
+        Making Life Better with<br>
+        <span class="text-accent">Premium Electronics</span>
+      </h1>
+      <p class="text-sm sm:text-base text-white/80 max-w-xl mx-auto mb-8 leading-relaxed">
+        Southeast Asia's largest electronics collective and biggest superstore — serving over a million customers, trusted by 1% agencies and enterprises.
+      </p>
+      <div class="flex items-center justify-center gap-4 flex-wrap">
+        <a href="contact.html"   class="bg-accent text-white font-bold px-6 py-3 rounded-lg hover:bg-yellow-500 transition-colors text-sm">Get in Touch</a>
+        <a href="products.html"  class="bg-white/20 border border-white/30 text-white font-bold px-6 py-3 rounded-lg hover:bg-white/30 transition-colors text-sm">Shop Now</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wave bottom -->
+  <div class="absolute bottom-0 left-0 right-0 h-8 bg-lightBg" style="clip-path: ellipse(55% 100% at 50% 100%);"></div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     STATS ROW
+══════════════════════════════════════════ -->
+<section class="max-w-[1320px] mx-auto px-4 sm:px-6 -mt-2 pb-8">
+  <div class="bg-white rounded-2xl shadow-lg px-6 sm:px-10 py-6 sm:py-8">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 text-center divide-x divide-border">
+      <div class="px-2">
+        <div class="stat-num">40+</div>
+        <div class="text-xs text-textSub mt-1 font-medium">Years Experience</div>
+      </div>
+      <div class="px-2">
+        <div class="stat-num">16</div>
+        <div class="text-xs text-textSub mt-1 font-medium">Showrooms</div>
+      </div>
+      <div class="px-2">
+        <div class="stat-num">100+</div>
+        <div class="text-xs text-textSub mt-1 font-medium">Premium Brands</div>
+      </div>
+      <div class="px-2">
+        <div class="stat-num">6,000+</div>
+        <div class="text-xs text-textSub mt-1 font-medium">Products In-Stock</div>
+      </div>
+      <div class="px-2">
+        <div class="stat-num">1M+</div>
+        <div class="text-xs text-textSub mt-1 font-medium">Customers Served</div>
+      </div>
+      <div class="px-2">
+        <div class="stat-num text-accent">ISO</div>
+        <div class="text-xs text-textSub mt-1 font-medium">Certified Quality</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     TWO GENERATIONS — STORY
+══════════════════════════════════════════ -->
+<section class="max-w-[1320px] mx-auto px-4 sm:px-6 py-10 sm:py-14">
+  <div class="max-w-2xl mx-auto text-center mb-10">
+    <div class="section-eye mb-2">Our Story</div>
+    <h2 class="text-2xl sm:text-3xl font-black text-textMain">Two generations. One name.</h2>
+    <p class="text-textSub text-sm mt-3 leading-relaxed">
+      In 1983, a single passion of delivering the best electronics drove our family to open our first shop in Kuala Lumpur. Today, that same family has grown to serve over a million customers and a hundred premium brands — united by the same belief: everyone deserves the finest quality.
+    </p>
+  </div>
+
+  <!-- Video block -->
+  <div class="relative max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-xl group cursor-pointer mb-10" onclick="this.querySelector('.play-btn').classList.add('scale-90')">
+    <img
+      src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=900&q=80"
+      alt="PowerNest Showroom"
+      class="w-full h-52 sm:h-80 object-cover group-hover:brightness-75 transition-all duration-300"
+    />
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/30 group-hover:bg-black/45 transition-colors flex items-center justify-center">
+      <div class="play-btn w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center shadow-2xl">
+        <i class="fas fa-play text-primary text-xl sm:text-2xl ml-1"></i>
+      </div>
+    </div>
+    <!-- Caption -->
+    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-5 py-4">
+      <p class="text-white text-xs sm:text-sm font-medium">MK Electronics Story — Our Journey from a local shop to Southeast Asia's #1 Electronics Superstore</p>
+      <p class="text-white/60 text-[11px] mt-0.5">2 min • Watch Now</p>
+    </div>
+  </div>
+
+  <!-- Quote + Story columns -->
+  <div class="grid sm:grid-cols-2 gap-8 items-start max-w-5xl mx-auto">
+    <div>
+      <blockquote class="border-l-4 border-accent pl-5 py-1">
+        <p class="text-textMain font-semibold text-base sm:text-lg leading-relaxed italic">"Quality products with quality service — my mission is well defined and always will be the same."</p>
+        <footer class="mt-3">
+          <div class="font-bold text-primary text-sm">Ahmad Razif bin Ismail</div>
+          <div class="text-xs text-textSub">Founder &amp; Chairman, PowerNest</div>
+        </footer>
+      </blockquote>
+    </div>
+    <div>
+      <p class="text-textSub text-sm leading-relaxed mb-3">
+        With decades in the industry, we've dedicated ourselves to offering the highest quality products and maintaining a name of trust with. We now proudly serve customers across Malaysia and internationally — building long-lasting relationships with installers, engineers, and homeowners.
+      </p>
+      <p class="text-textSub text-sm leading-relaxed">
+        As a family company, I want PowerNest to deliver the highest quality products you can trust throughout the world. Yes, I know almost every one of our quality products are made with excellent manufacturers. Our supervisors are the biggest in Southeast Asia.
+      </p>
+      <p class="text-textSub text-sm leading-relaxed mt-3">
+        At our RM 500,000 per store property, created by our leading engineers. Directly the Training team, we always deliver to the world itself — and, as a direct of quality electronics solutions.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     TIMELINE — 43 YEARS AND COUNTING
+══════════════════════════════════════════ -->
+<section class="py-12 sm:py-16 bg-white">
+  <div class="max-w-[1320px] mx-auto px-4 sm:px-6">
+    <div class="text-center mb-12">
+      <div class="section-eye mb-2">Since 1983</div>
+      <h2 class="text-2xl sm:text-3xl font-black text-textMain">43 years and counting</h2>
+    </div>
+
+    <div class="relative max-w-3xl mx-auto">
+      <!-- Center line -->
+      <div class="timeline-line"></div>
+
+      <!-- Timeline items -->
+      <!-- 1983 -->
+      <div class="tl-item mb-8 sm:mb-10">
+        <div class="tl-content">
+          <div class="bg-white border-2 border-border rounded-xl p-4 shadow-sm inline-block text-right sm:float-right sm:max-w-[260px]">
+            <div class="text-accent font-black text-base">1983</div>
+            <div class="font-bold text-textMain text-sm mt-0.5">The Beginning</div>
+            <p class="text-xs text-textSub mt-1 leading-relaxed">The first store opened in Kuala Lumpur — a small family shop with a big dream to serve the nation with premium electronics.</p>
+          </div>
+        </div>
+        <div class="tl-center">
+          <div class="tl-dot w-8 h-8 bg-primary rounded-full border-4 border-white shadow-md flex items-center justify-center">
+            <i class="fas fa-star text-accent text-xs"></i>
+          </div>
+        </div>
+        <div class="tl-empty"></div>
+      </div>
+
+      <!-- 2000 -->
+      <div class="tl-item mb-8 sm:mb-10">
+        <div class="tl-empty"></div>
+        <div class="tl-center">
+          <div class="tl-dot w-8 h-8 bg-accent rounded-full border-4 border-white shadow-md flex items-center justify-center">
+            <i class="fas fa-store text-white text-xs"></i>
+          </div>
+        </div>
+        <div class="tl-content">
+          <div class="bg-white border-2 border-border rounded-xl p-4 shadow-sm inline-block text-left sm:float-left sm:max-w-[260px]">
+            <div class="text-accent font-black text-base">2000</div>
+            <div class="font-bold text-textMain text-sm mt-0.5">Southeast Asia's Biggest Superstore</div>
+            <p class="text-xs text-textSub mt-1 leading-relaxed">Expanded to 8 branches across Malaysia — becoming the region's undisputed leader in consumer electronics.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2012 -->
+      <div class="tl-item mb-8 sm:mb-10">
+        <div class="tl-content">
+          <div class="bg-white border-2 border-border rounded-xl p-4 shadow-sm inline-block text-right sm:float-right sm:max-w-[260px]">
+            <div class="text-accent font-black text-base">2012</div>
+            <div class="font-bold text-textMain text-sm mt-0.5">Multi-City Expansion</div>
+            <p class="text-xs text-textSub mt-1 leading-relaxed">Opened showrooms in Penang, Johor Bahru, and Kuching — bringing our standards of excellence to every corner of Malaysia.</p>
+          </div>
+        </div>
+        <div class="tl-center">
+          <div class="tl-dot w-8 h-8 bg-primary rounded-full border-4 border-white shadow-md flex items-center justify-center">
+            <i class="fas fa-map-marker-alt text-accent text-xs"></i>
+          </div>
+        </div>
+        <div class="tl-empty"></div>
+      </div>
+
+      <!-- 2018 -->
+      <div class="tl-item mb-8 sm:mb-10">
+        <div class="tl-empty"></div>
+        <div class="tl-center">
+          <div class="tl-dot w-8 h-8 bg-accent rounded-full border-4 border-white shadow-md flex items-center justify-center">
+            <i class="fas fa-globe text-white text-xs"></i>
+          </div>
+        </div>
+        <div class="tl-content">
+          <div class="bg-white border-2 border-border rounded-xl p-4 shadow-sm inline-block text-left sm:float-left sm:max-w-[260px]">
+            <div class="text-accent font-black text-base">2018</div>
+            <div class="font-bold text-textMain text-sm mt-0.5">eCommerce Launch</div>
+            <p class="text-xs text-textSub mt-1 leading-relaxed">Launched our digital storefront, making our products accessible to international buyers across 30+ countries.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2022 -->
+      <div class="tl-item mb-8 sm:mb-10">
+        <div class="tl-content">
+          <div class="bg-white border-2 border-border rounded-xl p-4 shadow-sm inline-block text-right sm:float-right sm:max-w-[260px]">
+            <div class="text-accent font-black text-base">2022</div>
+            <div class="font-bold text-textMain text-sm mt-0.5">North, Rangel &amp; Khulna</div>
+            <p class="text-xs text-textSub mt-1 leading-relaxed">Expanded internationally — partnering with distributors across South Asia and the Middle East for bulk supply agreements.</p>
+          </div>
+        </div>
+        <div class="tl-center">
+          <div class="tl-dot w-8 h-8 bg-primary rounded-full border-4 border-white shadow-md flex items-center justify-center">
+            <i class="fas fa-handshake text-accent text-xs"></i>
+          </div>
+        </div>
+        <div class="tl-empty"></div>
+      </div>
+
+      <!-- Today -->
+      <div class="tl-item">
+        <div class="tl-empty"></div>
+        <div class="tl-center">
+          <div class="tl-dot w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-full border-4 border-white shadow-lg flex items-center justify-center">
+            <i class="fas fa-rocket text-white text-xs"></i>
+          </div>
+        </div>
+        <div class="tl-content">
+          <div class="bg-primary text-white border-2 border-primary rounded-xl p-4 shadow-sm inline-block text-left sm:float-left sm:max-w-[260px]">
+            <div class="text-accent font-black text-base">Today</div>
+            <div class="font-bold text-sm mt-0.5">Over a Million Customers Served</div>
+            <p class="text-xs text-white/80 mt-1 leading-relaxed">Today PowerNest is Malaysia's most trusted wholesale electronics partner — shipping globally, backed by ISO certification and 40+ years of excellence.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     OUR VALUES
+══════════════════════════════════════════ -->
+<section class="max-w-[1320px] mx-auto px-4 sm:px-6 py-12 sm:py-16">
+  <div class="text-center mb-10">
+    <div class="section-eye mb-2">What We Stand For</div>
+    <h2 class="text-2xl sm:text-3xl font-black text-textMain">Our Values</h2>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+    <div class="value-card bg-white rounded-2xl p-6 shadow-sm border border-border">
+      <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+        <i class="fas fa-heart text-primary text-xl"></i>
+      </div>
+      <h3 class="font-bold text-textMain text-base mb-2">A Family Company</h3>
+      <p class="text-textSub text-sm leading-relaxed">Built on family values — every customer and partner is treated as part of our extended family. Trust, honesty, and care guide every decision we make.</p>
+    </div>
+
+    <div class="value-card bg-white rounded-2xl p-6 shadow-sm border border-border">
+      <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+        <i class="fas fa-globe-asia text-primary text-xl"></i>
+      </div>
+      <h3 class="font-bold text-textMain text-base mb-2">The Largest Selection</h3>
+      <p class="text-textSub text-sm leading-relaxed">100+ global brands, 6,000+ SKUs — we source directly from manufacturers to give you unparalleled variety and the best pricing for bulk orders.</p>
+    </div>
+
+    <div class="value-card bg-white rounded-2xl p-6 shadow-sm border border-border">
+      <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+        <i class="fas fa-tags text-primary text-xl"></i>
+      </div>
+      <h3 class="font-bold text-textMain text-base mb-2">Quality Price</h3>
+      <p class="text-textSub text-sm leading-relaxed">Premium products don't have to cost a fortune. Our direct factory partnerships mean you receive genuine, certified electronics at competitive wholesale rates.</p>
+    </div>
+
+    <div class="value-card bg-white rounded-2xl p-6 shadow-sm border border-border">
+      <div class="w-12 h-12 bg-accent/15 rounded-xl flex items-center justify-center mb-4">
+        <i class="fas fa-users text-accent text-xl"></i>
+      </div>
+      <h3 class="font-bold text-textMain text-base mb-2">Customer Obsession</h3>
+      <p class="text-textSub text-sm leading-relaxed">From pre-sale guidance to post-installation support, our team stays by your side. We measure success not by sales, but by your satisfaction.</p>
+    </div>
+
+    <div class="value-card bg-white rounded-2xl p-6 shadow-sm border border-border">
+      <div class="w-12 h-12 bg-accent/15 rounded-xl flex items-center justify-center mb-4">
+        <i class="fas fa-shield-alt text-accent text-xl"></i>
+      </div>
+      <h3 class="font-bold text-textMain text-base mb-2">Integrity</h3>
+      <p class="text-textSub text-sm leading-relaxed">No hidden fees, no counterfeit products, no compromises on quality. We hold ourselves to the highest ethical standards — period, and that's our promise.</p>
+    </div>
+
+    <div class="value-card bg-white rounded-2xl p-6 shadow-sm border border-border">
+      <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+        <i class="fas fa-solar-panel text-green-600 text-xl"></i>
+      </div>
+      <h3 class="font-bold text-textMain text-base mb-2">Forward-Looking</h3>
+      <p class="text-textSub text-sm leading-relaxed">Investing in tomorrow — our solar division represents our commitment to a cleaner, greener future for Malaysia and the markets we serve internationally.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     100+ GLOBAL BRANDS
+══════════════════════════════════════════ -->
+<section class="py-12 sm:py-16" style="background: linear-gradient(135deg, #003087 0%, #0050c8 100%);">
+  <div class="max-w-[1320px] mx-auto px-4 sm:px-6">
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+
+      <!-- Left: copy -->
+      <div class="text-white">
+        <div class="section-eye text-white/60 mb-3">Global Brand Network</div>
+        <h2 class="text-2xl sm:text-3xl font-black leading-tight mb-4">100+ global brands,<br>one trusted roof.</h2>
+        <p class="text-white/75 text-sm leading-relaxed mb-6">
+          Every brand we stock is officially authorised. Our partnerships are built directly with manufacturers and regional distributors — ensuring authenticity, full warranty coverage, and competitive pricing that you simply can't find elsewhere.
+        </p>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-white/10 rounded-xl p-4 text-center">
+            <div class="text-3xl font-black text-accent">100+</div>
+            <div class="text-xs text-white/70 mt-1">Global Brands</div>
+          </div>
+          <div class="bg-white/10 rounded-xl p-4 text-center">
+            <div class="text-3xl font-black text-accent">6,000+</div>
+            <div class="text-xs text-white/70 mt-1">Products In-Stock</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: brand grid -->
+      <div>
+        <div class="grid grid-cols-4 gap-3">
+          <!-- Row 1 -->
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm text-gray-700">SONY</span></div>
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm" style="color:#1428A0">Samsung</span></div>
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm" style="color:#CC0000">Daikin</span></div>
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm text-gray-800">Fotile</span></div>
+          <!-- Row 2 -->
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm" style="color:#c00">Fujita</span></div>
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm" style="color:#CC0000">HITACHI</span></div>
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-lg" style="color:#a50034">LG</span></div>
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm text-gray-700">Haier</span></div>
+          <!-- Row 3 -->
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm text-gray-600">Electrolux</span></div>
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm" style="color:#004B8D">Panasonic</span></div>
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm" style="color:#0075C9">PHILIPS</span></div>
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm text-gray-700">Midea</span></div>
+          <!-- Row 4 -->
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm" style="color:#1428A0">SAMSUNG</span></div>
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm text-gray-700">Toshiba</span></div>
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm" style="color:#003087">SEC</span></div>
+          <div class="brand-tile bg-white rounded-xl p-3 flex items-center justify-center h-14"><span class="font-black text-sm" style="color:#1a1a1a">SHARP</span></div>
+        </div>
+        <p class="text-white/50 text-xs text-center mt-3">+ many more authorised brands</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     INSTITUTIONS THAT RELY ON US
+══════════════════════════════════════════ -->
+<section class="max-w-[1320px] mx-auto px-4 sm:px-6 py-12 sm:py-16">
+  <div class="text-center mb-8">
+    <div class="section-eye mb-2">Our B2B Network</div>
+    <h2 class="text-2xl sm:text-3xl font-black text-textMain">The institutions that rely on us</h2>
+    <p class="text-textSub text-sm mt-2 max-w-xl mx-auto">From hotels and hospitals to real estate developers and government contractors — leading organisations across the region trust PowerNest for bulk procurement.</p>
+  </div>
+  <div class="inst-scroll pb-2">
+    <div class="shrink-0 bg-white rounded-xl px-5 py-3 border border-border shadow-sm text-xs font-semibold text-textSub whitespace-nowrap">Grand Hotel Group</div>
+    <div class="shrink-0 bg-white rounded-xl px-5 py-3 border border-border shadow-sm text-xs font-semibold text-textSub whitespace-nowrap">Sime Darby Properties</div>
+    <div class="shrink-0 bg-white rounded-xl px-5 py-3 border border-border shadow-sm text-xs font-semibold text-textSub whitespace-nowrap">Bank Negara MY</div>
+    <div class="shrink-0 bg-white rounded-xl px-5 py-3 border border-border shadow-sm text-xs font-semibold text-textSub whitespace-nowrap">Asia Pacific Uni.</div>
+    <div class="shrink-0 bg-white rounded-xl px-5 py-3 border border-border shadow-sm text-xs font-semibold text-textSub whitespace-nowrap">KLCC Holdings</div>
+    <div class="shrink-0 bg-white rounded-xl px-5 py-3 border border-border shadow-sm text-xs font-semibold text-textSub whitespace-nowrap">Sunway Group</div>
+    <div class="shrink-0 bg-white rounded-xl px-5 py-3 border border-border shadow-sm text-xs font-semibold text-textSub whitespace-nowrap">IHH Healthcare</div>
+    <div class="shrink-0 bg-white rounded-xl px-5 py-3 border border-border shadow-sm text-xs font-semibold text-textSub whitespace-nowrap">Country Farming</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SERVICE EXCELLENCE
+══════════════════════════════════════════ -->
+<section class="bg-white py-12 sm:py-16">
+  <div class="max-w-[1320px] mx-auto px-4 sm:px-6">
+    <div class="text-center mb-10">
+      <div class="section-eye mb-2">Always Here For You</div>
+      <h2 class="text-2xl sm:text-3xl font-black text-textMain">Service Excellence</h2>
+      <p class="text-textSub text-sm mt-2">From our stores to your door, every step of the way</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+
+      <div class="text-center p-6 rounded-2xl bg-lightBg border border-border">
+        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md">
+          <i class="fas fa-certificate text-white text-2xl"></i>
+        </div>
+        <h3 class="font-bold text-textMain text-sm mb-2">Authorised Service Centres</h3>
+        <p class="text-xs text-textSub leading-relaxed">All our products come with full manufacturer warranties, handled through certified service partners nationwide.</p>
+      </div>
+
+      <div class="text-center p-6 rounded-2xl bg-lightBg border border-border">
+        <div class="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md">
+          <i class="fas fa-headset text-white text-2xl"></i>
+        </div>
+        <h3 class="font-bold text-textMain text-sm mb-2">Expertise &amp; Advisory</h3>
+        <p class="text-xs text-textSub leading-relaxed">Our product specialists are available 24/7 to guide bulk buyers, contractors, and developers in making the right choice.</p>
+      </div>
+
+      <div class="text-center p-6 rounded-2xl bg-lightBg border border-border">
+        <div class="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md">
+          <i class="fas fa-truck text-white text-2xl"></i>
+        </div>
+        <h3 class="font-bold text-textMain text-sm mb-2">Nationwide Delivery</h3>
+        <p class="text-xs text-textSub leading-relaxed">We deliver to all states in Malaysia and export to 30+ countries — with full logistics support and tracking for bulk orders.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     TEAM SECTION
+══════════════════════════════════════════ -->
+<section class="max-w-[1320px] mx-auto px-4 sm:px-6 py-12 sm:py-16">
+  <div class="text-center mb-10">
+    <div class="section-eye mb-2">The People Behind PowerNest</div>
+    <h2 class="text-2xl sm:text-3xl font-black text-textMain">Leadership Team</h2>
+  </div>
+  <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-5">
+
+    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-border group">
+      <div class="h-40 sm:h-48 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+        <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center">
+          <i class="fas fa-user text-white text-3xl"></i>
+        </div>
+      </div>
+      <div class="p-4 text-center">
+        <div class="font-bold text-textMain text-sm">Ahmad Razif</div>
+        <div class="text-xs text-primary font-semibold mt-0.5">Founder &amp; Chairman</div>
+        <p class="text-xs text-textSub mt-1.5 leading-relaxed">40+ years in electronics retail and wholesale.</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-border group">
+      <div class="h-40 sm:h-48 bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center">
+        <div class="w-20 h-20 bg-accent rounded-full flex items-center justify-center">
+          <i class="fas fa-user text-white text-3xl"></i>
+        </div>
+      </div>
+      <div class="p-4 text-center">
+        <div class="font-bold text-textMain text-sm">Farah Ismail</div>
+        <div class="text-xs text-primary font-semibold mt-0.5">CEO</div>
+        <p class="text-xs text-textSub mt-1.5 leading-relaxed">Leading digital transformation and international expansion.</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-border group">
+      <div class="h-40 sm:h-48 bg-gradient-to-br from-green-100 to-green-50 flex items-center justify-center">
+        <div class="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center">
+          <i class="fas fa-user text-white text-3xl"></i>
+        </div>
+      </div>
+      <div class="p-4 text-center">
+        <div class="font-bold text-textMain text-sm">Danial Razif</div>
+        <div class="text-xs text-primary font-semibold mt-0.5">Head of Solar Division</div>
+        <p class="text-xs text-textSub mt-1.5 leading-relaxed">Driving our renewable energy business across the region.</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-border group">
+      <div class="h-40 sm:h-48 bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center">
+        <div class="w-20 h-20 bg-purple-600 rounded-full flex items-center justify-center">
+          <i class="fas fa-user text-white text-3xl"></i>
+        </div>
+      </div>
+      <div class="p-4 text-center">
+        <div class="font-bold text-textMain text-sm">Nurul Hana</div>
+        <div class="text-xs text-primary font-semibold mt-0.5">Head of International Sales</div>
+        <p class="text-xs text-textSub mt-1.5 leading-relaxed">Managing export partnerships across 30+ countries.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     VISIT US CTA
+══════════════════════════════════════════ -->
+<section class="max-w-[1320px] mx-auto px-4 sm:px-6 mb-6">
+  <div class="rounded-2xl overflow-hidden" style="background:linear-gradient(120deg,#003087 0%,#0050c8 70%,#0077ff 100%);">
+    <div class="flex flex-col sm:flex-row items-center justify-between px-6 sm:px-12 py-10 sm:py-12 gap-6">
+      <div class="text-white text-center sm:text-left">
+        <div class="text-[10px] font-bold uppercase tracking-widest text-white/60 mb-2">Visit Us in Malaysia</div>
+        <h2 class="text-2xl sm:text-3xl font-black leading-tight">Visit us today</h2>
+        <p class="text-sm text-white/75 mt-2">Walk into any of our 16 showrooms, or shop online — experience premium electronics, trusted by millions.</p>
+        <div class="flex flex-wrap gap-2 mt-3 justify-center sm:justify-start text-xs text-white/60">
+          <span><i class="fas fa-map-marker-alt mr-1 text-accent"></i>KL · Penang · Johor · Kuching</span>
+          <span><i class="fas fa-clock mr-1 text-accent"></i>Mon–Sat: 9am – 7pm</span>
+        </div>
+      </div>
+      <div class="flex gap-3 shrink-0">
+        <a href="contact.html" class="bg-accent text-white font-bold px-6 py-3 rounded-xl hover:bg-yellow-500 transition-colors text-sm">
+          <i class="fas fa-map-marker-alt mr-2"></i>Get Directions
+        </a>
+        <a href="contact.html" class="bg-white/20 border border-white/30 text-white font-bold px-6 py-3 rounded-xl hover:bg-white/30 transition-colors text-sm">
+          <i class="fas fa-phone mr-2"></i>Call Us
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer>
+  <!-- Stats row -->
+  <div class="bg-white border-t border-border">
+    <div class="max-w-[1320px] mx-auto px-4 sm:px-6 py-4">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="flex items-center gap-3 justify-center md:justify-start py-2">
+          <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0"><i class="fas fa-award text-primary"></i></div>
+          <div><div class="font-bold text-sm">40+ Years</div><div class="text-xs text-textSub">Established Trust</div></div>
+        </div>
+        <div class="flex items-center gap-3 justify-center md:justify-start py-2">
+          <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0"><i class="fas fa-store text-primary"></i></div>
+          <div><div class="font-bold text-sm">16 Showrooms</div><div class="text-xs text-textSub">Across Malaysia</div></div>
+        </div>
+        <div class="flex items-center gap-3 justify-center md:justify-start py-2">
+          <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0"><i class="fas fa-box-open text-primary"></i></div>
+          <div><div class="font-bold text-sm">2,000+ SKUs</div><div class="text-xs text-textSub">Products In-Stock</div></div>
+        </div>
+        <div class="flex items-center gap-3 justify-center md:justify-start py-2">
+          <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0"><i class="fas fa-globe text-primary"></i></div>
+          <div><div class="font-bold text-sm">30+ Countries</div><div class="text-xs text-textSub">Export Partners</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main footer -->
+  <div id="footer-main" class="text-white">
+    <div class="max-w-[1320px] mx-auto px-4 sm:px-6 py-10">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div class="col-span-2 md:col-span-1">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-white/20 rounded-lg flex items-center justify-center"><i class="fas fa-bolt text-accent text-base"></i></div>
+            <div><div class="font-black text-lg">PowerNest</div><div class="text-[8px] opacity-60 uppercase tracking-widest">Electronics &amp; Solar</div></div>
+          </div>
+          <p class="text-xs sm:text-sm opacity-75 leading-relaxed mb-4">Malaysia's trusted wholesale partner for premium electronics, ACs, and solar — serving international buyers since 2010.</p>
+          <div class="flex gap-2.5">
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-facebook-f text-xs"></i></a>
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-instagram text-xs"></i></a>
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-linkedin-in text-xs"></i></a>
+            <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-youtube text-xs"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-3 text-accent">Products</h4>
+          <ul class="space-y-1.5 text-xs opacity-80">
+            <li><a href="products.html" class="hover:text-accent transition-colors">Air Conditioners</a></li>
+            <li><a href="solar.html"    class="hover:text-accent transition-colors">Solar Panels</a></li>
+            <li><a href="products.html" class="hover:text-accent transition-colors">Televisions</a></li>
+            <li><a href="products.html" class="hover:text-accent transition-colors">Refrigerators</a></li>
+            <li><a href="products.html" class="hover:text-accent transition-colors">Washing Machines</a></li>
+            <li><a href="products.html" class="hover:text-accent transition-colors">Water Purifiers</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-3 text-accent">Company</h4>
+          <ul class="space-y-1.5 text-xs opacity-80">
+            <li><a href="about.html"      class="hover:text-accent transition-colors">About Us</a></li>
+            <li><a href="#"               class="hover:text-accent transition-colors">Careers</a></li>
+            <li><a href="#"               class="hover:text-accent transition-colors">Press &amp; Media</a></li>
+            <li><a href="bulk-order.html" class="hover:text-accent transition-colors">Dealer Program</a></li>
+            <li><a href="#"               class="hover:text-accent transition-colors">Sustainability</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-3 text-accent">Support</h4>
+          <ul class="space-y-1.5 text-xs opacity-80">
+            <li><a href="contact.html" class="hover:text-accent transition-colors">Contact Us</a></li>
+            <li><a href="#"            class="hover:text-accent transition-colors">Track Order</a></li>
+            <li><a href="#"            class="hover:text-accent transition-colors">Return Policy</a></li>
+            <li><a href="#"            class="hover:text-accent transition-colors">Warranty Info</a></li>
+            <li><a href="#"            class="hover:text-accent transition-colors">FAQs</a></li>
+          </ul>
+          <div class="mt-4">
+            <div class="opacity-60 text-[10px] mb-0.5">24/7 Support</div>
+            <div class="font-bold text-accent text-sm">+60 3-1234 5678</div>
+            <div class="opacity-60 text-[10px] mt-0.5">support@powernest.com.my</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer bottom -->
+  <div id="footer-bot" class="text-white text-[11px]">
+    <div class="max-w-[1320px] mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <span class="opacity-70 text-center">© 2024 PowerNest Sdn. Bhd. All rights reserved. Kuala Lumpur, Malaysia.</span>
+      <div class="flex items-center gap-3 opacity-70">
+        <a href="#" class="hover:text-accent">Privacy Policy</a>
+        <a href="#" class="hover:text-accent">Terms</a>
+        <a href="#" class="hover:text-accent">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Mobile bottom nav -->
+<div id="mobile-bottom-bar" class="fixed bottom-0 left-0 right-0 bg-white border-t border-border z-[150] items-center justify-around py-2 px-2">
+  <a href="../homepage.html" class="flex flex-col items-center gap-0.5 text-textSub hover:text-primary"><i class="fas fa-home text-lg"></i><span class="text-[10px]">Home</span></a>
+  <a href="products.html"    class="flex flex-col items-center gap-0.5 text-textSub hover:text-primary"><i class="fas fa-th-large text-lg"></i><span class="text-[10px]">Products</span></a>
+  <a href="deals.html"       class="flex flex-col items-center gap-0.5 text-textSub hover:text-primary"><i class="fas fa-fire text-lg"></i><span class="text-[10px]">Deals</span></a>
+  <a href="wishlist.html"    class="flex flex-col items-center gap-0.5 text-textSub hover:text-primary relative"><i class="far fa-heart text-lg"></i><span class="text-[10px]">Wishlist</span><span class="absolute top-0 right-1 bg-accentRed text-white text-[8px] rounded-full w-3.5 h-3.5 flex items-center justify-center font-bold">3</span></a>
+  <a href="account.html"     class="flex flex-col items-center gap-0.5 text-primary"><i class="far fa-user text-lg"></i><span class="text-[10px] font-semibold">Account</span></a>
+</div>
+<div class="h-16 md:h-0"></div>
+
+<!-- Scroll to top -->
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+  class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 w-10 h-10 bg-primary text-white rounded-full shadow-lg items-center justify-center hover:bg-blue-800 transition-all z-[140]"
+  style="opacity:0; transition:opacity .3s; display:flex;">
+  <i class="fas fa-arrow-up text-sm"></i>
+</button>
+
+<script>
+  // ─── Drawer ───────────────────────────────────
+  function openDrawer() {
+    document.getElementById('mobile-drawer').classList.add('open');
+    document.getElementById('drawer-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    document.getElementById('mobile-drawer').classList.remove('open');
+    document.getElementById('drawer-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ─── Scroll to top ────────────────────────────
+  window.addEventListener('scroll', function () {
+    var btn = document.getElementById('scroll-top');
+    btn.style.opacity = window.scrollY > 400 ? '1' : '0';
+  });
+
+  // ─── Animate stat numbers ─────────────────────
+  function animateCount(el, target, suffix) {
+    var start = 0;
+    var duration = 1800;
+    var step = target / (duration / 16);
+    var timer = setInterval(function () {
+      start += step;
+      if (start >= target) { start = target; clearInterval(timer); }
+      el.textContent = Math.floor(start) + suffix;
+    }, 16);
+  }
+
+  var counted = false;
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting && !counted) {
+        counted = true;
+        var nums = document.querySelectorAll('.stat-num[data-target]');
+        nums.forEach(function (n) {
+          animateCount(n, parseInt(n.dataset.target), n.dataset.suffix || '');
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  var statsEl = document.querySelector('.stat-num');
+  if (statsEl) observer.observe(statsEl.closest('section') || statsEl);
+</script>
+</body>
+</html>
